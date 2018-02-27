@@ -1,0 +1,26 @@
+Group {
+ name M2x2_Det
+ addUserKnob {20 Matrix2x2_Determinant}
+}
+ Input {
+  inputs 0
+  name matrix
+  xpos 203
+  ypos 209
+ }
+ Expression {
+  channel0 rgb
+  expr0 matrix0.0*matrix1.1-matrix0.1*matrix1.0
+  channel1 none
+  channel2 none
+  channel3 none
+  name Matrix_22_Det
+  xpos 203
+  ypos 249
+ }
+ Output {
+  name Output1
+  xpos 203
+  ypos 349
+ }
+end_group

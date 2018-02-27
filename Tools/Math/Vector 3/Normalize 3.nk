@@ -1,0 +1,38 @@
+Group {
+ name V3_Norm
+ addUserKnob {20 Vector3_Normalize}
+}
+ Input {
+  inputs 0
+  name vector
+  xpos 509
+  ypos 209
+ }
+set Nf7145800 [stack 0]
+ Expression {
+  channel0 rgb
+  expr0 sqrt((r*r)+(g*g)+(b*b))
+  channel1 none
+  channel2 none
+  channel3 none
+  name Magnitude
+  xpos 580
+  ypos 255
+ }
+push $Nf7145800
+ MergeExpression {
+  inputs 2
+  expr0 Br/Ar
+  expr1 Bg/Ag
+  expr2 Bb/Ab
+  channel3 none
+  name MergeExpression1
+  xpos 509
+  ypos 312
+ }
+ Output {
+  name Output1
+  xpos 509
+  ypos 376
+ }
+end_group
