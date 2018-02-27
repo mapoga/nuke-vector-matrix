@@ -27,7 +27,7 @@ def findParentDirSubMenu(toolbar='Nodes', limitSearchToMenus=True, searchedMenus
 		depth += 1
 	return None
 
-def autoAddCommand(fileTypes=['.nk', '.gizmo'], sort=True):
+def autoAddCommand(menu, fileTypes=['.nk', '.gizmo'], sort=True):
 	# Adds icon with the same name as the file with a '_icon' suffix
 	initDir = os.path.dirname(os.path.realpath(__file__))
 	files = []
@@ -43,7 +43,6 @@ def autoAddCommand(fileTypes=['.nk', '.gizmo'], sort=True):
 		for f in files:
 			fullName = os.path.basename(f)
 			name, ext = os.path.splitext(fullName)
-			print("\nf: ", f)
 			m.addCommand(name, 'nuke.createNode(\'{0}\')'.format(fullName), icon='{0}_icon.png'.format(name))
 
 
@@ -55,6 +54,12 @@ dirName = os.path.basename(os.path.dirname(os.path.realpath(__file__))) # name o
 parentMenu = findParentDirSubMenu(toolbar='Nodes', limitSearchToMenus=True, searchedMenus=['Tools'])
 #parentMenu = nuke.toolbar('Nodes')
 if parentMenu:
-	m = parentMenu.addMenu(dirName, icon='{0}_icon.png'.format(dirName)) # Name menu after directory
-	m.addSeparator() # Trick to force Menu class completion when no commands are added.
-	autoAddCommand(fileTypes=['.nk', '.gizmo'], sort=True)
+	pMenus = [i for i in parentMenu.items() if type(i) == nuke.Menu]
+	if dirName not in pMenus: # Check if menu already exists
+		m = parentMenu.addMenu(dirName, icon='{0}_icon.png'.format(dirName)) # Name menu after directory
+		sep = m.addSeparator() # Trick to force Menu class completion when no commands are added.
+		sep.setVisible(False)
+
+	else:
+		m = pMenus[pMenus.index(dirName)]
+	autoAddCommand(menu=m, fileTypes=['.nk', '.gizmo'], sort=True)
