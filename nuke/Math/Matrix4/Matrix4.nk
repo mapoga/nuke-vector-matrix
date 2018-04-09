@@ -1,0 +1,183 @@
+Group {
+inputs 0
+name Matrix4_1
+knobChanged "def get_input_by_number(number):\n\t\"\"\" Returns the input node or None if not found \"\"\"\n\tinputs = nuke.allNodes(\"Input\")\n\tfor i in inputs:\n\t\tif int(i.knob(\"number\").value()) == int(number):\n\t\t\treturn i\n\treturn None\n\n\ndef connect_input(input, node, input_number):\n\t\"\"\" Connect input on top of node and reposition input \"\"\"\n\t# connect\n\tnode.connectInput(input_number, input)\n\t# position\n\tcon_xpos = node.xpos()\n\tcon_ypos = node.ypos()\n\tcon_width = node.screenWidth()\n\tcon_height = node.screenHeight()\n\twidth = input.screenWidth()\n\theight = input.screenHeight()\n\tinput.setXYpos(int(con_xpos+(con_width/2.0)-(width/2.0)),\n\t\t\t\t   int(con_ypos-height-10))\n\n\ndef pulldown_idx(knob):\n\t\"\"\" returns the index of current value \"\"\"\n\tvalues = knob.values()\n\tval = knob.value()\n\treturn values.index(val)\n\n\ndef add_input(name, connect_name, connect_pipe_nbr):\n\t\"\"\" Creates an input node and a connection \"\"\"\n\tinput_node = nuke.nodes.Input()\n\tinput_node.knob(\"name\").setValue(name)\n\tinput_connect_node = nuke.toNode(connect_name)\n\tconnect_input(input_node, input_connect_node, connect_pipe_nbr)\n\treturn input_node\n\nn = nuke.thisNode()\nk = nuke.thisKnob()\nwith n:\n\tcheckbox_name = \"custom_format\"\n\tmode_pulldown_name = \"mode\"\n\tinput_name = \"Input\"\n\tinput_number = 0\n\tinput_connect_node_name = \"Input0Connect\"\n\tis_custom_format = n.knob(checkbox_name).value()\n\tinput_node = get_input_by_number(input_number)\n\n\tif k.name() == checkbox_name:\n\t\t# Custom format change\n\t\tif is_custom_format:\n\t\t\tn.knob(\"format\").setEnabled(True)\n\t\t\tif input_node:\n\t\t\t\tnuke.delete(input_node)\n\t\telse:\n\t\t\tn.knob(\"format\").setEnabled(False)\n\t\t\tif not input_node:\n\t\t\t\tinput_node = add_input(input_name, input_connect_node_name, 0)\n\telif k.name() == mode_pulldown_name:\n\t\t# Mode change\n\t\tmodes = \[\"image\", \"knob\"]\n\t\tvisiblity = \[\[\"group_image\", ],\n\t\t\t\t\t \[\"group_knob\", ]]\n\t\tfor idx, value in enumerate(modes):\n\t\t\tif value == k.value():\n\t\t\t\tfor v in visiblity\[idx]:\n\t\t\t\t\tn.knob(v).setVisible(True)\n\t\t\telse:\n\t\t\t\tfor v in visiblity\[idx]:\n\t\t\t\t\tn.knob(v).setVisible(False)\n\t\t# Update input node\n\t\tif k.value() == \"knob\":\n\t\t\tif input_node:\n\t\t\t\tnuke.delete(input_node)\n\t\telse:\n\t\t\tif not input_node and not is_custom_format:\n\t\t\t\tinput_node = add_input(input_name, input_connect_node_name, 0)"
+selected true
+addUserKnob {20 Matrix4}
+addUserKnob {26 divider_input l "               Input"}
+addUserKnob {41 matrix -STARTLINE T MatrixKnob.matrix}
+addUserKnob {26 divider_output l Output}
+addUserKnob {4 mode M {knob image "" "" "" "" ""}}
+addUserKnob {20 group_image l "" +STARTLINE +HIDDEN n 1}
+addUserKnob {6 custom_format l "specify format" +STARTLINE}
+addUserKnob {41 format l " " -STARTLINE T Constant1.format}
+addUserKnob {20 endGroup n -1}
+addUserKnob {20 group_knob l "" +STARTLINE n 1}
+addUserKnob {41 world_matrix l "world matrix" -STARTLINE T MatrixKnob.world_matrix}
+addUserKnob {20 endGroup_1 l endGroup n -1}
+addUserKnob {26 divider_copyright l "" +STARTLINE}
+addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode1
+ tile_color 0x545454ff
+ label "- Identity in\n  matrix layers\n- Bypass other channels"
+ note_font_size 20
+ xpos 640
+ ypos 363
+ bdwidth 280
+ bdheight 262
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode2
+ tile_color 0x545454ff
+ label "Use input format"
+ note_font_size 20
+ xpos 408
+ ypos -57
+ bdwidth 281
+ bdheight 195
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode3
+ tile_color 0x545454ff
+ label "Custom format"
+ note_font_size 20
+ xpos 793
+ ypos -58
+ bdwidth 281
+ bdheight 195
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode4
+ tile_color 0x464646ff
+ label "Used for\nmatrix knob"
+ note_font_size 20
+ xpos 6
+ ypos -57
+ bdwidth 284
+ bdheight 231
+}
+Axis2 {
+ inputs 0
+ useMatrix true
+ name MatrixKnob
+ xpos 111
+ ypos 49
+}
+Constant {
+ inputs 0
+ channels rgb
+ name Constant1
+ xpos 889
+ ypos 13
+}
+Dot {
+ name Dot1
+ xpos 923
+ ypos 224
+}
+Dot {
+ inputs 0
+ name Input0Connect
+ selected true
+ xpos 543
+ ypos 72
+}
+Switch {
+ inputs 2
+ which {{parent.custom_format}}
+ name format
+ xpos 509
+ ypos 220
+}
+Dot {
+ name Dot2
+ xpos 543
+ ypos 455
+}
+set N4ef3500 [stack 0]
+Dot {
+ name Dot3
+ xpos 772
+ ypos 455
+}
+add_layer {matrix0 matrix0.0 matrix0.1 matrix0.2 matrix0.3}
+Expression {
+ channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+ expr0 parent.world_matrix.0
+ channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+ expr1 parent.world_matrix.1
+ channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+ expr2 parent.world_matrix.2
+ channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+ expr3 parent.world_matrix.3
+ name Expression1
+ xpos 738
+ ypos 490
+}
+add_layer {matrix1 matrix1.0 matrix1.1 matrix1.2 matrix1.3}
+Expression {
+ channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+ expr0 parent.world_matrix.4
+ channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+ expr1 parent.world_matrix.5
+ channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+ expr2 parent.world_matrix.6
+ channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+ expr3 parent.world_matrix.7
+ name Expression2
+ xpos 738
+ ypos 516
+}
+add_layer {matrix2 matrix2.0 matrix2.1 matrix2.2 matrix2.3}
+Expression {
+ channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+ expr0 parent.world_matrix.8
+ channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+ expr1 parent.world_matrix.9
+ channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+ expr2 parent.world_matrix.10
+ channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+ expr3 parent.world_matrix.11
+ name Expression3
+ xpos 738
+ ypos 542
+}
+add_layer {matrix3 matrix3.0 matrix3.1 matrix3.2 matrix3.3}
+Expression {
+ channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+ expr0 parent.world_matrix.12
+ channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+ expr1 parent.world_matrix.13
+ channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+ expr2 parent.world_matrix.14
+ channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+ expr3 parent.world_matrix.15
+ name Expression4
+ xpos 738
+ ypos 568
+}
+Dot {
+ name Dot4
+ xpos 772
+ ypos 590
+}
+push $N4ef3500
+Switch {
+ inputs 2
+ which {{parent.mode}}
+ name mode
+ xpos 509
+ ypos 586
+}
+Output {
+ name Output1
+ xpos 509
+ ypos 732
+}
+end_group

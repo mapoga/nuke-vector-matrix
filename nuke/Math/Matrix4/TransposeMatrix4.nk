@@ -1,6 +1,6 @@
 Group {
- name M4x4_Transpose
- addUserKnob {20 Matrix4x4_Transpose}
+ name TransposeMatrix4_1
+ addUserKnob {20 TransposeMatrix4}
 }
  Input {
   inputs 0

@@ -1,6 +1,6 @@
 Group {
- name M4x4_Transform
- addUserKnob {20 Matrix4x4_Transform}
+ name TransformMatrix4_1
+ addUserKnob {20 TransformMatrix4}
  addUserKnob {41 xform_order l "transform order" T Axis1.xform_order}
  addUserKnob {41 rot_order l "rotation order" T Axis1.rot_order}
  addUserKnob {41 translate T Axis1.translate}
@@ -12,6 +12,8 @@ Group {
  addUserKnob {20 "" l "Local matrix" n 2}
  addUserKnob {41 useMatrix l "specify matrix" T Axis1.useMatrix}
  addUserKnob {41 matrix l "" +STARTLINE T Axis1.matrix}
+ addUserKnob {20 "" n -1}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
 }
  BackdropNode {
   inputs 0
