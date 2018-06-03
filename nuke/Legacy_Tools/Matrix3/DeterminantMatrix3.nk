@@ -1,0 +1,180 @@
+Group {
+ name M3x3_Det
+ addUserKnob {20 Matrix_3x3_determinant}
+}
+ Input {
+  inputs 0
+  name matrix
+  xpos 365
+  ypos 212
+ }
+ Dot {
+  name Dot1
+  xpos 399
+  ypos 252
+ }
+set N270b7400 [stack 0]
+push $N270b7400
+add_layer {matrix0 matrix0.0 matrix0.1 matrix0.2 matrix0.3}
+ Expression {
+  channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+  expr0 matrix1.0
+  channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+  expr1 matrix1.1
+  channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+  channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+  name Expression8
+  xpos 472
+  ypos 293
+ }
+add_layer {matrix1 matrix1.0 matrix1.1 matrix1.2 matrix1.3}
+ Expression {
+  channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+  expr0 matrix2.0
+  channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+  expr1 matrix2.1
+  channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+  channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+  name Expression9
+  xpos 472
+  ypos 317
+ }
+ Expression {
+  channel0 rgb
+  expr0 matrix0.0*matrix1.1-matrix0.1*matrix1.0
+  channel1 none
+  channel2 none
+  channel3 none
+  name Matrix_22_Det2
+  xpos 472
+  ypos 376
+ }
+ MergeExpression {
+  inputs 2
+  channel0 rgb
+  expr0 Br*Amatrix0.2
+  channel1 none
+  channel2 none
+  channel3 none
+  name MergeExpression3
+  xpos 472
+  ypos 400
+ }
+push $N270b7400
+push $N270b7400
+ Expression {
+  channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+  expr0 matrix1.0
+  channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+  expr1 matrix1.2
+  channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+  channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+  name Expression6
+  xpos 365
+  ypos 293
+ }
+ Expression {
+  channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+  expr0 matrix2.0
+  channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+  expr1 matrix2.2
+  channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+  channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+  name Expression7
+  xpos 365
+  ypos 317
+ }
+ Expression {
+  channel0 rgb
+  expr0 matrix0.0*matrix1.1-matrix0.1*matrix1.0
+  channel1 none
+  channel2 none
+  channel3 none
+  name Matrix_22_Det1
+  xpos 365
+  ypos 375
+ }
+ MergeExpression {
+  inputs 2
+  channel0 rgb
+  expr0 Br*Amatrix0.1
+  channel1 none
+  channel2 none
+  channel3 none
+  name MergeExpression2
+  xpos 365
+  ypos 399
+ }
+push $N270b7400
+push $N270b7400
+ Expression {
+  channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+  expr0 matrix1.1
+  channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+  expr1 matrix1.2
+  channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+  channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+  name Expression3
+  xpos 260
+  ypos 294
+ }
+ Expression {
+  channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+  expr0 matrix2.1
+  channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+  expr1 matrix2.2
+  channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+  channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+  name Expression5
+  xpos 260
+  ypos 318
+ }
+ Expression {
+  channel0 rgb
+  expr0 matrix0.0*matrix1.1-matrix0.1*matrix1.0
+  channel1 none
+  channel2 none
+  channel3 none
+  name Matrix_22_Det3
+  xpos 260
+  ypos 374
+ }
+ MergeExpression {
+  inputs 2
+  channel0 rgb
+  expr0 Br*Amatrix0.0
+  channel1 none
+  channel2 none
+  channel3 none
+  name MergeExpression1
+  xpos 260
+  ypos 398
+ }
+ MergeExpression {
+  inputs 2
+  channel0 rgb
+  expr0 Br-Ar
+  channel1 none
+  channel2 none
+  channel3 none
+  name MergeExpression4
+  xpos 365
+  ypos 455
+ }
+ MergeExpression {
+  inputs 2
+  channel0 rgb
+  expr0 Br+Ar
+  channel1 none
+  channel2 none
+  channel3 none
+  name MergeExpression5
+  xpos 365
+  ypos 479
+ }
+ Output {
+  name Output1
+  xpos 365
+  ypos 516
+ }
+end_group

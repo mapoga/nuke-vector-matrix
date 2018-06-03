@@ -1,0 +1,898 @@
+#! /spin/software/nuke/10.0v4/linux/64/libnuke-10.0.4.so -nx
+version 10.0 v4
+define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="0" y="0" w="2560" h="1405" maximized="1" screen="0">
+        <splitter orientation="1">
+            <split size="40"/>
+            <dock id="" hideTitles="1" activePageId="Toolbar.1">
+                <page id="Toolbar.1"/>
+            </dock>
+            <split size="1897" stretch="1"/>
+            <splitter orientation="2">
+                <split size="796"/>
+                <dock id="" activePageId="Viewer.1">
+                    <page id="uk.co.thefoundry.scripteditor.1"/>
+                    <page id="Viewer.2"/>
+                    <page id="Viewer.1"/>
+                </dock>
+                <split size="559"/>
+                <dock id="" activePageId="DAG.1">
+                    <page id="DAG.1"/>
+                    <page id="DopeSheet.1"/>
+                    <page id="DAG.6"/>
+                    <page id="DAG.7"/>
+                    <page id="DAG.8"/>
+                </dock>
+            </splitter>
+            <split size="615"/>
+            <dock id="" activePageId="Properties.1">
+                <page id="Properties.1"/>
+            </dock>
+        </splitter>
+    </window>
+</layout>
+}
+Root {
+ inputs 0
+ name /Network/Servers/xserve1.spinpro.com/mnt/useraccounts/eleroy/Documents/Erwan/nuke_RnD/mapoga/nuke-vector-matrix/nuke/eleroy_wip_01.nk
+ format "2048 1556 0 0 2048 1556 1 2K_Super_35(full-ap)"
+ proxy_type scale
+ proxy_format "1024 778 0 0 1024 778 1 1K_Super_35(full-ap)"
+ colorManagement OCIO
+ defaultViewerLUT "OCIO LUTs"
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode1
+ tile_color 0x667e7fff
+ label Done
+ note_font_size 40
+ xpos -1916
+ ypos -179
+ bdwidth 196
+ bdheight 441
+}
+BackdropNode {
+ inputs 0
+ name Backdrop_WIP
+ tile_color 0x7f7366ff
+ label WIP
+ note_font_size 40
+ xpos -1708
+ ypos 17
+ bdwidth 182
+ bdheight 244
+}
+Group {
+ inputs 0
+ name CrossProductVector2_
+ xpos -1866
+ ypos 175
+ addUserKnob {20 main_tab l TemplateMatrix4}
+ addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
+ addUserKnob {41 in_1 l "Vector A Layer" t "Layer containing the vector information for input A" T vector_layer1.in}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+ Input {
+  inputs 0
+  name vectorA
+  xpos 457
+  ypos -6
+  number 1
+ }
+ Shuffle {
+  name vector_layer1
+  xpos 457
+  ypos 103
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove2
+  xpos 457
+  ypos 129
+ }
+ Dot {
+  name Dot3
+  tile_color 0x9e3c6300
+  xpos 491
+  ypos 210
+ }
+ Input {
+  inputs 0
+  name vectorB
+  xpos 0
+ }
+ Dot {
+  name Dot1
+  tile_color 0xcccccc00
+  xpos 34
+  ypos 108
+ }
+set Nca4991a0 [stack 0]
+ Shuffle {
+  name vector_layer
+  xpos 140
+  ypos 104
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove1
+  xpos 140
+  ypos 130
+ }
+ MergeExpression {
+  inputs 2
+  channel0 rgb
+  expr0 "Br*Ag - Bg*Ar"
+  name MergeExpression2
+  xpos 140
+  ypos 206
+ }
+ Dot {
+  name Dot2
+  tile_color 0x4b5ec600
+  xpos 174
+  ypos 364
+ }
+push $Nca4991a0
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  blue blue
+  out {{{parent.UV_Channel.in}}}
+  name ShuffleCopy1
+  xpos 0
+  ypos 360
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 506
+ }
+end_group
+Group {
+ inputs 0
+ name CrossProductVector3_1
+ xpos -1863
+ ypos 215
+ addUserKnob {20 main_tab l TemplateMatrix4}
+ addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
+ addUserKnob {41 in_1 l "Vector A Layer" t "Layer containing the vector information for input A" T vector_layer1.in}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+ Input {
+  inputs 0
+  name vectorA
+  xpos 457
+  ypos -6
+  number 1
+ }
+ Shuffle {
+  name vector_layer1
+  xpos 457
+  ypos 103
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove2
+  xpos 457
+  ypos 129
+ }
+ Dot {
+  name Dot3
+  tile_color 0x9e3c6300
+  xpos 491
+  ypos 210
+ }
+ Input {
+  inputs 0
+  name vectorB
+  xpos 0
+ }
+ Dot {
+  name Dot1
+  tile_color 0xcccccc00
+  xpos 34
+  ypos 108
+ }
+set Na3a6ca0 [stack 0]
+ Shuffle {
+  name vector_layer
+  xpos 140
+  ypos 104
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove1
+  xpos 140
+  ypos 130
+ }
+ MergeExpression {
+  inputs 2
+  expr0 "Ag*Bb - Ab*Bg"
+  expr1 "Ab*Br - Ar*Bb"
+  expr2 "Ar*Bg - Ag*Br"
+  name MergeExpression2
+  xpos 140
+  ypos 206
+ }
+ Dot {
+  name Dot2
+  tile_color 0x4b5ec600
+  xpos 174
+  ypos 364
+ }
+push $Na3a6ca0
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  blue blue
+  out {{{parent.UV_Channel.in}}}
+  name ShuffleCopy1
+  xpos 0
+  ypos 360
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 506
+ }
+end_group
+Group {
+ inputs 0
+ name MagnitudeVector2_
+ xpos -1869
+ ypos -97
+ addUserKnob {20 main_tab l TemplateMatrix4}
+ addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+ Input {
+  inputs 0
+  name vectorB
+  xpos 0
+ }
+ Dot {
+  name Dot1
+  tile_color 0xcccccc00
+  xpos 34
+  ypos 108
+ }
+set Nbd912c0 [stack 0]
+ Shuffle {
+  name vector_layer
+  xpos 140
+  ypos 104
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove1
+  xpos 140
+  ypos 130
+ }
+ Expression {
+  channel0 rgba
+  expr0 sqrt((r*r)+(g*g))
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  channel3 {none none none -rgba.alpha}
+  name Mag2
+  xpos 140
+  ypos 218
+ }
+ Dot {
+  name Dot2
+  tile_color 0xcccccc00
+  xpos 174
+  ypos 364
+ }
+push $Nbd912c0
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  blue blue
+  out {{{parent.UV_Channel.in}}}
+  name ShuffleCopy1
+  xpos 0
+  ypos 360
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 506
+ }
+end_group
+Group {
+ inputs 0
+ name RotateVector2_
+ xpos -1662
+ ypos 158
+ addUserKnob {20 main_tab l TemplateMatrix4}
+ addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
+ addUserKnob {4 mode l "Rotate by" M {"Knob (Degrees 0-360)" "Angle Map (Degrees 0-360)" "Angle Map (Degrees 0-1)" "Angle Map (Radians)" ""}}
+ addUserKnob {7 angle l Angle R -360 360}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+ Input {
+  inputs 0
+  name vectorB
+  xpos 0
+ }
+ Dot {
+  name Dot1
+  tile_color 0xcccccc00
+  xpos 34
+  ypos 108
+ }
+set N6c2d2c0 [stack 0]
+ Shuffle {
+  name vector_layer
+  xpos 140
+  ypos 104
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove1
+  xpos 140
+  ypos 130
+ }
+ Expression {
+  temp_name0 angleRad
+  temp_expr0 radians(parent.angle)
+  expr0 "r * cos(angleRad) - g * sin(angleRad)"
+  expr1 "r * sin(angleRad) + g * cos(angleRad)"
+  name Rotation
+  xpos 140
+  ypos 240
+ }
+ Dot {
+  name Dot2
+  tile_color 0xcccccc00
+  xpos 174
+  ypos 364
+ }
+push $N6c2d2c0
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  blue blue
+  out {{{parent.UV_Channel.in}}}
+  name ShuffleCopy1
+  xpos 0
+  ypos 360
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 506
+ }
+ Input {
+  inputs 0
+  name angleMap
+  xpos 403
+  ypos 6
+  number 1
+ }
+end_group
+Group {
+ inputs 0
+ name RotateVector3_
+ xpos -1660
+ ypos 216
+ addUserKnob {20 main_tab l TemplateMatrix4}
+ addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
+ addUserKnob {4 mode l "Rotate by" M {Knob "Pixel Matrix"}}
+ addUserKnob {41 rotate T Axis1.rotate}
+ addUserKnob {6 preserve l "Preserve Magnitude" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+ Input {
+  inputs 0
+  name vectorB
+  xpos 0
+ }
+ Dot {
+  name Dot1
+  tile_color 0xcccccc00
+  xpos 34
+  ypos 108
+ }
+set N10e55f70 [stack 0]
+ Shuffle {
+  name vector_layer
+  xpos 140
+  ypos 104
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove1
+  xpos 140
+  ypos 130
+ }
+ ColorMatrix {
+  matrix {
+      {{Axis1.world_matrix.0} {Axis1.world_matrix.1} {Axis1.world_matrix.2}}
+      {{Axis1.world_matrix.4} {Axis1.world_matrix.5} {Axis1.world_matrix.6}}
+      {{Axis1.world_matrix.8} {Axis1.world_matrix.9} {Axis1.world_matrix.10}}
+    }
+  name ColorMatrix1
+  xpos 140
+  ypos 174
+ }
+ Dot {
+  name Dot2
+  tile_color 0xcc804e00
+  xpos 174
+  ypos 364
+ }
+push $N10e55f70
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  blue blue
+  out {{{parent.UV_Channel.in}}}
+  name ShuffleCopy1
+  xpos 0
+  ypos 360
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 506
+ }
+ Input {
+  inputs 0
+  name matrix
+  xpos 383
+  number 1
+ }
+ Axis2 {
+  inputs 0
+  name Axis1
+  xpos 337
+  ypos 152
+ }
+end_group
+Group {
+ inputs 0
+ name DotProductVector2_
+ xpos -1852
+ ypos 67
+ addUserKnob {20 main_tab l TemplateMatrix4}
+ addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
+ addUserKnob {41 in_1 l "Vector A Layer" t "Layer containing the vector information for input A" T vector_layer1.in}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+ Input {
+  inputs 0
+  name vectorA
+  xpos 457
+  ypos -6
+  number 1
+ }
+ Shuffle {
+  name vector_layer1
+  xpos 457
+  ypos 103
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove2
+  xpos 457
+  ypos 129
+ }
+ Dot {
+  name Dot3
+  tile_color 0x9e3c6300
+  xpos 491
+  ypos 210
+ }
+ Input {
+  inputs 0
+  name vectorB
+  xpos 0
+ }
+ Dot {
+  name Dot1
+  tile_color 0xcccccc00
+  xpos 34
+  ypos 108
+ }
+set Na315970 [stack 0]
+ Shuffle {
+  name vector_layer
+  xpos 140
+  ypos 104
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove1
+  xpos 140
+  ypos 130
+ }
+ MergeExpression {
+  inputs 2
+  channel0 rgb
+  expr0 Br*Ar+Bg*Ag
+  channel1 none
+  channel2 none
+  channel3 none
+  name MergeExpression1
+  xpos 140
+  ypos 206
+ }
+ Dot {
+  name Dot2
+  tile_color 0x4b5ec600
+  xpos 174
+  ypos 364
+ }
+push $Na315970
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  blue blue
+  out {{{parent.UV_Channel.in}}}
+  name ShuffleCopy1
+  xpos 0
+  ypos 360
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 506
+ }
+end_group
+Group {
+ inputs 0
+ name DotProductVector3_
+ xpos -1864
+ ypos 118
+ addUserKnob {20 main_tab l TemplateMatrix4}
+ addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
+ addUserKnob {41 in_1 l "Vector A Layer" t "Layer containing the vector information for input A" T vector_layer1.in}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+ Input {
+  inputs 0
+  name vectorA
+  xpos 457
+  ypos -6
+  number 1
+ }
+ Shuffle {
+  name vector_layer1
+  xpos 457
+  ypos 103
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove2
+  xpos 457
+  ypos 129
+ }
+ Dot {
+  name Dot3
+  tile_color 0x9e3c6300
+  xpos 491
+  ypos 210
+ }
+ Input {
+  inputs 0
+  name vectorB
+  xpos 0
+ }
+ Dot {
+  name Dot1
+  tile_color 0xcccccc00
+  xpos 34
+  ypos 108
+ }
+set Nc439c60 [stack 0]
+ Shuffle {
+  name vector_layer
+  xpos 140
+  ypos 104
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove1
+  xpos 140
+  ypos 130
+ }
+ MergeExpression {
+  inputs 2
+  channel0 rgb
+  expr0 Br*Ar+Bg*Ag+Bb*Ab
+  channel1 none
+  channel2 none
+  channel3 none
+  name MergeExpression1
+  xpos 140
+  ypos 206
+ }
+ Dot {
+  name Dot2
+  tile_color 0x4b5ec600
+  xpos 174
+  ypos 364
+ }
+push $Nc439c60
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  blue blue
+  out {{{parent.UV_Channel.in}}}
+  name ShuffleCopy1
+  xpos 0
+  ypos 360
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 506
+ }
+end_group
+Group {
+ inputs 0
+ name NormalizeVector2_
+ xpos -1863
+ ypos 26
+ addUserKnob {20 main_tab l TemplateMatrix4}
+ addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+ Input {
+  inputs 0
+  name vectorB
+  xpos 0
+ }
+ Dot {
+  name Dot1
+  tile_color 0xcccccc00
+  xpos 34
+  ypos 108
+ }
+set Nbe9d0b0 [stack 0]
+ Shuffle {
+  name vector_layer
+  xpos 140
+  ypos 104
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove1
+  xpos 140
+  ypos 130
+ }
+set Nbeb16c0 [stack 0]
+push $Nbeb16c0
+ Expression {
+  channel0 {rgba.red rgba.green -rgba.blue -rgba.alpha}
+  expr0 sqrt((r*r)+(g*g))
+  channel1 {-rgba.red -rgba.green rgba.blue rgba.alpha}
+  expr1 1
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  channel3 {none none none -rgba.alpha}
+  name Mag2
+  xpos 289
+  ypos 216
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  bbox B
+  name Merge1
+  xpos 140
+  ypos 267
+ }
+ Dot {
+  name Dot2
+  tile_color 0x4b5ec600
+  xpos 174
+  ypos 364
+ }
+push $Nbe9d0b0
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  blue blue
+  out {{{parent.UV_Channel.in}}}
+  name ShuffleCopy1
+  xpos 0
+  ypos 360
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 506
+ }
+end_group
+Group {
+ inputs 0
+ name NormalizeVector3_
+ xpos -1862
+ ypos -13
+ addUserKnob {20 main_tab l TemplateMatrix4}
+ addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+ Input {
+  inputs 0
+  name vectorB
+  xpos 0
+ }
+ Dot {
+  name Dot1
+  tile_color 0xcccccc00
+  xpos 34
+  ypos 108
+ }
+set Nbe4e550 [stack 0]
+ Shuffle {
+  name vector_layer
+  xpos 140
+  ypos 104
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove1
+  xpos 140
+  ypos 130
+ }
+set Nbe61e90 [stack 0]
+push $Nbe61e90
+ Expression {
+  channel0 rgba
+  expr0 sqrt((r*r)+(g*g)+(b*b))
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  channel3 {none none none -rgba.alpha}
+  name Mag3
+  xpos 343
+  ypos 227
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  bbox B
+  name Merge1
+  xpos 140
+  ypos 267
+ }
+set Naabbdd0 [stack 0]
+ Dot {
+  name Dot2
+  tile_color 0x4b5ec600
+  xpos 174
+  ypos 364
+ }
+push $Nbe4e550
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  blue blue
+  out {{{parent.UV_Channel.in}}}
+  name ShuffleCopy1
+  xpos 0
+  ypos 360
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 506
+ }
+push $Naabbdd0
+ Viewer {
+  frame_range 1-100
+  name Viewer1
+  xpos 343
+  ypos 253
+ }
+end_group
+Group {
+ inputs 0
+ name Magnitude_Vector3_
+ xpos -1863
+ ypos -60
+ addUserKnob {20 main_tab l TemplateMatrix4}
+ addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+ Input {
+  inputs 0
+  name vectorB
+  xpos 0
+ }
+ Dot {
+  name Dot1
+  tile_color 0xcccccc00
+  xpos 34
+  ypos 108
+ }
+set Nbdf7920 [stack 0]
+ Shuffle {
+  name vector_layer
+  xpos 140
+  ypos 104
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove1
+  xpos 140
+  ypos 130
+ }
+ Expression {
+  channel0 rgba
+  expr0 sqrt((r*r)+(g*g)+(b*b))
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  channel3 {none none none -rgba.alpha}
+  name Mag3
+  xpos 140
+  ypos 227
+ }
+ Dot {
+  name Dot2
+  tile_color 0xcccccc00
+  xpos 174
+  ypos 364
+ }
+push $Nbdf7920
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  blue blue
+  out {{{parent.UV_Channel.in}}}
+  name ShuffleCopy1
+  xpos 0
+  ypos 360
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 506
+ }
+end_group

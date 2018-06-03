@@ -1,0 +1,157 @@
+Group {
+ inputs 2
+ name TranslateMatrix4Knob_1
+ knobChanged "n = nuke.thisNode()\nk = nuke.thisKnob()\nwith n:\n\tif k.name() == \"specify_matrix\":\n\t\tif k.value():\n\t\t\tn.knob(\"group_matrix\").setVisible(True)\n\t\t\tn.knob(\"group_input_matrix\").setVisible(False)\n\t\telse:\n\t\t\tn.knob(\"group_matrix\").setVisible(False)\n\t\t\tn.knob(\"group_input_matrix\").setVisible(True)\n\telif k.name() == \"specify_vector\":\n\t\tif k.value():\n\t\t\tn.knob(\"group_specify_translate\").setVisible(True)\n\t\t\tn.knob(\"group_translate\").setVisible(False)\n\t\telse:\n\t\t\tn.knob(\"group_specify_translate\").setVisible(False)\n\t\t\tn.knob(\"group_translate\").setVisible(True)"
+ selected true
+ addUserKnob {20 TranslateMatrix4Knob}
+ addUserKnob {26 divider_input l "               INPUT"}
+ addUserKnob {6 specify_matrix l "specify matrix" +STARTLINE}
+ addUserKnob {20 group_matrix l "" +STARTLINE +HIDDEN n 1}
+ addUserKnob {41 matrix -STARTLINE T MatrixKnob_in.matrix}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 group_input_matrix l "" +STARTLINE n 1}
+ addUserKnob {41 world_matrix_1 l matrix -STARTLINE T MatrixKnob_in1.world_matrix}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 divider_operation l OPERATION}
+ addUserKnob {6 specify_vector l "specify vector" +STARTLINE}
+ addUserKnob {20 group_specify_translate l "" +STARTLINE +HIDDEN n 1}
+ addUserKnob {18 translate_specify l translate}
+ translate_specify {0 0 0}
+ addUserKnob {20 endGroup_3 l endGroup n -1}
+ addUserKnob {20 group_translate l "" +STARTLINE n 1}
+ addUserKnob {41 translate T Reconcile3D1.outputxyz}
+ addUserKnob {20 endGroup_4 l endGroup n -1}
+ addUserKnob {26 divider_output l OUTPUT}
+ addUserKnob {20 group_output l "" +STARTLINE n 1}
+ addUserKnob {41 world_matrix l "world matrix" -STARTLINE T Axis_output.world_matrix}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {26 divider_copyright l "" +STARTLINE}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0x464646ff
+  label "Used for\nmatrix knob"
+  note_font_size 20
+  xpos 143
+  ypos 497
+  bdwidth 304
+  bdheight 626
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos 509
+  ypos 483
+ }
+ Dot {
+  name Input0Connect
+  xpos 543
+  ypos 522
+ }
+ Output {
+  name Output1
+  xpos 509
+  ypos 763
+ }
+ Input {
+  inputs 0
+  name vector3
+  xpos 799
+  ypos 482
+  number 1
+ }
+ Dot {
+  name Input1Connect
+  xpos 833
+  ypos 523
+ }
+ Axis2 {
+  inputs 0
+  useMatrix true
+  matrix {
+      {{input.world_matrix} {input.world_matrix} {input.world_matrix} {input.world_matrix}}
+      {{input.world_matrix} {input.world_matrix} {input.world_matrix} {input.world_matrix}}
+      {{input.world_matrix} {input.world_matrix} {input.world_matrix} {input.world_matrix}}
+      {{input.world_matrix} {input.world_matrix} {input.world_matrix} {input.world_matrix}}
+    }
+  name MatrixKnob_in1
+  xpos 335
+  ypos 597
+ }
+ Axis2 {
+  inputs 0
+  useMatrix true
+  name MatrixKnob_in
+  xpos 193
+  ypos 595
+ }
+ Switch {
+  inputs 2
+  which {{checks.use_input_world_matrix}}
+  name Switch1
+  xpos 253
+  ypos 688
+ }
+ Axis2 {
+  name Axis_choose
+  xpos 263
+  ypos 746
+ }
+set Na4739180 [stack 0]
+ Axis2 {
+  translate {{"\[if \{\[value checks.use_input_1_output_vector]\} \{return \[value Reconcile3D1.outputxyz.x]\} \{return \[value parent.translate_specify.r]\}]"} {"\[if \{\[value checks.use_input_1_output_vector]\} \{return \[value Reconcile3D1.outputxyz.y]\} \{return \[value parent.translate_specify.g]\}]"} {"\[if \{\[value checks.use_input_1_output_vector]\} \{return \[value Reconcile3D1.outputxyz.z]\} \{return \[value parent.translate_specify.b]\}]"}}
+  name Axis1
+  xpos 352
+  ypos 858
+ }
+ Dot {
+  name Dot1
+  xpos 376
+  ypos 960
+ }
+push $Na4739180
+ Switch {
+  inputs 2
+  which {{1-parent.disable}}
+  name bypass
+  xpos 254
+  ypos 956
+ }
+ Axis2 {
+  useMatrix true
+  name Axis_output
+  xpos 264
+  ypos 1016
+ }
+ NoOp {
+  inputs 0
+  name checks
+  xpos -3
+  ypos 682
+  addUserKnob {20 User}
+  addUserKnob {26 divider_main l main}
+  addUserKnob {6 has_input +STARTLINE}
+  has_input {{"\[exists input]"}}
+  addUserKnob {6 has_input_world_matrix +STARTLINE}
+  has_input_world_matrix {{"\[exists input.world_matrix]"}}
+  addUserKnob {6 use_input_world_matrix +STARTLINE}
+  use_input_world_matrix {{1-parent.specify_matrix}}
+  addUserKnob {26 divider_second l second}
+  addUserKnob {6 has_input_1 +STARTLINE}
+  has_input_1 {{"\[exists input1]"}}
+  addUserKnob {6 has_input_1_output_vector +STARTLINE}
+  has_input_1_output_vector {{"\[exists input1.output_vector]"}}
+  addUserKnob {6 use_input_1_output_vector +STARTLINE}
+  use_input_1_output_vector {{1-parent.specify_vector}}
+ }
+ Reconcile3D {
+  inputs 0
+  point {{parent.input1.output_vector} {parent.input1.output_vector} {parent.input1.output_vector}}
+  calc_output true
+  name Reconcile3D1
+  xpos 916
+  ypos 579
+ }
+end_group
