@@ -1,6 +1,14 @@
 """ knobChanged """
 
+# Set knobChanged:
+nuke.selectedNode()['knobChanged'].setValue("""# Knobchanged code:
+node = nuke.thisNode()
+knob = nuke.thisKnob()
+print("Node: {}, Knob: {}".format(node.name(), knob.name()))
+""")
 
+
+# Other:
 def get_input_by_number(number):
     """ Returns the input node or None if not found """
     inputs = nuke.allNodes('Input')
