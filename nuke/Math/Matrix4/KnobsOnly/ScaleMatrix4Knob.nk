@@ -18,8 +18,8 @@ Group {
   note_font_size 20
   xpos 143
   ypos 497
-  bdwidth 304
-  bdheight 626
+  bdwidth 336
+  bdheight 813
  }
  Input {
   inputs 0
@@ -31,6 +31,31 @@ Group {
   name Output1
   xpos 509
   ypos 763
+ }
+ NoOp {
+  inputs 0
+  name checks
+  xpos -4
+  ypos 682
+  addUserKnob {20 User}
+  addUserKnob {26 divider_main l main}
+  addUserKnob {6 has_input +STARTLINE}
+  has_input {{"\[exists input]"}}
+  addUserKnob {6 has_input_world_matrix +STARTLINE}
+  has_input_world_matrix {{"\[exists input.world_matrix]"}}
+  addUserKnob {6 use_input_world_matrix +STARTLINE}
+  use_input_world_matrix {{1-parent.specify_matrix}}
+ }
+ Axis2 {
+  inputs 0
+  name Operation
+  xpos 352
+  ypos 860
+ }
+ Dot {
+  name Dot1
+  xpos 376
+  ypos 960
  }
  Axis2 {
   inputs 0
@@ -54,28 +79,16 @@ Group {
  }
  Switch {
   inputs 2
-  which {{ScaleMatrix4Knob_.checks.has_input_world_matrix}}
+  which {{checks.has_input_world_matrix}}
   name has_input_matrix
   xpos 253
-  ypos 688
+  ypos 687
  }
  Axis2 {
   name Axis_choose
   xpos 263
-  ypos 746
+  ypos 730
  }
-set N5ac0e700 [stack 0]
- Axis2 {
-  name Operation
-  xpos 352
-  ypos 860
- }
- Dot {
-  name Dot1
-  xpos 376
-  ypos 960
- }
-push $N5ac0e700
  Switch {
   inputs 2
   which {{1-parent.disable}}
@@ -84,24 +97,25 @@ push $N5ac0e700
   ypos 956
  }
  Axis2 {
-  useMatrix true
-  name Axis_output
+  name result
   xpos 264
-  ypos 1016
+  ypos 1022
  }
- NoOp {
-  inputs 0
-  name checks
-  selected true
-  xpos -4
-  ypos 682
-  addUserKnob {20 User}
-  addUserKnob {26 divider_main l main}
-  addUserKnob {6 has_input +STARTLINE}
-  has_input {{"\[exists input]"}}
-  addUserKnob {6 has_input_world_matrix +STARTLINE}
-  has_input_world_matrix {{"\[exists input.world_matrix]"}}
-  addUserKnob {6 use_input_world_matrix +STARTLINE}
-  use_input_world_matrix {{1-parent.specify_matrix}}
+ Axis2 {
+  useMatrix true
+  matrix {
+      {{Axis_choose.world_matrix.0} {Axis_choose.world_matrix.1} {Axis_choose.world_matrix.2} {Axis_choose.world_matrix.3}}
+      {{Axis_choose.world_matrix.4} {Axis_choose.world_matrix.5} {Axis_choose.world_matrix.6} {Axis_choose.world_matrix.7}}
+      {{Axis_choose.world_matrix.8} {Axis_choose.world_matrix.9} {Axis_choose.world_matrix.10} {Axis_choose.world_matrix.11}}
+      {{Axis_choose.world_matrix.12} {Axis_choose.world_matrix.13} {Axis_choose.world_matrix.14} {Axis_choose.world_matrix.15}}
+    }
+  name source
+  xpos 361
+  ypos 1084
+ }
+ Axis2 {
+  name Axis_output
+  xpos 269
+  ypos 1195
  }
 end_group

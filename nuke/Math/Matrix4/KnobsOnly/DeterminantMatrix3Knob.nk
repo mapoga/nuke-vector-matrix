@@ -286,7 +286,7 @@ Group {
  }
  Switch {
   inputs 2
-  which {{DeterminantMatrix3Knob_.checks.has_input_world_matrix*(1-parent.disable)}}
+  which {{checks.has_input_world_matrix*(1-parent.disable)}}
   name has_input_matrix
   xpos 253
   ypos 685
@@ -296,7 +296,7 @@ Group {
   xpos 263
   ypos 727
  }
-set N2bb87880 [stack 0]
+set N244b7180 [stack 0]
  NoOp {
   name min_b
   xpos 292
@@ -305,7 +305,7 @@ set N2bb87880 [stack 0]
   addUserKnob {7 determinant}
   determinant {{input.world_matrix.1*det_b.determinant}}
  }
-push $N2bb87880
+push $N244b7180
  NoOp {
   name min_c
   xpos 414
@@ -313,6 +313,24 @@ push $N2bb87880
   addUserKnob {20 User}
   addUserKnob {7 determinant}
   determinant {{input.world_matrix.2*det_c.determinant}}
+ }
+push $N244b7180
+ NoOp {
+  name min_a
+  xpos 167
+  ypos 1014
+  addUserKnob {20 User}
+  addUserKnob {7 determinant}
+  determinant {{input.world_matrix.0*det_a.determinant}}
+ }
+ NoOp {
+  inputs 0
+  name det
+  xpos 294
+  ypos 1086
+  addUserKnob {20 User}
+  addUserKnob {7 determinant}
+  determinant {{min_a.determinant-min_b.determinant+min_c.determinant}}
  }
  Axis2 {
   inputs 0
@@ -340,6 +358,7 @@ push $N2bb87880
   name det_a
   onCreate "n = nuke.thisNode()\nwith n:  # enables group scope\n\tREAD_ONLY = 0x10000000\n\tn.knob(\"determinant\").setFlag(READ_ONLY)"
   knobChanged "n = nuke.thisNode()\nk = nuke.thisKnob()\nwith n:\n\tif k.name() == \"specify_matrix\":\n\t\tif k.value():\n\t\t\tn.knob(\"group_matrix\").setVisible(True)\n\t\t\tn.knob(\"group_input_matrix\").setVisible(False)\n\t\telse:\n\t\t\tn.knob(\"group_matrix\").setVisible(False)\n\t\t\tn.knob(\"group_input_matrix\").setVisible(True)\n\telif k.name() == \"specify_vector\":\n\t\tif k.value():\n\t\t\tn.knob(\"group_specify_translate\").setVisible(True)\n\t\t\tn.knob(\"group_translate\").setVisible(False)\n\t\telse:\n\t\t\tn.knob(\"group_specify_translate\").setVisible(False)\n\t\t\tn.knob(\"group_translate\").setVisible(True)"
+  selected true
   xpos 162
   ypos 948
   addUserKnob {20 DeterminantMatrix2Knob}
@@ -424,22 +443,4 @@ push $N2bb87880
    determinant {{input.world_matrix.0*input.world_matrix.5-input.world_matrix.1*input.world_matrix.4}}
   }
  end_group
-push $N2bb87880
- NoOp {
-  name min_a
-  xpos 167
-  ypos 1014
-  addUserKnob {20 User}
-  addUserKnob {7 determinant}
-  determinant {{input.world_matrix.0*det_a.determinant}}
- }
- NoOp {
-  inputs 0
-  name det
-  xpos 294
-  ypos 1086
-  addUserKnob {20 User}
-  addUserKnob {7 determinant}
-  determinant {{min_a.determinant-min_b.determinant+min_c.determinant}}
- }
 end_group

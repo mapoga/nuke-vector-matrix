@@ -24,8 +24,8 @@ Group {
   note_font_size 20
   xpos 143
   ypos 497
-  bdwidth 304
-  bdheight 626
+  bdwidth 325
+  bdheight 846
  }
  Input {
   inputs 0
@@ -37,6 +37,31 @@ Group {
   name Output1
   xpos 509
   ypos 763
+ }
+ NoOp {
+  inputs 0
+  name checks
+  xpos -4
+  ypos 682
+  addUserKnob {20 User}
+  addUserKnob {26 divider_main l main}
+  addUserKnob {6 has_input +STARTLINE}
+  has_input {{"\[exists input]"}}
+  addUserKnob {6 has_input_world_matrix +STARTLINE}
+  has_input_world_matrix {{"\[exists input.world_matrix]"}}
+  addUserKnob {6 use_input_world_matrix +STARTLINE}
+  use_input_world_matrix {{1-parent.specify_matrix}}
+ }
+ Axis2 {
+  inputs 0
+  name Operation
+  xpos 352
+  ypos 860
+ }
+ Dot {
+  name Dot1
+  xpos 376
+  ypos 960
  }
  Axis2 {
   inputs 0
@@ -60,7 +85,7 @@ Group {
  }
  Switch {
   inputs 2
-  which {{TransformMatrix4Knob_.checks.has_input_world_matrix}}
+  which {{checks.has_input_world_matrix}}
   name has_input_matrix
   xpos 253
   ypos 688
@@ -70,18 +95,6 @@ Group {
   xpos 263
   ypos 746
  }
-set N5ac71c00 [stack 0]
- Axis2 {
-  name Operation
-  xpos 352
-  ypos 860
- }
- Dot {
-  name Dot1
-  xpos 376
-  ypos 960
- }
-push $N5ac71c00
  Switch {
   inputs 2
   which {{1-parent.disable}}
@@ -90,24 +103,26 @@ push $N5ac71c00
   ypos 956
  }
  Axis2 {
+  name Axis1
+  xpos 264
+  ypos 1008
+ }
+ Axis2 {
+  useMatrix true
+  matrix {
+      {{Axis_choose.world_matrix} {Axis_choose.world_matrix} {Axis_choose.world_matrix} {Axis_choose.world_matrix}}
+      {{Axis_choose.world_matrix} {Axis_choose.world_matrix} {Axis_choose.world_matrix} {Axis_choose.world_matrix}}
+      {{Axis_choose.world_matrix} {Axis_choose.world_matrix} {Axis_choose.world_matrix} {Axis_choose.world_matrix}}
+      {{Axis_choose.world_matrix} {Axis_choose.world_matrix} {Axis_choose.world_matrix} {Axis_choose.world_matrix}}
+    }
+  name Axis2
+  xpos 371
+  ypos 1077
+ }
+ Axis2 {
   useMatrix true
   name Axis_output
   xpos 264
-  ypos 1016
- }
- NoOp {
-  inputs 0
-  name checks
-  selected true
-  xpos -4
-  ypos 682
-  addUserKnob {20 User}
-  addUserKnob {26 divider_main l main}
-  addUserKnob {6 has_input +STARTLINE}
-  has_input {{"\[exists input]"}}
-  addUserKnob {6 has_input_world_matrix +STARTLINE}
-  has_input_world_matrix {{"\[exists input.world_matrix]"}}
-  addUserKnob {6 use_input_world_matrix +STARTLINE}
-  use_input_world_matrix {{1-parent.specify_matrix}}
+  ypos 1207
  }
 end_group
