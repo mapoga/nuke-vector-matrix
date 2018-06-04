@@ -1,0 +1,38 @@
+Group {
+ inputs 0
+ name Matrix4Knob_
+ knobChanged "def get_input_by_number(number):\n\t\"\"\" Returns the input node or None if not found \"\"\"\n\tinputs = nuke.allNodes(\"Input\")\n\tfor i in inputs:\n\t\tif int(i.knob(\"number\").value()) == int(number):\n\t\t\treturn i\n\treturn None\n\n\ndef connect_input(input, node, input_number):\n\t\"\"\" Connect input on top of node and reposition input \"\"\"\n\t# connect\n\tnode.connectInput(input_number, input)\n\t# position\n\tcon_xpos = node.xpos()\n\tcon_ypos = node.ypos()\n\tcon_width = node.screenWidth()\n\tcon_height = node.screenHeight()\n\twidth = input.screenWidth()\n\theight = input.screenHeight()\n\tinput.setXYpos(int(con_xpos+(con_width/2.0)-(width/2.0)),\n\t\t\t\t   int(con_ypos-height-10))\n\n\ndef pulldown_idx(knob):\n\t\"\"\" returns the index of current value \"\"\"\n\tvalues = knob.values()\n\tval = knob.value()\n\treturn values.index(val)\n\n\ndef add_input(name, connect_name, connect_pipe_nbr):\n\t\"\"\" Creates an input node and a connection \"\"\"\n\tinput_node = nuke.nodes.Input()\n\tinput_node.knob(\"name\").setValue(name)\n\tinput_connect_node = nuke.toNode(connect_name)\n\tconnect_input(input_node, input_connect_node, connect_pipe_nbr)\n\treturn input_node\n\nn = nuke.thisNode()\nk = nuke.thisKnob()\nwith n:\n\tcheckbox_name = \"custom_format\"\n\tmode_pulldown_name = \"mode\"\n\tinput_name = \"Input\"\n\tinput_number = 0\n\tinput_connect_node_name = \"Input0Connect\"\n\tis_custom_format = n.knob(checkbox_name).value()\n\tinput_node = get_input_by_number(input_number)\n\n\tif k.name() == checkbox_name:\n\t\t# Custom format change\n\t\tif is_custom_format:\n\t\t\tn.knob(\"format\").setEnabled(True)\n\t\t\tif input_node:\n\t\t\t\tnuke.delete(input_node)\n\t\telse:\n\t\t\tn.knob(\"format\").setEnabled(False)\n\t\t\tif not input_node:\n\t\t\t\tinput_node = add_input(input_name, input_connect_node_name, 0)\n\telif k.name() == mode_pulldown_name:\n\t\t# Mode change\n\t\tmodes = \[\"image\", \"knob\"]\n\t\tvisiblity = \[\[\"group_image\", ],\n\t\t\t\t\t \[\"group_knob\", ]]\n\t\tfor idx, value in enumerate(modes):\n\t\t\tif value == k.value():\n\t\t\t\tfor v in visiblity\[idx]:\n\t\t\t\t\tn.knob(v).setVisible(True)\n\t\t\telse:\n\t\t\t\tfor v in visiblity\[idx]:\n\t\t\t\t\tn.knob(v).setVisible(False)\n\t\t# Update input node\n\t\tif k.value() == \"knob\":\n\t\t\tif input_node:\n\t\t\t\tnuke.delete(input_node)\n\t\telse:\n\t\t\tif not input_node and not is_custom_format:\n\t\t\t\tinput_node = add_input(input_name, input_connect_node_name, 0)"
+ selected true
+ addUserKnob {20 Matrix4Knob}
+ addUserKnob {41 matrix -STARTLINE T MatrixKnob.matrix}
+ addUserKnob {41 world_matrix l INVISIBLE -STARTLINE +INVISIBLE T MatrixKnob.world_matrix}
+ addUserKnob {26 divider_copyright l "" +STARTLINE}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0x464646ff
+  label "Used for\nmatrix knob"
+  note_font_size 20
+  selected true
+  xpos 396
+  ypos 414
+  bdwidth 284
+  bdheight 231
+ }
+ Output {
+  inputs 0
+  name Output1
+  xpos 509
+  ypos 732
+ }
+ Axis2 {
+  inputs 0
+  useMatrix true
+  name MatrixKnob
+  selected true
+  xpos 501
+  ypos 520
+ }
+end_group

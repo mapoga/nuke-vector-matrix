@@ -1,10 +1,11 @@
 Group {
- name TranslateMatrix4Knob_
+ name ScaleMatrix4Knob_
  knobChanged "n = nuke.thisNode()\nk = nuke.thisKnob()\nwith n:\n\tif k.name() == \"specify_matrix\":\n\t\tif k.value():\n\t\t\tn.knob(\"group_matrix\").setVisible(True)\n\t\t\tn.knob(\"group_input_matrix\").setVisible(False)\n\t\telse:\n\t\t\tn.knob(\"group_matrix\").setVisible(False)\n\t\t\tn.knob(\"group_input_matrix\").setVisible(True)\n\telif k.name() == \"specify_vector\":\n\t\tif k.value():\n\t\t\tn.knob(\"group_specify_translate\").setVisible(True)\n\t\t\tn.knob(\"group_translate\").setVisible(False)\n\t\telse:\n\t\t\tn.knob(\"group_specify_translate\").setVisible(False)\n\t\t\tn.knob(\"group_translate\").setVisible(True)"
  selected true
- addUserKnob {20 TranslateMatrix4Knob}
- addUserKnob {13 translate}
- addUserKnob {26 "" +STARTLINE}
+ addUserKnob {20 ScaleMatrix4Knob}
+ addUserKnob {41 scaling l scale T Operation.scaling}
+ addUserKnob {41 uniform_scale l "uniform scale" T Operation.uniform_scale}
+ addUserKnob {26 ""}
  addUserKnob {41 world_matrix l "output matrix" T Axis_output.world_matrix}
  addUserKnob {26 divider_copyright l "" +STARTLINE}
  addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
@@ -40,20 +41,20 @@ Group {
       {{input.world_matrix} {input.world_matrix} {input.world_matrix} {input.world_matrix}}
       {{input.world_matrix} {input.world_matrix} {input.world_matrix} {input.world_matrix}}
     }
-  name MatrixKnob_in1
-  xpos 335
+  name MatrixKnob_in
+  xpos 333
   ypos 597
  }
  Axis2 {
   inputs 0
   useMatrix true
-  name MatrixKnob_in
+  name MatrixKnob_Default
   xpos 190
   ypos 596
  }
  Switch {
   inputs 2
-  which {{TranslateMatrix4Knob_.checks.has_input_world_matrix}}
+  which {{ScaleMatrix4Knob_.checks.has_input_world_matrix}}
   name has_input_matrix
   xpos 253
   ypos 688
@@ -63,19 +64,18 @@ Group {
   xpos 263
   ypos 746
  }
-set Nc6c1d500 [stack 0]
+set N5ac0e700 [stack 0]
  Axis2 {
-  translate {{parent.translate} {parent.translate} {parent.translate}}
-  name Axis1
+  name Operation
   xpos 352
-  ypos 858
+  ypos 860
  }
  Dot {
   name Dot1
   xpos 376
   ypos 960
  }
-push $Nc6c1d500
+push $N5ac0e700
  Switch {
   inputs 2
   which {{1-parent.disable}}
@@ -92,6 +92,7 @@ push $Nc6c1d500
  NoOp {
   inputs 0
   name checks
+  selected true
   xpos -4
   ypos 682
   addUserKnob {20 User}

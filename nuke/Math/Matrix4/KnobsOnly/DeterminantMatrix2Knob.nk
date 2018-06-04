@@ -1,11 +1,10 @@
 Group {
- name TranslateMatrix4Knob_
+ name DeterminantMatrix2Knob_
+ onCreate "n = nuke.thisNode()\nwith n:  # enables group scope\n\tREAD_ONLY = 0x10000000\n\tn.knob(\"determinant\").setFlag(READ_ONLY)"
  knobChanged "n = nuke.thisNode()\nk = nuke.thisKnob()\nwith n:\n\tif k.name() == \"specify_matrix\":\n\t\tif k.value():\n\t\t\tn.knob(\"group_matrix\").setVisible(True)\n\t\t\tn.knob(\"group_input_matrix\").setVisible(False)\n\t\telse:\n\t\t\tn.knob(\"group_matrix\").setVisible(False)\n\t\t\tn.knob(\"group_input_matrix\").setVisible(True)\n\telif k.name() == \"specify_vector\":\n\t\tif k.value():\n\t\t\tn.knob(\"group_specify_translate\").setVisible(True)\n\t\t\tn.knob(\"group_translate\").setVisible(False)\n\t\telse:\n\t\t\tn.knob(\"group_specify_translate\").setVisible(False)\n\t\t\tn.knob(\"group_translate\").setVisible(True)"
  selected true
- addUserKnob {20 TranslateMatrix4Knob}
- addUserKnob {13 translate}
- addUserKnob {26 "" +STARTLINE}
- addUserKnob {41 world_matrix l "output matrix" T Axis_output.world_matrix}
+ addUserKnob {20 DeterminantMatrix2Knob}
+ addUserKnob {41 determinant T det_2x2.determinant}
  addUserKnob {26 divider_copyright l "" +STARTLINE}
  addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
 }
@@ -31,64 +30,6 @@ Group {
   xpos 509
   ypos 763
  }
- Axis2 {
-  inputs 0
-  useMatrix true
-  matrix {
-      {{input.world_matrix} {input.world_matrix} {input.world_matrix} {input.world_matrix}}
-      {{input.world_matrix} {input.world_matrix} {input.world_matrix} {input.world_matrix}}
-      {{input.world_matrix} {input.world_matrix} {input.world_matrix} {input.world_matrix}}
-      {{input.world_matrix} {input.world_matrix} {input.world_matrix} {input.world_matrix}}
-    }
-  name MatrixKnob_in1
-  xpos 335
-  ypos 597
- }
- Axis2 {
-  inputs 0
-  useMatrix true
-  name MatrixKnob_in
-  xpos 190
-  ypos 596
- }
- Switch {
-  inputs 2
-  which {{TranslateMatrix4Knob_.checks.has_input_world_matrix}}
-  name has_input_matrix
-  xpos 253
-  ypos 688
- }
- Axis2 {
-  name Axis_choose
-  xpos 263
-  ypos 746
- }
-set Nc6c1d500 [stack 0]
- Axis2 {
-  translate {{parent.translate} {parent.translate} {parent.translate}}
-  name Axis1
-  xpos 352
-  ypos 858
- }
- Dot {
-  name Dot1
-  xpos 376
-  ypos 960
- }
-push $Nc6c1d500
- Switch {
-  inputs 2
-  which {{1-parent.disable}}
-  name bypass
-  xpos 254
-  ypos 956
- }
- Axis2 {
-  useMatrix true
-  name Axis_output
-  xpos 264
-  ypos 1016
- }
  NoOp {
   inputs 0
   name checks
@@ -102,5 +43,45 @@ push $Nc6c1d500
   has_input_world_matrix {{"\[exists input.world_matrix]"}}
   addUserKnob {6 use_input_world_matrix +STARTLINE}
   use_input_world_matrix {{1-parent.specify_matrix}}
+ }
+ Axis2 {
+  inputs 0
+  useMatrix true
+  matrix {
+      {{input.world_matrix} {input.world_matrix} {input.world_matrix} {input.world_matrix}}
+      {{input.world_matrix} {input.world_matrix} {input.world_matrix} {input.world_matrix}}
+      {{input.world_matrix} {input.world_matrix} {input.world_matrix} {input.world_matrix}}
+      {{input.world_matrix} {input.world_matrix} {input.world_matrix} {input.world_matrix}}
+    }
+  name MatrixKnob_in
+  xpos 335
+  ypos 591
+ }
+ Axis2 {
+  inputs 0
+  useMatrix true
+  name MatrixKnob_Default
+  xpos 194
+  ypos 590
+ }
+ Switch {
+  inputs 2
+  which {{DeterminantMatrix2Knob_.checks.has_input_world_matrix*(1-parent.disable)}}
+  name has_input_matrix
+  xpos 253
+  ypos 688
+ }
+ Axis2 {
+  name Axis1
+  xpos 263
+  ypos 725
+ }
+ NoOp {
+  name det_2x2
+  xpos 253
+  ypos 818
+  addUserKnob {20 User}
+  addUserKnob {7 determinant}
+  determinant {{input.world_matrix.0*input.world_matrix.5-input.world_matrix.1*input.world_matrix.4}}
  }
 end_group
