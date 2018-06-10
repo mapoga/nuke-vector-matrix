@@ -10,12 +10,12 @@ define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
             </dock>
             <split size="1897" stretch="1"/>
             <splitter orientation="2">
-                <split size="796"/>
-                <dock id="" activePageId="Viewer.1">
+                <split size="798"/>
+                <dock id="" activePageId="uk.co.thefoundry.scripteditor.1">
                     <page id="uk.co.thefoundry.scripteditor.1"/>
                     <page id="Viewer.1"/>
                 </dock>
-                <split size="559"/>
+                <split size="560"/>
                 <dock id="" activePageId="DAG.1" focus="true">
                     <page id="DAG.1"/>
                     <page id="Curve Editor.1"/>
@@ -80,11 +80,15 @@ Noise {
  xpos -1355
  ypos -283
 }
-Luma_to_Normals {
- name Luma_to_Normals
+Luma_to_Normals { name Luma_to_Normals
  xpos -1355
  ypos -257
  gain 11
+
+ xpos -1355
+ ypos -257
+ selected false
+ disable false
 }
 Shuffle {
  blue black
@@ -122,7 +126,7 @@ Group {
   xpos 34
   ypos 72
  }
-set Ndbabe950 [stack 0]
+set N5979500 [stack 0]
  Shuffle {
   name vector_layer
   xpos 366
@@ -141,7 +145,7 @@ set Ndbabe950 [stack 0]
   xpos 400
   ypos 156
  }
-set Nf52e8240 [stack 0]
+set N56a88c0 [stack 0]
  Dot {
   name Dot6
   tile_color 0x9e3c6300
@@ -169,7 +173,7 @@ set Nf52e8240 [stack 0]
    xpos 34
    ypos 108
   }
-set N310c8670 [stack 0]
+set N7e5a1d0 [stack 0]
   Shuffle {
    name vector_layer
    xpos 140
@@ -197,7 +201,7 @@ set N310c8670 [stack 0]
    xpos 174
    ypos 364
   }
-push $N310c8670
+push $N7e5a1d0
   ShuffleCopy {
    inputs 2
    in2 none
@@ -221,14 +225,14 @@ push $N310c8670
   xpos 220
   ypos 529
  }
-push $Nf52e8240
+push $N56a88c0
  Dot {
   name Dot4
   tile_color 0x9e3c6300
   xpos 556
   ypos 156
  }
-set N31e68fa0 [stack 0]
+set N59716c0 [stack 0]
  Input {
   inputs 0
   name matrix
@@ -242,7 +246,7 @@ set N31e68fa0 [stack 0]
   xpos 614
   ypos 152
  }
-push $N31e68fa0
+push $N59716c0
  Dot {
   name Dot5
   tile_color 0x9e3c6300
@@ -280,7 +284,7 @@ add_layer {matrix0 matrix0.0 matrix0.1 matrix0.2 matrix0.3}
    xpos 402
    ypos 109
   }
-set N24e6a40 [stack 0]
+set N7b977b0 [stack 0]
 add_layer {matrix1 matrix1.0 matrix1.1 matrix1.2 matrix1.3}
   Shuffle {
    in matrix1
@@ -289,7 +293,7 @@ add_layer {matrix1 matrix1.0 matrix1.1 matrix1.2 matrix1.3}
    xpos 402
    ypos 147
   }
-set Ne9db8090 [stack 0]
+set N5dac560 [stack 0]
 add_layer {matrix2 matrix2.0 matrix2.1 matrix2.2 matrix2.3}
   Shuffle {
    in matrix2
@@ -298,7 +302,7 @@ add_layer {matrix2 matrix2.0 matrix2.1 matrix2.2 matrix2.3}
    xpos 402
    ypos 185
   }
-set Nead98e20 [stack 0]
+set N5cfcb10 [stack 0]
 add_layer {matrix3 matrix3.0 matrix3.1 matrix3.2 matrix3.3}
   Shuffle {
    in matrix3
@@ -307,21 +311,21 @@ add_layer {matrix3 matrix3.0 matrix3.1 matrix3.2 matrix3.3}
    xpos 402
    ypos 223
   }
-push $Nead98e20
+push $N5cfcb10
   Dot {
    name Dot7
    tile_color 0x9e3c6300
    xpos 343
    ypos 195
   }
-push $Ne9db8090
+push $N5dac560
   Dot {
    name Dot6
    tile_color 0x9e3c6300
    xpos 343
    ypos 157
   }
-push $N24e6a40
+push $N7b977b0
   Dot {
    name Dot5
    tile_color 0x9e3c6300
@@ -364,7 +368,7 @@ push $N24e6a40
   xpos 648
   ypos 364
  }
-push $Nf52e8240
+push $N56a88c0
  ColorMatrix {
   matrix {
       {{Axis1.world_matrix.0} {Axis1.world_matrix.1} {Axis1.world_matrix.2}}
@@ -403,7 +407,7 @@ push $Nf52e8240
    xpos 34
    ypos 108
   }
-set N23a3310 [stack 0]
+set N7312e70 [stack 0]
   Shuffle {
    name vector_layer
    xpos 140
@@ -422,8 +426,8 @@ set N23a3310 [stack 0]
    xpos 174
    ypos 156
   }
-set Ne7eeabb0 [stack 0]
-push $Ne7eeabb0
+set N8362d20 [stack 0]
+push $N8362d20
   Dot {
    name Dot4
    tile_color 0x9e3c6300
@@ -459,7 +463,7 @@ push $Ne7eeabb0
    xpos 174
    ypos 364
   }
-push $N23a3310
+push $N7312e70
   ShuffleCopy {
    inputs 2
    in2 none
@@ -491,7 +495,7 @@ push $N23a3310
   xpos 400
   ypos 601
  }
-push $Ndbabe950
+push $N5979500
  ShuffleCopy {
   inputs 2
   in2 none
@@ -533,7 +537,7 @@ Group {
  addUserKnob {20 main_tab l "Rotate Vector2"}
  addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
  addUserKnob {4 mode l "Rotate by" t "Pick whether to rotate the input vector by:\nKnob (Degrees 0-360)\nAngle Map (Degrees 0-360)\nAngle Map (Degrees 0-1)\nAngle Map (Radians)\n\nAn Angle map is a single channel image (expected in red channel) that represents an angle value at each pixel." M {"Knob (Degrees 0-360)" "Angle Map (Degrees 0-360)" "Angle Map (Degrees 0-1)" "Angle Map (Radians)" "" "" ""}}
- addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 ""}
  addUserKnob {7 angle l Angle R -180 180}
  addUserKnob {26 ""}
  addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
@@ -577,7 +581,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N8a49d10 [stack 0]
+set N6d99150 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -596,7 +600,7 @@ set N8a49d10 [stack 0]
   xpos 174
   ypos 181
  }
-set N31f4270 [stack 0]
+set N82eb270 [stack 0]
  Dot {
   name Dot4
   tile_color 0x9e3c6300
@@ -617,7 +621,7 @@ set N31f4270 [stack 0]
   xpos 372
   ypos 311
  }
-push $N31f4270
+push $N82eb270
  Expression {
   temp_name0 angleRad
   temp_expr0 radians(parent.angle)
@@ -640,7 +644,7 @@ push $N31f4270
   xpos 174
   ypos 364
  }
-push $N8a49d10
+push $N6d99150
  ShuffleCopy {
   inputs 2
   in2 none
@@ -688,7 +692,7 @@ Group {
   xpos 402
   ypos 109
  }
-set Ne478bfd0 [stack 0]
+set N6d107e0 [stack 0]
  Shuffle {
   in matrix1
   name Shuffle2
@@ -696,7 +700,7 @@ set Ne478bfd0 [stack 0]
   xpos 402
   ypos 147
  }
-set Nd8882950 [stack 0]
+set N6dc0100 [stack 0]
  Shuffle {
   in matrix2
   name Shuffle3
@@ -704,7 +708,7 @@ set Nd8882950 [stack 0]
   xpos 402
   ypos 185
  }
-set N2858d430 [stack 0]
+set N8356e70 [stack 0]
  Shuffle {
   in matrix3
   name Shuffle4
@@ -712,21 +716,21 @@ set N2858d430 [stack 0]
   xpos 402
   ypos 223
  }
-push $N2858d430
+push $N8356e70
  Dot {
   name Dot7
   tile_color 0x9e3c6300
   xpos 343
   ypos 195
  }
-push $Nd8882950
+push $N6dc0100
  Dot {
   name Dot6
   tile_color 0x9e3c6300
   xpos 343
   ypos 157
  }
-push $Ne478bfd0
+push $N6d107e0
  Dot {
   name Dot5
   tile_color 0x9e3c6300
@@ -785,7 +789,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N75db0d0 [stack 0]
+set N6d18ac0 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -813,7 +817,7 @@ set N75db0d0 [stack 0]
   xpos 174
   ypos 364
  }
-push $N75db0d0
+push $N6d18ac0
  ShuffleCopy {
   inputs 2
   in2 none
@@ -853,7 +857,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N3f91a00 [stack 0]
+set N840c490 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -881,7 +885,7 @@ set N3f91a00 [stack 0]
   xpos 174
   ypos 364
  }
-push $N3f91a00
+push $N840c490
  ShuffleCopy {
   inputs 2
   in2 none
@@ -921,7 +925,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N792f390 [stack 0]
+set N6f45750 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -940,8 +944,8 @@ set N792f390 [stack 0]
   xpos 174
   ypos 156
  }
-set Ne7eccb90 [stack 0]
-push $Ne7eccb90
+set N85de600 [stack 0]
+push $N85de600
  Dot {
   name Dot4
   tile_color 0x9e3c6300
@@ -977,7 +981,7 @@ push $Ne7eccb90
   xpos 174
   ypos 364
  }
-push $N792f390
+push $N6f45750
  ShuffleCopy {
   inputs 2
   in2 none
@@ -1017,7 +1021,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N78cf630 [stack 0]
+set N6d66940 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -1030,8 +1034,8 @@ set N78cf630 [stack 0]
   xpos 140
   ypos 130
  }
-set N78e2f00 [stack 0]
-push $N78e2f00
+set N6d7a1f0 [stack 0]
+push $N6d7a1f0
  Expression {
   channel0 {rgba.red rgba.green -rgba.blue -rgba.alpha}
   expr0 sqrt((r*r)+(g*g))
@@ -1057,7 +1061,7 @@ push $N78e2f00
   xpos 174
   ypos 364
  }
-push $N78cf630
+push $N6d66940
  ShuffleCopy {
   inputs 2
   in2 none
@@ -1123,7 +1127,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N78454e0 [stack 0]
+set N6f258a0 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -1153,7 +1157,7 @@ set N78454e0 [stack 0]
   xpos 174
   ypos 364
  }
-push $N78454e0
+push $N6f258a0
  ShuffleCopy {
   inputs 2
   in2 none
@@ -1219,7 +1223,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N79e48f0 [stack 0]
+set N6ce3010 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -1249,7 +1253,7 @@ set N79e48f0 [stack 0]
   xpos 174
   ypos 364
  }
-push $N79e48f0
+push $N6ce3010
  ShuffleCopy {
   inputs 2
   in2 none
@@ -1315,7 +1319,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N71872f0 [stack 0]
+set N6c7ea00 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -1342,7 +1346,7 @@ set N71872f0 [stack 0]
   xpos 174
   ypos 364
  }
-push $N71872f0
+push $N6c7ea00
  ShuffleCopy {
   inputs 2
   in2 none
@@ -1408,7 +1412,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N762f800 [stack 0]
+set N728df30 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -1436,7 +1440,7 @@ set N762f800 [stack 0]
   xpos 174
   ypos 364
  }
-push $N762f800
+push $N728df30
  ShuffleCopy {
   inputs 2
   in2 none
@@ -1452,5 +1456,165 @@ push $N762f800
   name Output1
   xpos 0
   ypos 506
+ }
+end_group
+Group {
+ inputs 0
+ name Matrix4_
+ help "Generate a Matrix4 based on a Matrix Knob. (Defaults to an identity matrix)"
+ knobChanged "node = nuke.thisNode()\nknob = nuke.thisKnob()\n\nif knob.name() == \"inputChange\":\n    with node:\n        format_knob = nuke.toNode('Constant1')\['format']\n    if node.input(0):\n        format_knob.setEnabled(False)\n    else:\n        format_knob.setEnabled(True)\n"
+ selected true
+ xpos -2106
+ ypos 289
+ addUserKnob {20 Matrix4}
+ addUserKnob {41 format T Constant1.format}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 matrix T MatrixKnob.matrix}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 divider_copyright l "" +STARTLINE}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x545454ff
+  label "- Identity in\n  matrix layers\n- Bypass other channels"
+  note_font_size 20
+  xpos 411
+  ypos 441
+  bdwidth 280
+  bdheight 262
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x545454ff
+  label "Use input format"
+  note_font_size 20
+  xpos 408
+  ypos -57
+  bdwidth 281
+  bdheight 195
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x545454ff
+  label "Custom format"
+  note_font_size 20
+  xpos 793
+  ypos -58
+  bdwidth 281
+  bdheight 195
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0x464646ff
+  label "Used for\nmatrix knob"
+  note_font_size 20
+  xpos 6
+  ypos -57
+  bdwidth 284
+  bdheight 231
+ }
+ Axis2 {
+  inputs 0
+  useMatrix true
+  name MatrixKnob
+  xpos 111
+  ypos 49
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  name Constant1
+  selected true
+  xpos 889
+  ypos 13
+ }
+ Dot {
+  name Dot1
+  xpos 923
+  ypos 224
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos 509
+  ypos 4
+ }
+ Switch {
+  inputs 2
+  which {{"!\[exists parent.input0]"}}
+  name format
+  xpos 509
+  ypos 220
+ }
+ AddChannels {
+  channels matrix0
+  channels2 matrix1
+  channels3 matrix2
+  channels4 matrix3
+  name AddChannels1
+  xpos 509
+  ypos 303
+ }
+ Expression {
+  channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+  expr0 parent.world_matrix.0
+  channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+  expr1 parent.world_matrix.1
+  channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+  expr2 parent.world_matrix.2
+  channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+  expr3 parent.world_matrix.3
+  name Expression1
+  xpos 509
+  ypos 568
+ }
+ Expression {
+  channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+  expr0 parent.world_matrix.4
+  channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+  expr1 parent.world_matrix.5
+  channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+  expr2 parent.world_matrix.6
+  channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+  expr3 parent.world_matrix.7
+  name Expression2
+  xpos 509
+  ypos 594
+ }
+ Expression {
+  channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+  expr0 parent.world_matrix.8
+  channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+  expr1 parent.world_matrix.9
+  channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+  expr2 parent.world_matrix.10
+  channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+  expr3 parent.world_matrix.11
+  name Expression3
+  xpos 509
+  ypos 620
+ }
+ Expression {
+  channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+  expr0 parent.world_matrix.12
+  channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+  expr1 parent.world_matrix.13
+  channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+  expr2 parent.world_matrix.14
+  channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+  expr3 parent.world_matrix.15
+  name Expression4
+  xpos 509
+  ypos 646
+ }
+ Output {
+  name Output1
+  xpos 509
+  ypos 756
  }
 end_group

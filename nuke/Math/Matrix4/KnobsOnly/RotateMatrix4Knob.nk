@@ -1,9 +1,10 @@
 Group {
- name TranslateMatrix4Knob_
+ name RotateMatrix4Knob_
  knobChanged "n = nuke.thisNode()\nk = nuke.thisKnob()\nwith n:\n\tif k.name() == \"specify_matrix\":\n\t\tif k.value():\n\t\t\tn.knob(\"group_matrix\").setVisible(True)\n\t\t\tn.knob(\"group_input_matrix\").setVisible(False)\n\t\telse:\n\t\t\tn.knob(\"group_matrix\").setVisible(False)\n\t\t\tn.knob(\"group_input_matrix\").setVisible(True)\n\telif k.name() == \"specify_vector\":\n\t\tif k.value():\n\t\t\tn.knob(\"group_specify_translate\").setVisible(True)\n\t\t\tn.knob(\"group_translate\").setVisible(False)\n\t\telse:\n\t\t\tn.knob(\"group_specify_translate\").setVisible(False)\n\t\t\tn.knob(\"group_translate\").setVisible(True)"
  selected true
- addUserKnob {20 TranslateMatrix4Knob}
- addUserKnob {13 translate}
+ addUserKnob {20 RotateMatrix4Knob}
+ addUserKnob {41 rot_order l "rotation order" T Operation.rot_order}
+ addUserKnob {41 rotate T Operation.rotate}
  addUserKnob {26 ""}
  addUserKnob {41 world_matrix l "output matrix" T Axis_output.world_matrix}
  addUserKnob {26 divider_copyright l "" +STARTLINE}
@@ -17,8 +18,8 @@ Group {
   note_font_size 20
   xpos 143
   ypos 497
-  bdwidth 341
-  bdheight 947
+  bdwidth 327
+  bdheight 849
  }
  Input {
   inputs 0
@@ -47,10 +48,9 @@ Group {
  }
  Axis2 {
   inputs 0
-  translate {{parent.translate} {parent.translate} {parent.translate}}
-  name Axis1
+  name Operation
   xpos 352
-  ypos 858
+  ypos 860
  }
  Dot {
   name Dot1
@@ -66,14 +66,14 @@ Group {
       {{input.world_matrix} {input.world_matrix} {input.world_matrix} {input.world_matrix}}
       {{input.world_matrix} {input.world_matrix} {input.world_matrix} {input.world_matrix}}
     }
-  name MatrixKnob_in1
-  xpos 335
+  name MatrixKnob_in
+  xpos 333
   ypos 597
  }
  Axis2 {
   inputs 0
   useMatrix true
-  name MatrixKnob_in
+  name MatrixKnob_Default
   xpos 190
   ypos 596
  }
@@ -81,9 +81,8 @@ Group {
   inputs 2
   which {{checks.has_input_world_matrix}}
   name has_input_matrix
-  selected true
   xpos 253
-  ypos 687
+  ypos 688
  }
  Axis2 {
   name Axis_choose
@@ -98,26 +97,26 @@ Group {
   ypos 956
  }
  Axis2 {
-  name Axis2
+  name result
   xpos 264
-  ypos 1024
+  ypos 1009
  }
  Axis2 {
   useMatrix true
   matrix {
-      {{Axis_choose.world_matrix} {Axis_choose.world_matrix} {Axis_choose.world_matrix} {Axis_choose.world_matrix}}
-      {{Axis_choose.world_matrix} {Axis_choose.world_matrix} {Axis_choose.world_matrix} {Axis_choose.world_matrix}}
-      {{Axis_choose.world_matrix} {Axis_choose.world_matrix} {Axis_choose.world_matrix} {Axis_choose.world_matrix}}
-      {{Axis_choose.world_matrix} {Axis_choose.world_matrix} {Axis_choose.world_matrix} {Axis_choose.world_matrix}}
+      {{Axis_choose.world_matrix.0} {Axis_choose.world_matrix.1} {Axis_choose.world_matrix.2} {Axis_choose.world_matrix.3}}
+      {{Axis_choose.world_matrix.4} {Axis_choose.world_matrix.5} {Axis_choose.world_matrix.6} {Axis_choose.world_matrix.7}}
+      {{Axis_choose.world_matrix.8} {Axis_choose.world_matrix.9} {Axis_choose.world_matrix.10} {Axis_choose.world_matrix.11}}
+      {{Axis_choose.world_matrix.12} {Axis_choose.world_matrix.13} {Axis_choose.world_matrix.14} {Axis_choose.world_matrix.15}}
     }
-  name Axis3
-  xpos 371
-  ypos 1103
+  name source
+  xpos 365
+  ypos 1072
  }
  Axis2 {
   useMatrix true
   name Axis_output
   xpos 264
-  ypos 1255
+  ypos 1198
  }
 end_group
