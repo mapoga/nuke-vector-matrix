@@ -4,9 +4,10 @@ push $cut_paste_input
 Group {
  name InvertAxis
  help "Inverts an input Axis"
+ tile_color 0x9c0000ff
  selected true
- xpos 569
- ypos 42
+ xpos 444
+ ypos 29
  addUserKnob {20 InvertAxis l "Invert Axis"}
  addUserKnob {41 world_matrix l "" -STARTLINE T Out_Axis.world_matrix}
  addUserKnob {26 divider_copyright l "" +STARTLINE}
@@ -34,7 +35,7 @@ Group {
  }
  Input {
   inputs 0
-  name Input
+  name Inputaxis
   xpos 806
   ypos 434
  }
