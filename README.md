@@ -3,9 +3,12 @@ Suite of mathematical nodes for Nuke to deal with Vectors and Matrices, by @mapo
  
 ### Table of Contents
 **[Installation Instructions](#installation-instructions)**<br>
-**[Advanced Installation](#advance-installation)**
+**[Manual Installation](#manual-installation)**
 
 ## Installation Instructions
+For easy installation of the toolset, we provide a script that will make menu entries for each of our tools and ensure 
+they are all part of the Nuke plugin path.
+
 Installation instructions are similar for any OS. However, the paths we are using in the example are formatted for an 
 UNIX system (Mac or Linux).
 
@@ -23,14 +26,20 @@ via an existing/new `init.py` file, in which you would add the line:
 This should be enough to Install the suite of tools.
 
 
-## Advanced Installation
-We provide by default a menu.py and init.py to add all the tools in the NUKE_PATH and generate menu entried for them.
+## Manual Installation
+While the default installation is probably ideal for many users, it may not be the best for Studio Environments 
+where tools need to be installed in a specific location or for users who already have their own Gizmo loader.
 
-While this is ideal for many users, it may not be the best for Studio Environments where tools need to be installed 
-in a specific manner.
+For manual installation of the tools, only the content of the `nuke` folder is necessary and contains all the .nk and 
+.gizmo files. 
+It can be reorganized as required.
 
-For manual installation of the tools, only the content of the `nuke` folder is necessary, and can be reorganized as 
-required.
+.gizmo files need to be added to the nuke plugin path. See instructions by the foundry: 
+- [Loading Gizmos, Plugins, Scripts](
+https://learn.foundry.com/nuke/content/comp_environment/configuring_nuke/loading_gizmos_plugins_scripts.html)
+- [Custom Menus](
+https://learn.foundry.com/nuke/content/comp_environment/configuring_nuke/custom_menus_toolbars.html)
+
 
 All the icons are located in the `icons` folder. 
 
