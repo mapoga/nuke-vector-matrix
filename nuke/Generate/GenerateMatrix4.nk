@@ -2,7 +2,7 @@ set cut_paste_input [stack 0]
 version 10.0 v4
 push $cut_paste_input
 Group {
- name Matrix4_
+ name GenerateMatrix4_
  help "Generate a Matrix4 based on a Matrix Knob. (Defaults to an identity matrix)"
  knobChanged "node = nuke.thisNode()\nknob = nuke.thisKnob()\n\nif knob.name() == \"inputChange\":\n    with node:\n        format_knob = nuke.toNode('Constant1')\['format']\n    if node.input(0):\n        format_knob.setEnabled(False)\n    else:\n        format_knob.setEnabled(True)\n"
  selected true
