@@ -22,5 +22,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 >- NormalizeVector3
 >- RotateVector2
 >- RotateVector3
+>- TransformVector2
 - Setup menu.py and init.py
 - Initial installation documentation in README

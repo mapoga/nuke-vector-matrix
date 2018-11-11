@@ -1,5 +1,6 @@
 # nuke-vector-matrix
-Suite of mathematical nodes for Nuke to deal with Vectors and Matrices, by @mapoga and @herronelou.
+Suite of mathematical nodes for Nuke to deal with Vectors and Matrices, by @mapoga (Mathieu Goulet-Aubin) 
+and @herronelou (Erwan Leroy).
  
 ### Table of Contents
 **[Installation Instructions](#installation-instructions)**<br>
