@@ -1,27 +1,28 @@
-#! /spin/software/nuke/10.0v4/linux/64/libnuke-10.0.4.so -nx
-version 10.0 v4
+#! /spin/software/nuke/11.2v4/linux/64/libnuke-11.2.4.so -nx
+version 11.2 v4
 define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
 <layout version="1.0">
-    <window x="0" y="0" w="2560" h="1405" maximized="1" screen="0">
+    <window x="-3" y="-3" w="1920" h="1025" maximized="1" screen="0">
         <splitter orientation="1">
             <split size="40"/>
             <dock id="" hideTitles="1" activePageId="Toolbar.1">
                 <page id="Toolbar.1"/>
             </dock>
-            <split size="1897" stretch="1"/>
+            <split size="1257" stretch="1"/>
             <splitter orientation="2">
-                <split size="796"/>
-                <dock id="" activePageId="uk.co.thefoundry.scripteditor.1">
+                <split size="573"/>
+                <dock id="" activePageId="Viewer.1">
                     <page id="uk.co.thefoundry.scripteditor.1"/>
                     <page id="Viewer.1"/>
-                    <page id="Viewer.2"/>
                 </dock>
-                <split size="559"/>
+                <split size="402"/>
                 <dock id="" activePageId="DAG.1" focus="true">
                     <page id="DAG.1"/>
                     <page id="Curve Editor.1"/>
                     <page id="DopeSheet.1"/>
                     <page id="DAG.2"/>
+                    <page id="DAG.3"/>
+                    <page id="DAG.4"/>
                 </dock>
             </splitter>
             <split size="615"/>
@@ -34,7 +35,7 @@ define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
 }
 Root {
  inputs 0
- name /Network/Servers/xserve1.spinpro.com/mnt/useraccounts/eleroy/Documents/Erwan/nuke_RnD/mapoga/nuke-vector-matrix/temp/eleroy_wip_01.nk
+ name /spin/ldap_accounts/eleroy/Documents/Erwan/nuke_RnD/mapoga/nuke-vector-matrix/temp/eleroy_wip_01.nk
  frame 1001
  first_frame 1001
  last_frame 1296
@@ -44,6 +45,12 @@ Root {
  proxy_format "1024 778 0 0 1024 778 1 1K_Super_35(full-ap)"
  colorManagement OCIO
  defaultViewerLUT "OCIO LUTs"
+ workingSpaceLUT linear
+ monitorLut sRGB
+ int8Lut sRGB
+ int16Lut sRGB
+ logLut Cineon
+ floatLut linear
 }
 BackdropNode {
  inputs 0
@@ -78,6 +85,17 @@ BackdropNode {
  bdwidth 182
  bdheight 244
 }
+BackdropNode {
+ inputs 0
+ name Backdrop_WIP1
+ tile_color 0x667f79ff
+ label WIP
+ note_font_size 40
+ xpos -1724
+ ypos 487
+ bdwidth 180
+ bdheight 168
+}
 Group {
  inputs 0
  name MagnitudeVector2_
@@ -100,7 +118,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N9303320 [stack 0]
+set Nb2016f0 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -128,7 +146,7 @@ set N9303320 [stack 0]
   xpos 174
   ypos 364
  }
-push $N9303320
+push $Nb2016f0
  ShuffleCopy {
   inputs 2
   in2 none
@@ -168,7 +186,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N9352a60 [stack 0]
+set Nb277510 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -196,7 +214,7 @@ set N9352a60 [stack 0]
   xpos 174
   ypos 364
  }
-push $N9352a60
+push $Nb277510
  ShuffleCopy {
   inputs 2
   in2 none
@@ -236,7 +254,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N93a21b0 [stack 0]
+set Nb4ed9d0 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -255,8 +273,8 @@ set N93a21b0 [stack 0]
   xpos 174
   ypos 156
  }
-set N93be360 [stack 0]
-push $N93be360
+set Nb1f1730 [stack 0]
+push $Nb1f1730
  Dot {
   name Dot4
   tile_color 0x9e3c6300
@@ -292,7 +310,7 @@ push $N93be360
   xpos 174
   ypos 364
  }
-push $N93a21b0
+push $Nb4ed9d0
  ShuffleCopy {
   inputs 2
   in2 none
@@ -332,7 +350,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N940f2e0 [stack 0]
+set Nb2aae90 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -345,8 +363,8 @@ set N940f2e0 [stack 0]
   xpos 140
   ypos 130
  }
-set N9422b90 [stack 0]
-push $N9422b90
+set N4896a40 [stack 0]
+push $N4896a40
  Expression {
   channel0 {rgba.red rgba.green -rgba.blue -rgba.alpha}
   expr0 sqrt((r*r)+(g*g))
@@ -372,7 +390,7 @@ push $N9422b90
   xpos 174
   ypos 364
  }
-push $N940f2e0
+push $Nb2aae90
  ShuffleCopy {
   inputs 2
   in2 none
@@ -438,7 +456,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N948ee00 [stack 0]
+set Nd6707f0 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -468,7 +486,7 @@ set N948ee00 [stack 0]
   xpos 174
   ypos 364
  }
-push $N948ee00
+push $Nd6707f0
  ShuffleCopy {
   inputs 2
   in2 none
@@ -534,7 +552,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N94fe800 [stack 0]
+set Naff1470 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -564,7 +582,7 @@ set N94fe800 [stack 0]
   xpos 174
   ypos 364
  }
-push $N94fe800
+push $Naff1470
  ShuffleCopy {
   inputs 2
   in2 none
@@ -630,7 +648,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N956e200 [stack 0]
+set N4920e10 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -657,7 +675,7 @@ set N956e200 [stack 0]
   xpos 174
   ypos 364
  }
-push $N956e200
+push $N4920e10
  ShuffleCopy {
   inputs 2
   in2 none
@@ -673,6 +691,525 @@ push $N956e200
   name Output1
   xpos 0
   ypos 506
+ }
+end_group
+Noise {
+ inputs 0
+ center {1024 778}
+ name Noise1
+ xpos -326
+ ypos -345
+}
+Luma_to_Normals {
+ name Luma_to_Normals
+ xpos -326
+ ypos -266
+ gain 11
+}
+Shuffle {
+ blue black
+ name Shuffle1
+ label "in \[value in]-->out \[value out]"
+ xpos -326
+ ypos -240
+}
+Multiply {
+ value 232
+ name Multiply1
+ xpos -326
+ ypos -135
+}
+Blur {
+ size 40
+ name Blur1
+ label "size \[value size]"
+ xpos -326
+ ypos -97
+}
+Group {
+ inputs 0
+ name Compression_Map_test
+ xpos -1699
+ ypos 106
+}
+ Input {
+  inputs 0
+  name Inputvector2
+  xpos 536
+  ypos -310
+ }
+ Dot {
+  name Dot2
+  tile_color 0xcccccc00
+  xpos 570
+  ypos -255
+ }
+set Naf489d0 [stack 0]
+ Dot {
+  name Dot1
+  tile_color 0xcccccc00
+  xpos 1003
+  ypos -228
+ }
+set Naf4d1f0 [stack 0]
+ Expression {
+  channel0 rgb
+  expr0 "sqrt(pow2((x+r) - (x+1+r(x+1, y-1))) + pow2((y+g) - (y-1+g(x+1, y-1))))/1.41421"
+  name Expression1
+  xpos 1049
+  ypos -126
+ }
+push $Naf4d1f0
+ Expression {
+  channel0 rgb
+  expr0 "sqrt(pow2((x+r) - (x-1+r(x-1, y-1))) + pow2((y+g) - (y-1+g(x-1, y-1))))/1.41421"
+  name Expression6
+  xpos 950
+  ypos -126
+ }
+push 0
+push $Naf4d1f0
+ Expression {
+  channel0 rgb
+  expr0 "sqrt(pow2((x+r) - (x-1+r(x-1, y+1))) + pow2((y+g) - (y+1+g(x-1, y+1))))/1.41421"
+  name Expression7
+  xpos 853
+  ypos -126
+ }
+push $Naf4d1f0
+ Expression {
+  channel0 rgb
+  expr0 "sqrt(pow2((x+r) - (x+1+r(x+1, y+1))) + pow2((y+g) - (y+1+g(x+1, y+1))))/1.41421"
+  name Expression8
+  xpos 755
+  ypos -126
+ }
+ Merge2 {
+  inputs 4+1
+  operation plus
+  bbox B
+  name Merge1
+  xpos 923
+  ypos -53
+ }
+ Multiply {
+  value 0.5
+  name Multiply2
+  xpos 923
+  ypos -27
+ }
+set Naf97d30 [stack 0]
+push $Naf489d0
+ Expression {
+  channel0 rgb
+  expr0 "sqrt(pow2((x+r) - (x+r(x, y-1))) + pow2((y+g) - (y-1+g(x, y-1))))"
+  name Expression5
+  xpos 615
+  ypos -153
+ }
+push $Naf489d0
+ Expression {
+  channel0 rgb
+  expr0 "sqrt(pow2((x+r) - (x-1+r(x-1, y))) + pow2((y+g) - (y+g(x-1, y))))"
+  name Expression4
+  xpos 517
+  ypos -153
+ }
+push 0
+push $Naf489d0
+ Expression {
+  channel0 rgb
+  expr0 "sqrt(pow2((x+r) - (x+r(x, y+1))) + pow2((y+g) - (y+1+g(x, y+1))))"
+  name Expression3
+  xpos 420
+  ypos -153
+ }
+push $Naf489d0
+ Expression {
+  channel0 rgb
+  expr0 "sqrt(pow2((x+r) - (x+1+r(x+1, y))) + pow2((y+g) - (y+g(x+1, y))))"
+  name Expression2
+  xpos 322
+  ypos -153
+ }
+ Merge2 {
+  inputs 4+1
+  operation plus
+  bbox B
+  name Merge7
+  xpos 490
+  ypos -80
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  bbox B
+  name Merge2
+  xpos 490
+  ypos -29
+ }
+ Multiply {
+  value 0.1666666667
+  name Multiply1
+  xpos 490
+  ypos 15
+ }
+ Output {
+  name Output1
+  xpos 490
+  ypos 115
+ }
+push $Naf97d30
+push $Naf489d0
+ Viewer {
+  inputs 2
+  frame_range 1001-1296
+  colour_sample_bbox {0.01171875 -0.384765625 0.0126953125 -0.3837890625}
+  samplepoints {{0.01171875 -0.384765625}
+    }
+  name Viewer1
+  xpos 1019
+  ypos 21
+ }
+end_group
+Group {
+ inputs 0
+ name STMap_Generator
+ xpos -17
+ ypos -310
+ postage_stamp true
+ addUserKnob {20 STMap l "ST Map"}
+ addUserKnob {41 format l Format T Reformat1.format}
+ addUserKnob {26 ""}
+ addUserKnob {7 overscan l "Overscan (%)" t "Add overscan to your ST map" R 0 100}
+ overscan 10
+ addUserKnob {6 reformat l "Reformat to Overscan" t "Reformats the image to overscan size" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.2 - Part of VectorTools"}
+}
+ Reformat {
+  inputs 0
+  name Reformat1
+  xpos 555
+  ypos 395
+ }
+ Crop {
+  box {{-width*(parent.overscan/100)/2} {-height*(parent.overscan/100)/2} {width+(width*(parent.overscan/100)/2)} {height+(height*(parent.overscan/100)/2)}}
+  reformat {{parent.reformat}}
+  crop false
+  name Crop1
+  xpos 555
+  ypos 446
+ }
+ Expression {
+  expr0 (x+0.5)/width
+  expr1 (y+.5)/height
+  name Expression1
+  xpos 555
+  ypos 497
+ }
+ Output {
+  name Output1
+  xpos 555
+  ypos 583
+ }
+end_group
+Transform {
+ scale 1.14
+ center {1024 778}
+ shutteroffset centred
+ name Transform4
+ label "\[if \{\[value translate.x] != 0 || \[value translate.y] != 0\} then \{return \"t \[value translate.x] \[value translate.y]\n\"\} else \{return \"\"\}]\[if \{\[value rotate] != 0\} then \{return \"r \[value rotate]\n\"\} else \{return \"\"\}] \[if \{\[value scale] != 1\} then \{return \"s \[value scale]\"\} else \{return \"\"\}]\[if \{\[value skewX] != 0 || \[value skewY] != 0\} then \{return \"sk \[value skewX] \[value skewY]\n\"\} else \{return \"\"\}]\[if \{\[value motionblur] != 0\} then \{return \"mb \[value motionblur] sh \[value shutter] \[value shutteroffset]\n\"\} else \{return \"\"\}]"
+ xpos -17
+ ypos -238
+}
+Mirror2 {
+ flop true
+ name Mirror2_1
+ xpos -25
+ ypos -189
+ disable true
+}
+Crop {
+ box {0 0 2048 1556}
+ crop false
+ name Crop1
+ xpos -25
+ ypos -163
+}
+set Nb08b8a0 [stack 0]
+Group {
+ name UV_to_Vectors
+ help "Transforms a distorted UV Map to Motion Vectors corresponding to the distortion."
+ xpos -25
+ ypos -37
+ addUserKnob {20 UV_to_Vectors}
+ addUserKnob {41 in l UV_Layer t "Select the layer containing your UV_map" T UV_Channel.in}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" t www.erwanleroy.com +STARTLINE T "v1.0 - Part of VectorTools by Erwan Leroy - 2016"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -291
+  ypos -63
+ }
+set Nb09dcd0 [stack 0]
+ Shuffle {
+  name UV_Channel
+  xpos -151
+  ypos -17
+ }
+ Expression {
+  expr0 -x+r*width-0.5
+  expr1 -y+g*height-0.5
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  channel3 {none none none -rgba.alpha}
+  name UV_to_Vectors1
+  xpos -151
+  ypos 97
+ }
+push $Nb09dcd0
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  alpha black
+  out {{{parent.UV_Channel.in}}}
+  name ShuffleCopy1
+  xpos -291
+  ypos 97
+ }
+ Output {
+  name Output1
+  xpos -291
+  ypos 167
+ }
+end_group
+set Nb095820 [stack 0]
+Transform {
+ translate {282 -208}
+ rotate 55
+ scale 0.37
+ center {1024 778}
+ shutteroffset centred
+ name Transform2
+ label "\[if \{\[value translate.x] != 0 || \[value translate.y] != 0\} then \{return \"t \[value translate.x] \[value translate.y]\n\"\} else \{return \"\"\}]\[if \{\[value rotate] != 0\} then \{return \"r \[value rotate]\n\"\} else \{return \"\"\}] \[if \{\[value scale] != 1\} then \{return \"s \[value scale]\"\} else \{return \"\"\}]\[if \{\[value skewX] != 0 || \[value skewY] != 0\} then \{return \"sk \[value skewX] \[value skewY]\n\"\} else \{return \"\"\}]\[if \{\[value motionblur] != 0\} then \{return \"mb \[value motionblur] sh \[value shutter] \[value shutteroffset]\n\"\} else \{return \"\"\}]"
+ xpos 161
+ ypos 3
+}
+push $Nb095820
+VectorTransform {
+ name VectorTransform
+ xpos 104
+ ypos 110
+ translate {282 -208}
+ rotate 73
+ scale 0.136
+ center {1024 778}
+ shutteroffset centred
+}
+set Nb0e2dc0 [stack 0]
+ColorWheel {
+ inputs 0
+ gamma 0.45
+ name ColorWheel1
+ xpos 437
+ ypos -91
+}
+Transform {
+ scale 1.65
+ center {1024 778}
+ shutteroffset centred
+ name Transform3
+ label "\[if \{\[value translate.x] != 0 || \[value translate.y] != 0\} then \{return \"t \[value translate.x] \[value translate.y]\n\"\} else \{return \"\"\}]\[if \{\[value rotate] != 0\} then \{return \"r \[value rotate]\n\"\} else \{return \"\"\}] \[if \{\[value scale] != 1\} then \{return \"s \[value scale]\"\} else \{return \"\"\}]\[if \{\[value skewX] != 0 || \[value skewY] != 0\} then \{return \"sk \[value skewX] \[value skewY]\n\"\} else \{return \"\"\}]\[if \{\[value motionblur] != 0\} then \{return \"mb \[value motionblur] sh \[value shutter] \[value shutteroffset]\n\"\} else \{return \"\"\}]"
+ xpos 437
+ ypos -19
+}
+CheckerBoard2 {
+ inputs 0
+ name CheckerBoard1
+ xpos 307
+ ypos -146
+}
+Merge2 {
+ inputs 2
+ operation plus
+ bbox B
+ mix 0.29
+ name Merge1
+ xpos 276
+ ypos 4
+}
+Copy {
+ inputs 2
+ from0 rgba.red
+ to0 forward.u
+ from1 rgba.green
+ to1 forward.v
+ bbox B
+ name Copy1
+ xpos 242
+ ypos 148
+}
+set Nd7e8600 [stack 0]
+IDistort {
+ uv motion
+ name IDistort1
+ xpos 327
+ ypos 234
+}
+push $Nd7e8600
+Dot {
+ name Dot1
+ tile_color 0x9e3c6300
+ xpos 74
+ ypos 254
+}
+push 0
+push 0
+push $Nd7e8600
+Kronos {
+ inputs 4
+ retimedChannels all
+ timingOutputSpeed 1
+ showLegacyMode false
+ motionEstimation Regularized
+ Advanced 1
+ legacyModeNuke9 false
+ vectorSpacing 50
+ showVectors true
+ name Kronos1
+ xpos 198
+ ypos 311
+}
+push $Nb0e2dc0
+Group {
+ name Vectors_to_UV
+ xpos 47
+ ypos 160
+ addUserKnob {20 VtoU l "Vectors to UV"}
+ addUserKnob {41 in l Vector_Layer t "Pick the layer containing your motion vectors." T UV_Channel.in}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" t www.erwanleroy.com +STARTLINE T "v1.0 - Part of VectorTools by Erwan Leroy - 2016"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -303
+  ypos 114
+ }
+set N1003f420 [stack 0]
+ Shuffle {
+  name UV_Channel
+  xpos -163
+  ypos 114
+ }
+ Expression {
+  expr0 (r+x+0.5)/width
+  expr1 (g+y+0.5)/height
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  channel3 {none none none -rgba.alpha}
+  name Vectors_to_UV
+  xpos -163
+  ypos 228
+ }
+push $N1003f420
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  alpha black
+  out {{{parent.UV_Channel.in}}}
+  name ShuffleCopy1
+  xpos -303
+  ypos 228
+ }
+ Output {
+  name Output1
+  xpos -303
+  ypos 299
+ }
+end_group
+push $Nb08b8a0
+Transform {
+ translate {282 -208}
+ rotate 55
+ scale 0.37
+ center {1024 778}
+ shutteroffset centred
+ name Transform1
+ label "\[if \{\[value translate.x] != 0 || \[value translate.y] != 0\} then \{return \"t \[value translate.x] \[value translate.y]\n\"\} else \{return \"\"\}]\[if \{\[value rotate] != 0\} then \{return \"r \[value rotate]\n\"\} else \{return \"\"\}] \[if \{\[value scale] != 1\} then \{return \"s \[value scale]\"\} else \{return \"\"\}]\[if \{\[value skewX] != 0 || \[value skewY] != 0\} then \{return \"sk \[value skewX] \[value skewY]\n\"\} else \{return \"\"\}]\[if \{\[value motionblur] != 0\} then \{return \"mb \[value motionblur] sh \[value shutter] \[value shutteroffset]\n\"\} else \{return \"\"\}]"
+ xpos 153
+ ypos -114
+}
+Group {
+ inputs 0
+ name TransformVector2_
+ help "Transforms an image assuming it is a motion vector in RGBA.\nCompared to a regular transform, this will edit the pixel colors to compensate for vector direction and magnitude.\n\nWarning: This node breaks concatenation."
+ tile_color 0xc692ccff
+ xpos -2213
+ ypos 439
+ addUserKnob {20 transform l "Transform Vector2"}
+ addUserKnob {41 matrix T Transform1.matrix}
+ addUserKnob {41 translate T Transform1.translate}
+ addUserKnob {41 rotate T Transform1.rotate}
+ addUserKnob {41 scale T Transform1.scale}
+ addUserKnob {41 skewX l "skew X" T Transform1.skewX}
+ addUserKnob {41 skewY l "skew Y" T Transform1.skewY}
+ addUserKnob {41 skew_order l "skew order" T Transform1.skew_order}
+ addUserKnob {41 center T Transform1.center}
+ addUserKnob {41 invert_matrix l invert T Transform1.invert_matrix}
+ addUserKnob {41 filter T Transform1.filter}
+ addUserKnob {41 clamp -STARTLINE T Transform1.clamp}
+ addUserKnob {41 black_outside l "black outside" -STARTLINE T Transform1.black_outside}
+ addUserKnob {41 motionblur T Transform1.motionblur}
+ addUserKnob {41 shutter T Transform1.shutter}
+ addUserKnob {41 shutteroffset l "shutter offset" T Transform1.shutteroffset}
+ addUserKnob {41 shuttercustomoffset l "" -STARTLINE T Transform1.shuttercustomoffset}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" t www.erwanleroy.com +STARTLINE T "v1.1 - Part of VectorTools by Erwan Leroy - 2016"}
+}
+ Input {
+  inputs 0
+  name vectorB
+  xpos -482
+  ypos -5
+ }
+set N1008d970 [stack 0]
+ Transform {
+  center {1024 778}
+  shutteroffset centred
+  name Transform1
+  xpos -482
+  ypos 92
+ }
+set N10092350 [stack 0]
+ ColorMatrix {
+  matrix {
+      {{"\[python nuke.toNode('Transform1')\\\['matrix'\\].value()\\\[0\\]]"} {"\[python nuke.toNode('Transform1')\\\['matrix'\\].value()\\\[4\\]]"} 0}
+      {{"\[python nuke.toNode('Transform1')\\\['matrix'\\].value()\\\[1\\]]"} {"\[python nuke.toNode('Transform1')\\\['matrix'\\].value()\\\[5\\]]"} 0}
+      {0 0 0}
+    }
+  name ColorMatrix1
+  xpos -482
+  ypos 172
+ }
+ Output {
+  name Output1
+  xpos -482
+  ypos 232
+ }
+push $N10092350
+push $N1008d970
+ Viewer {
+  inputs 2
+  frame_range 1001-1296
+  name Viewer1
+  xpos -191
+  ypos 172
  }
 end_group
 Group {
@@ -723,7 +1260,7 @@ Group {
   xpos 34
   ypos 108
  }
-set N95ddbf0 [stack 0]
+set N100fe200 [stack 0]
  Shuffle {
   name vector_layer
   xpos 140
@@ -751,7 +1288,7 @@ set N95ddbf0 [stack 0]
   xpos 174
   ypos 364
  }
-push $N95ddbf0
+push $N100fe200
  ShuffleCopy {
   inputs 2
   in2 none
@@ -771,11 +1308,146 @@ push $N95ddbf0
 end_group
 Group {
  inputs 0
- name Matrix4_
+ name RotateVector2_
+ help "Rotate a 2D vector on the same 2D plane."
+ knobChanged "\nnode = nuke.thisNode()\nknob = nuke.thisKnob()\nif knob.name() == \"mode\":\n    if knob.value() == \"Knob (Degrees 0-360)\":\n        node\['angle'].setEnabled(True)\n    else:\n        node\['angle'].setEnabled(False)\n"
+ xpos -2212
+ ypos 322
+ addUserKnob {20 main_tab l "Rotate Vector2"}
+ addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
+ addUserKnob {4 mode l "Rotate by" t "Pick whether to rotate the input vector by:\nKnob (Degrees 0-360)\nAngle Map (Degrees 0-360)\nAngle Map (Degrees 0-1)\nAngle Map (Radians)\n\nAn Angle map is a single channel image (expected in red channel) that represents an angle value at each pixel." M {"Knob (Degrees 0-360)" "Angle Map (Degrees 0-360)" "Angle Map (Degrees 0-1)" "Angle Map (Radians)" "" "" ""}}
+ addUserKnob {26 ""}
+ addUserKnob {7 angle l Angle R -180 180}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+ Input {
+  inputs 0
+  name angleMap
+  xpos 479
+  ypos 5
+  number 1
+ }
+ Multiply {
+  channels rgb
+  value 360
+  name Multiply_360
+  xpos 479
+  ypos 90
+  disable {{parent.mode!=2}}
+ }
+ Expression {
+  expr0 radians(r)
+  name Degrees_to_Radians
+  xpos 479
+  ypos 132
+  disable {{parent.mode==3}}
+ }
+ Dot {
+  name Dot5
+  tile_color 0xcccccc00
+  xpos 513
+  ypos 249
+ }
+ Input {
+  inputs 0
+  name vectorB
+  xpos 0
+ }
+ Dot {
+  name Dot1
+  tile_color 0xcccccc00
+  xpos 34
+  ypos 108
+ }
+set N10171910 [stack 0]
+ Shuffle {
+  name vector_layer
+  xpos 140
+  ypos 104
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove1
+  xpos 140
+  ypos 130
+ }
+ Dot {
+  name Dot3
+  tile_color 0x9e3c6300
+  xpos 174
+  ypos 181
+ }
+set N1018e9d0 [stack 0]
+ Dot {
+  name Dot4
+  tile_color 0x9e3c6300
+  xpos 372
+  ypos 181
+ }
+ MergeExpression {
+  inputs 2
+  expr0 "Br * cos(Ar) - Bg * sin(Ar)"
+  expr1 "Br * sin(Ar) + Bg * cos(Ar)"
+  name MergeExpression1
+  xpos 338
+  ypos 245
+ }
+ Dot {
+  name Dot6
+  tile_color 0x4b5ec600
+  xpos 372
+  ypos 311
+ }
+push $N1018e9d0
+ Expression {
+  temp_name0 angleRad
+  temp_expr0 radians(parent.angle)
+  expr0 "r * cos(angleRad) - g * sin(angleRad)"
+  expr1 "r * sin(angleRad) + g * cos(angleRad)"
+  name Rotation
+  xpos 140
+  ypos 240
+ }
+ Switch {
+  inputs 2
+  which {{parent.mode!=0}}
+  name Switch1
+  xpos 140
+  ypos 307
+ }
+ Dot {
+  name Dot2
+  tile_color 0xcccccc00
+  xpos 174
+  ypos 364
+ }
+push $N10171910
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  blue blue
+  out {{{parent.UV_Channel.in}}}
+  name ShuffleCopy1
+  xpos 0
+  ypos 360
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 506
+ }
+end_group
+Group {
+ inputs 0
+ name GenerateMatrix4_
  help "Generate a Matrix4 based on a Matrix Knob. (Defaults to an identity matrix)"
  knobChanged "node = nuke.thisNode()\nknob = nuke.thisKnob()\n\nif knob.name() == \"inputChange\":\n    with node:\n        format_knob = nuke.toNode('Constant1')\['format']\n    if node.input(0):\n        format_knob.setEnabled(False)\n    else:\n        format_knob.setEnabled(True)\n"
- xpos -2106
- ypos 289
+ xpos -2208
+ ypos 506
  addUserKnob {20 Matrix4}
  addUserKnob {41 format T Constant1.format}
  addUserKnob {26 ""}
@@ -875,528 +1547,270 @@ add_layer {matrix3 matrix3.0 matrix3.1 matrix3.2 matrix3.3}
  }
  Expression {
   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
-  expr0 parent.world_matrix.0
+  expr0 MatrixKnob.world_matrix.0
   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
-  expr1 parent.world_matrix.1
+  expr1 MatrixKnob.world_matrix.1
   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
-  expr2 parent.world_matrix.2
+  expr2 MatrixKnob.world_matrix.2
   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
-  expr3 parent.world_matrix.3
+  expr3 MatrixKnob.world_matrix.3
   name Expression1
   xpos 509
-  ypos 568
+  ypos 570
  }
  Expression {
   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
-  expr0 parent.world_matrix.4
+  expr0 MatrixKnob.world_matrix.4
   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
-  expr1 parent.world_matrix.5
+  expr1 MatrixKnob.world_matrix.5
   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
-  expr2 parent.world_matrix.6
+  expr2 MatrixKnob.world_matrix.6
   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
-  expr3 parent.world_matrix.7
+  expr3 MatrixKnob.world_matrix.7
   name Expression2
   xpos 509
   ypos 594
  }
  Expression {
   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
-  expr0 parent.world_matrix.8
+  expr0 MatrixKnob.world_matrix.8
   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
-  expr1 parent.world_matrix.9
+  expr1 MatrixKnob.world_matrix.9
   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
-  expr2 parent.world_matrix.10
+  expr2 MatrixKnob.world_matrix.10
   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
-  expr3 parent.world_matrix.11
+  expr3 MatrixKnob.world_matrix.11
   name Expression3
   xpos 509
-  ypos 620
+  ypos 618
  }
  Expression {
   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
-  expr0 parent.world_matrix.12
+  expr0 MatrixKnob.world_matrix.12
   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
-  expr1 parent.world_matrix.13
+  expr1 MatrixKnob.world_matrix.13
   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
-  expr2 parent.world_matrix.14
+  expr2 MatrixKnob.world_matrix.14
   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
-  expr3 parent.world_matrix.15
+  expr3 MatrixKnob.world_matrix.15
   name Expression4
   xpos 509
-  ypos 646
+  ypos 642
  }
  Output {
   name Output1
   xpos 509
-  ypos 756
+  ypos 755
  }
 end_group
-Noise {
+Axis2 {
  inputs 0
- center {1024 778}
- name Noise1
- xpos -1355
- ypos -336
+ useMatrix true
+ matrix {
+     {1.3333 -0.6667 0 0}
+     {-0.6667 1.3333 0 0}
+     {0 0 1 0}
+     {0 0 0 1}
+   }
+ name Axis2
+ xpos -839
+ ypos 476
 }
-Luma_to_Normals {
- name Luma_to_Normals
- xpos -1355
- ypos -257
- gain 11
+Axis2 {
+ useMatrix true
+ matrix {
+     {1 0.5 0 0}
+     {0.5 1 0 0}
+     {0 0 1 0}
+     {0 0 0 1}
+   }
+ name Axis1
+ xpos -743
+ ypos 427
 }
-Shuffle {
- blue black
- name Shuffle1
- label "in \[value in]-->out \[value out]"
- xpos -1355
- ypos -231
+Cube {
+ inputs 0
+ name Cube1
+ xpos -628
+ ypos 457
 }
-Multiply {
- value 232
- name Multiply1
- xpos -1355
- ypos -126
+TransformGeo {
+ inputs 2
+ name TransformGeo1
+ xpos -628
+ ypos 518
 }
-Blur {
- size 40
- name Blur1
- label "size \[value size]"
- xpos -1355
- ypos -88
+Viewer {
+ frame_range 1001-1296
+ channels matrix0
+ name Viewer1
+ xpos -123
+ ypos 278
 }
 Group {
  inputs 0
- name Compression_Map_test
- xpos -1699
- ypos 106
+ name TransposeMatrix4_
+ help "Transpose a pixel based Matrix4 (Defined as layers matrix0, matrix1, matrix2 and matrix3)"
+ knobChanged "node = nuke.thisNode()\nknob = nuke.thisKnob()\n\nif knob.name() == \"inputChange\":\n    with node:\n        format_knob = nuke.toNode('Constant1')\['format']\n    if node.input(0):\n        format_knob.setEnabled(False)\n    else:\n        format_knob.setEnabled(True)\n"
+ xpos -2210
+ ypos 595
+ addUserKnob {20 Matrix4 l TransposeMatrix4}
+ addUserKnob {26 Description l "" +STARTLINE T "Transpose matrix channels"}
+ addUserKnob {26 divider_copyright l "" +STARTLINE}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
 }
  Input {
   inputs 0
-  name Inputvector2
-  xpos 536
-  ypos -310
+  name Inputmatrix
+  xpos 361
+  ypos 272
+ }
+ Dot {
+  name Dot31
+  tile_color 0xcccccc00
+  xpos 395
+  ypos 355
+ }
+set N104bcd20 [stack 0]
+ Dot {
+  name Dot32
+  tile_color 0xcccccc00
+  xpos 497
+  ypos 355
+ }
+set N104c14a0 [stack 0]
+ Dot {
+  name Dot33
+  tile_color 0xcccccc00
+  xpos 619
+  ypos 355
+ }
+set N104c5e30 [stack 0]
+ Dot {
+  name Dot34
+  tile_color 0xcccccc00
+  xpos 736
+  ypos 355
+ }
+ Expression {
+  channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+  expr0 matrix0.3
+  channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+  expr1 matrix1.3
+  channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+  expr2 matrix2.3
+  channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+  name Expression56
+  xpos 702
+  ypos 402
  }
  Dot {
   name Dot2
   tile_color 0xcccccc00
-  xpos 570
-  ypos -255
+  xpos 736
+  ypos 638
  }
-set N9847b10 [stack 0]
+push $N104c5e30
+ Expression {
+  channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+  expr0 matrix0.2
+  channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+  expr1 matrix1.2
+  channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+  channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+  expr3 matrix3.2
+  name Expression55
+  xpos 585
+  ypos 399
+ }
  Dot {
   name Dot1
   tile_color 0xcccccc00
-  xpos 1003
-  ypos -228
+  xpos 619
+  ypos 548
  }
-set N984c790 [stack 0]
+push $N104c14a0
  Expression {
-  channel0 rgb
-  expr0 "sqrt(pow2((x+r) - (x+1+r(x+1, y-1))) + pow2((y+g) - (y-1+g(x+1, y-1))))/1.41421"
-  name Expression1
-  xpos 1049
-  ypos -126
+  channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+  expr0 matrix0.1
+  channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+  channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+  expr2 matrix2.1
+  channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+  expr3 matrix3.1
+  name Expression54
+  xpos 463
+  ypos 398
  }
-push $N984c790
+ Dot {
+  name Dot37
+  tile_color 0xcccccc00
+  xpos 497
+  ypos 464
+ }
+push $N104bcd20
  Expression {
-  channel0 rgb
-  expr0 "sqrt(pow2((x+r) - (x-1+r(x-1, y-1))) + pow2((y+g) - (y-1+g(x-1, y-1))))/1.41421"
-  name Expression6
-  xpos 950
-  ypos -126
- }
-push 0
-push $N984c790
- Expression {
-  channel0 rgb
-  expr0 "sqrt(pow2((x+r) - (x-1+r(x-1, y+1))) + pow2((y+g) - (y+1+g(x-1, y+1))))/1.41421"
-  name Expression7
-  xpos 853
-  ypos -126
- }
-push $N984c790
- Expression {
-  channel0 rgb
-  expr0 "sqrt(pow2((x+r) - (x+1+r(x+1, y+1))) + pow2((y+g) - (y+1+g(x+1, y+1))))/1.41421"
-  name Expression8
-  xpos 755
-  ypos -126
- }
- Merge2 {
-  inputs 4+1
-  operation plus
-  bbox B
-  name Merge1
-  xpos 923
-  ypos -53
- }
- Multiply {
-  value 0.5
-  name Multiply2
-  xpos 923
-  ypos -27
- }
-set N9898d90 [stack 0]
-push $N9847b10
- Expression {
-  channel0 rgb
-  expr0 "sqrt(pow2((x+r) - (x+r(x, y-1))) + pow2((y+g) - (y-1+g(x, y-1))))"
-  name Expression5
-  xpos 615
-  ypos -153
- }
-push $N9847b10
- Expression {
-  channel0 rgb
-  expr0 "sqrt(pow2((x+r) - (x-1+r(x-1, y))) + pow2((y+g) - (y+g(x-1, y))))"
-  name Expression4
-  xpos 517
-  ypos -153
- }
-push 0
-push $N9847b10
- Expression {
-  channel0 rgb
-  expr0 "sqrt(pow2((x+r) - (x+r(x, y+1))) + pow2((y+g) - (y+1+g(x, y+1))))"
-  name Expression3
-  xpos 420
-  ypos -153
- }
-push $N9847b10
- Expression {
-  channel0 rgb
-  expr0 "sqrt(pow2((x+r) - (x+1+r(x+1, y))) + pow2((y+g) - (y+g(x+1, y))))"
-  name Expression2
-  xpos 322
-  ypos -153
- }
- Merge2 {
-  inputs 4+1
-  operation plus
-  bbox B
-  name Merge7
-  xpos 490
-  ypos -80
- }
- Merge2 {
-  inputs 2
-  operation plus
-  bbox B
-  name Merge2
-  xpos 490
-  ypos -29
- }
- Multiply {
-  value 0.1666666667
-  name Multiply1
-  xpos 490
-  ypos 15
- }
- Output {
-  name Output1
-  xpos 490
-  ypos 115
- }
-push $N9898d90
-push $N9847b10
- Viewer {
-  inputs 2
-  frame_range 1001-1296
-  colour_sample_bbox {0.01171875 -0.384765625 0.0126953125 -0.3837890625}
-  samplepoints {{0.01171875 -0.384765625}
-    }
-  name Viewer1
-  xpos 1019
-  ypos 21
- }
-end_group
-Group {
- inputs 0
- name STMap_Generator
- xpos -1046
- ypos -301
- postage_stamp true
- addUserKnob {20 STMap l "ST Map"}
- addUserKnob {41 format l Format T Reformat1.format}
- addUserKnob {26 ""}
- addUserKnob {7 overscan l "Overscan (%)" t "Add overscan to your ST map" R 0 100}
- overscan 10
- addUserKnob {6 reformat l "Reformat to Overscan" t "Reformats the image to overscan size" +STARTLINE}
- addUserKnob {26 ""}
- addUserKnob {26 copyright l "" +STARTLINE T "v1.2 - Part of VectorTools"}
-}
- Reformat {
-  inputs 0
-  name Reformat1
-  xpos 555
+  channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+  channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+  expr1 matrix1.0
+  channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+  expr2 matrix2.0
+  channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+  expr3 matrix3.0
+  name Expression53
+  xpos 361
   ypos 395
  }
- Crop {
-  box {{-width*(parent.overscan/100)/2} {-height*(parent.overscan/100)/2} {width+(width*(parent.overscan/100)/2)} {height+(height*(parent.overscan/100)/2)}}
-  reformat {{parent.reformat}}
-  crop false
-  name Crop1
-  xpos 555
-  ypos 446
- }
- Expression {
-  expr0 (x+0.5)/width
-  expr1 (y+.5)/height
-  name Expression1
-  xpos 555
-  ypos 497
- }
- Output {
-  name Output1
-  xpos 555
-  ypos 583
- }
-end_group
-Transform {
- scale 1.14
- center {1024 778}
- shutteroffset centred
- name Transform4
- label "\[if \{\[value translate.x] != 0 || \[value translate.y] != 0\} then \{return \"t \[value translate.x] \[value translate.y]\n\"\} else \{return \"\"\}]\[if \{\[value rotate] != 0\} then \{return \"r \[value rotate]\n\"\} else \{return \"\"\}] \[if \{\[value scale] != 1\} then \{return \"s \[value scale]\"\} else \{return \"\"\}]\[if \{\[value skewX] != 0 || \[value skewY] != 0\} then \{return \"sk \[value skewX] \[value skewY]\n\"\} else \{return \"\"\}]\[if \{\[value motionblur] != 0\} then \{return \"mb \[value motionblur] sh \[value shutter] \[value shutteroffset]\n\"\} else \{return \"\"\}]"
- xpos -1046
- ypos -229
-}
-Mirror2 {
- flop true
- name Mirror2_1
- xpos -1054
- ypos -180
- disable true
-}
-Crop {
- box {0 0 2048 1556}
- crop false
- name Crop1
- xpos -1054
- ypos -154
-}
-set N996a180 [stack 0]
-Group {
- name UV_to_Vectors
- help "Transforms a distorted UV Map to Motion Vectors corresponding to the distortion."
- xpos -1054
- ypos -28
- addUserKnob {20 UV_to_Vectors}
- addUserKnob {41 in l UV_Layer t "Select the layer containing your UV_map" T UV_Channel.in}
- addUserKnob {26 ""}
- addUserKnob {26 copyright l "" t www.erwanleroy.com +STARTLINE T "v1.0 - Part of VectorTools by Erwan Leroy - 2016"}
-}
- Input {
-  inputs 0
-  name Input
-  xpos -291
-  ypos -63
- }
-set N997cd60 [stack 0]
- Shuffle {
-  name UV_Channel
-  xpos -151
-  ypos -17
- }
- Expression {
-  expr0 -x+r*width-0.5
-  expr1 -y+g*height-0.5
-  channel2 {-rgba.red -rgba.green -rgba.blue none}
-  channel3 {none none none -rgba.alpha}
-  name UV_to_Vectors1
-  xpos -151
-  ypos 97
- }
-push $N997cd60
- ShuffleCopy {
+ Copy {
   inputs 2
-  in2 none
-  red red
-  green green
-  alpha black
-  out {{{parent.UV_Channel.in}}}
-  name ShuffleCopy1
-  xpos -291
-  ypos 97
+  from0 matrix1.0
+  to0 matrix1.0
+  from1 matrix1.2
+  to1 matrix1.2
+  from2 matrix1.3
+  to2 matrix1.3
+  bbox B
+  name Copy1
+  xpos 361
+  ypos 442
  }
- Output {
-  name Output1
-  xpos -291
-  ypos 167
- }
-end_group
-set N9974440 [stack 0]
-Transform {
- translate {282 -208}
- rotate 55
- scale 0.37
- center {1024 778}
- shutteroffset centred
- name Transform2
- label "\[if \{\[value translate.x] != 0 || \[value translate.y] != 0\} then \{return \"t \[value translate.x] \[value translate.y]\n\"\} else \{return \"\"\}]\[if \{\[value rotate] != 0\} then \{return \"r \[value rotate]\n\"\} else \{return \"\"\}] \[if \{\[value scale] != 1\} then \{return \"s \[value scale]\"\} else \{return \"\"\}]\[if \{\[value skewX] != 0 || \[value skewY] != 0\} then \{return \"sk \[value skewX] \[value skewY]\n\"\} else \{return \"\"\}]\[if \{\[value motionblur] != 0\} then \{return \"mb \[value motionblur] sh \[value shutter] \[value shutteroffset]\n\"\} else \{return \"\"\}]"
- xpos -868
- ypos 12
-}
-push $N9974440
-VectorTransform {
- name VectorTransform
- xpos -925
- ypos 119
- translate {282 -208}
- rotate 73
- scale 0.136
- center {1024 778}
- shutteroffset centred
-}
-set N99c0740 [stack 0]
-ColorWheel {
- inputs 0
- gamma 0.45
- name ColorWheel1
- xpos -592
- ypos -82
-}
-Transform {
- scale 1.65
- center {1024 778}
- shutteroffset centred
- name Transform3
- label "\[if \{\[value translate.x] != 0 || \[value translate.y] != 0\} then \{return \"t \[value translate.x] \[value translate.y]\n\"\} else \{return \"\"\}]\[if \{\[value rotate] != 0\} then \{return \"r \[value rotate]\n\"\} else \{return \"\"\}] \[if \{\[value scale] != 1\} then \{return \"s \[value scale]\"\} else \{return \"\"\}]\[if \{\[value skewX] != 0 || \[value skewY] != 0\} then \{return \"sk \[value skewX] \[value skewY]\n\"\} else \{return \"\"\}]\[if \{\[value motionblur] != 0\} then \{return \"mb \[value motionblur] sh \[value shutter] \[value shutteroffset]\n\"\} else \{return \"\"\}]"
- xpos -592
- ypos -10
-}
-CheckerBoard2 {
- inputs 0
- name CheckerBoard1
- xpos -722
- ypos -137
-}
-Merge2 {
- inputs 2
- operation plus
- bbox B
- mix 0.29
- name Merge1
- xpos -753
- ypos 13
-}
-Copy {
- inputs 2
- from0 rgba.red
- to0 forward.u
- from1 rgba.green
- to1 forward.v
- bbox B
- name Copy1
- xpos -787
- ypos 157
-}
-set N9a7d710 [stack 0]
-IDistort {
- uv motion
- name IDistort1
- xpos -702
- ypos 243
-}
-push $N9a7d710
-Dot {
- name Dot1
- tile_color 0x9e3c6300
- xpos -955
- ypos 263
-}
-push 0
-push 0
-push $N9a7d710
-Kronos {
- inputs 4
- retimedChannels all
- timingOutputSpeed 1
- showLegacyMode false
- motionEstimation Regularized
- Advanced 1
- legacyModeNuke9 false
- vectorSpacing 50
- showVectors true
- name Kronos1
- xpos -831
- ypos 320
-}
-push $N99c0740
-Group {
- name Vectors_to_UV
- xpos -982
- ypos 169
- addUserKnob {20 VtoU l "Vectors to UV"}
- addUserKnob {41 in l Vector_Layer t "Pick the layer containing your motion vectors." T UV_Channel.in}
- addUserKnob {26 ""}
- addUserKnob {26 copyright l "" t www.erwanleroy.com +STARTLINE T "v1.0 - Part of VectorTools by Erwan Leroy - 2016"}
-}
- Input {
-  inputs 0
-  name Input
-  xpos -303
-  ypos 114
- }
-set N9a05a20 [stack 0]
- Shuffle {
-  name UV_Channel
-  xpos -163
-  ypos 114
- }
- Expression {
-  expr0 (r+x+0.5)/width
-  expr1 (g+y+0.5)/height
-  channel2 {-rgba.red -rgba.green -rgba.blue none}
-  channel3 {none none none -rgba.alpha}
-  name Vectors_to_UV
-  xpos -163
-  ypos 228
- }
-push $N9a05a20
- ShuffleCopy {
+ Copy {
   inputs 2
-  in2 none
-  red red
-  green green
-  alpha black
-  out {{{parent.UV_Channel.in}}}
-  name ShuffleCopy1
-  xpos -303
-  ypos 228
+  from0 matrix2.0
+  to0 matrix2.0
+  from1 matrix2.1
+  to1 matrix2.1
+  from2 matrix2.3
+  to2 matrix2.2
+  bbox B
+  name Copy2
+  xpos 361
+  ypos 526
+ }
+ Copy {
+  inputs 2
+  from0 matrix3.0
+  to0 matrix3.0
+  from1 matrix3.1
+  to1 matrix3.1
+  from2 matrix3.2
+  to2 matrix3.2
+  bbox B
+  name Copy3
+  xpos 361
+  ypos 616
  }
  Output {
   name Output1
-  xpos -303
-  ypos 299
+  xpos 361
+  ypos 733
  }
 end_group
-push $N996a180
-Transform {
- translate {282 -208}
- rotate 55
- scale 0.37
- center {1024 778}
- shutteroffset centred
- name Transform1
- label "\[if \{\[value translate.x] != 0 || \[value translate.y] != 0\} then \{return \"t \[value translate.x] \[value translate.y]\n\"\} else \{return \"\"\}]\[if \{\[value rotate] != 0\} then \{return \"r \[value rotate]\n\"\} else \{return \"\"\}] \[if \{\[value scale] != 1\} then \{return \"s \[value scale]\"\} else \{return \"\"\}]\[if \{\[value skewX] != 0 || \[value skewY] != 0\} then \{return \"sk \[value skewX] \[value skewY]\n\"\} else \{return \"\"\}]\[if \{\[value motionblur] != 0\} then \{return \"mb \[value motionblur] sh \[value shutter] \[value shutteroffset]\n\"\} else \{return \"\"\}]"
- xpos -876
- ypos -105
-}
-push 0
-Viewer {
- inputs 2
- frame 1001
- frame_range 1001-1296
- name Viewer1
- xpos -1152
- ypos 287
-}
 Group {
  inputs 0
  name MultiplyVector3Matrix3_
  help "Multiply (transform) a Vector3 by a Matrix3. This is the equivalent of applying Rotation/Scale/Skew from a Matrix to the vector.\nA Matrix4 can be used, but the last row/column will be ignored."
- xpos -2220
+ xpos -2221
  ypos -128
  addUserKnob {20 main_tab l "Mutiply Vector3 Matrix3"}
  addUserKnob {26 ""}
@@ -1422,7 +1836,7 @@ Group {
   xpos 402
   ypos 109
  }
-set N928c190 [stack 0]
+set N105514d0 [stack 0]
  Shuffle {
   in matrix1
   name Shuffle2
@@ -1430,7 +1844,7 @@ set N928c190 [stack 0]
   xpos 402
   ypos 147
  }
-set N929ade0 [stack 0]
+set N10561890 [stack 0]
  Shuffle {
   in matrix2
   name Shuffle3
@@ -1438,7 +1852,7 @@ set N929ade0 [stack 0]
   xpos 402
   ypos 185
  }
-set N92abad0 [stack 0]
+set N10571be0 [stack 0]
  Shuffle {
   in matrix3
   name Shuffle4
@@ -1446,21 +1860,21 @@ set N92abad0 [stack 0]
   xpos 402
   ypos 223
  }
-push $N92abad0
+push $N10571be0
  Dot {
   name Dot7
   tile_color 0x9e3c6300
   xpos 343
   ypos 195
  }
-push $N929ade0
+push $N10561890
  Dot {
   name Dot6
   tile_color 0x9e3c6300
   xpos 343
   ypos 157
  }
-push $N928c190
+push $N105514d0
  Dot {
   name Dot5
   tile_color 0x9e3c6300
@@ -1499,11 +1913,2550 @@ push $N928c190
 end_group
 Group {
  inputs 0
- name RotateVector3_
+ name Product_Matrix4_
+ xpos -2214
+ ypos 717
+ addUserKnob {20 Matrix4Product l "Product Matrix4"}
+}
+ Input {
+  inputs 0
+  name matrixA
+  xpos 344
+  ypos 139
+ }
+ Dot {
+  name Dot3
+  xpos 378
+  ypos 252
+ }
+set N106f4840 [stack 0]
+push $N106f4840
+push $N106f4840
+push $N106f4840
+ Input {
+  inputs 0
+  name matrixB
+  xpos 21
+  ypos 142
+  number 1
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+  expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+  channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+  expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+  channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+  expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+  channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+  expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+  name MergeExpression1
+  xpos 21
+  ypos 249
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+  expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+  channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+  expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+  channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+  expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+  channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+  expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+  name MergeExpression2
+  xpos 21
+  ypos 273
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+  expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+  channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+  expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+  channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+  expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+  channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+  expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+  name MergeExpression3
+  xpos 21
+  ypos 297
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+  expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+  channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+  expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+  channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+  expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+  channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+  expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+  name MergeExpression4
+  xpos 21
+  ypos 321
+ }
+ Output {
+  name Output1
+  xpos 21
+  ypos 421
+ }
+end_group
+Group {
+ inputs 0
+ name TransformMatrix4
+ xpos -2220
+ ypos 808
+ addUserKnob {20 Matrix4x4_Transform}
+ addUserKnob {41 xform_order l "transform order" T Axis1.xform_order}
+ addUserKnob {41 rot_order l "rotation order" T Axis1.rot_order}
+ addUserKnob {41 translate T Axis1.translate}
+ addUserKnob {41 rotate T Axis1.rotate}
+ addUserKnob {41 scaling l scale T Axis1.scaling}
+ addUserKnob {41 uniform_scale l "uniform scale" T Axis1.uniform_scale}
+ addUserKnob {41 skew T Axis1.skew}
+ addUserKnob {41 pivot T Axis1.pivot}
+ addUserKnob {20 "" l "Local matrix" n 2}
+ addUserKnob {41 useMatrix l "specify matrix" T Axis1.useMatrix}
+ addUserKnob {41 matrix l "" +STARTLINE T Axis1.matrix}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0xaaaaaa00
+  label "Transform\nTo Matrix"
+  note_font_size 20
+  xpos 764
+  ypos 251
+  bdwidth 218
+  bdheight 180
+ }
+ Input {
+  inputs 0
+  name matrix
+  xpos 451
+  ypos 137
+ }
+ Dot {
+  name Dot1
+  xpos 485
+  ypos 195
+ }
+set N107494b0 [stack 0]
+ Dot {
+  name Dot2
+  xpos 808
+  ypos 195
+ }
+ Expression {
+  channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+  expr0 Axis1.world_matrix.0
+  channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+  expr1 Axis1.world_matrix.1
+  channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+  expr2 Axis1.world_matrix.2
+  channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+  expr3 Axis1.world_matrix.3
+  name Expression1
+  xpos 774
+  ypos 331
+ }
+ Expression {
+  channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+  expr0 Axis1.world_matrix.4
+  channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+  expr1 Axis1.world_matrix.5
+  channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+  expr2 Axis1.world_matrix.6
+  channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+  expr3 Axis1.world_matrix.7
+  name Expression2
+  xpos 774
+  ypos 355
+ }
+ Expression {
+  channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+  expr0 Axis1.world_matrix.8
+  channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+  expr1 Axis1.world_matrix.9
+  channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+  expr2 Axis1.world_matrix.10
+  channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+  expr3 Axis1.world_matrix.11
+  name Expression3
+  xpos 774
+  ypos 379
+ }
+ Expression {
+  channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+  expr0 Axis1.world_matrix.12
+  channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+  expr1 Axis1.world_matrix.13
+  channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+  expr2 Axis1.world_matrix.14
+  channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+  expr3 Axis1.world_matrix.15
+  name Expression4
+  xpos 774
+  ypos 403
+ }
+ Dot {
+  name Dot3
+  xpos 808
+  ypos 574
+ }
+set N10788db0 [stack 0]
+push $N107494b0
+push $N10788db0
+ Group {
+  inputs 2
+  name Product_Matrix4_
+  help "Multiply two pixel based Matrix4 (Defined as layers matrix0, matrix1, matrix2 and matrix3)"
+  xpos 451
+  ypos 571
+  addUserKnob {20 Matrix4Product l "Product Matrix4"}
+  addUserKnob {26 Description l "" +STARTLINE T "Multiply two matrix4: matrixA*matrixB"}
+  addUserKnob {26 divider_copyright l "" +STARTLINE}
+  addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N1079a450 [stack 0]
+push $N1079a450
+push $N1079a450
+push $N1079a450
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+ Switch {
+  inputs 2
+  which {{"\[exists parent.input]"}}
+  name HasInput
+  xpos 451
+  ypos 788
+ }
+ Output {
+  name Output1
+  xpos 451
+  ypos 852
+ }
+ Input {
+  inputs 0
+  name axis
+  xpos 1041
+  ypos 158
+  number 1
+ }
+ Dot {
+  name Dot4
+  tile_color 0xcccccc00
+  xpos 1075
+  ypos 370
+ }
+ Axis2 {
+  name Axis1
+  xpos 912
+  ypos 346
+  addUserKnob {20 wpp}
+  addUserKnob {18 pointPosition l "Point Position"}
+  pointPosition {0 0 0}
+  addUserKnob {6 pointPosition_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 pointPosition_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 pointPosition_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+ }
+end_group
+Group {
+ inputs 0
+ name RotateMatrix4_
+ xpos -2223
+ ypos 1127
+ addUserKnob {20 Matrix4x4_Rotate}
+ addUserKnob {4 rotation_unit l "rotation unit" M {radians degrees}}
+ rotation_unit degrees
+ addUserKnob {41 rot_order l "rotation order" T Axis1.rot_order}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0xaaaaaa00
+  label Rx
+  note_font_size 42
+  xpos 505
+  ypos 349
+  bdwidth 215
+  bdheight 180
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0xaaaaaa00
+  label Ry
+  note_font_size 42
+  xpos 980
+  ypos 346
+  bdwidth 215
+  bdheight 180
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0xaaaaaa00
+  label Rz
+  note_font_size 42
+  xpos 1495
+  ypos 344
+  bdwidth 215
+  bdheight 180
+ }
+ Input {
+  inputs 0
+  name vector
+  xpos 664
+  ypos 156
+  number 1
+ }
+ Expression {
+  expr0 radians(r)
+  expr1 radians(g)
+  expr2 radians(b)
+  expr3 radians(a)
+  name Expression1
+  xpos 664
+  ypos 201
+  disable {{1-parent.rotation_unit}}
+ }
+ Dot {
+  name Dot1
+  xpos 698
+  ypos 251
+ }
+set N108c46e0 [stack 0]
+ Dot {
+  name Dot4
+  xpos 1173
+  ypos 251
+ }
+set N108c8f30 [stack 0]
+ Dot {
+  name Dot5
+  xpos 1688
+  ypos 251
+ }
+ Dot {
+  name Dot22
+  xpos 1688
+  ypos 427
+ }
+set N108d2080 [stack 0]
+push $N108d2080
+push $N108d2080
+push $N108d2080
+ Input {
+  inputs 0
+  name matrix
+  xpos 344
+  ypos 161
+ }
+ Dot {
+  name Dot6
+  xpos 378
+  ypos 296
+ }
+set N108db190 [stack 0]
+ Dot {
+  name Dot7
+  xpos 549
+  ypos 296
+ }
+set N108df9c0 [stack 0]
+ Dot {
+  name Dot8
+  xpos 1024
+  ypos 296
+ }
+set N108e4200 [stack 0]
+ Dot {
+  name Dot9
+  xpos 1539
+  ypos 296
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+  expr0 cos(Ab)
+  channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+  expr1 -sin(Ab)
+  channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+  expr2 0
+  channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+  expr3 0
+  name MergeExpression17
+  xpos 1505
+  ypos 424
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+  expr0 sin(Ab)
+  channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+  expr1 cos(Ab)
+  channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+  expr2 0
+  channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+  expr3 0
+  name MergeExpression18
+  xpos 1505
+  ypos 448
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+  expr0 0
+  channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+  expr1 0
+  channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+  expr2 1
+  channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+  expr3 0
+  name MergeExpression19
+  xpos 1505
+  ypos 472
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+  expr0 0
+  channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+  expr1 0
+  channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+  expr2 0
+  channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+  expr3 1
+  name MergeExpression20
+  xpos 1505
+  ypos 496
+ }
+ Dot {
+  name Dot12
+  xpos 1539
+  ypos 673
+ }
+set N10921620 [stack 0]
+ Dot {
+  name Dot31
+  xpos 1328
+  ypos 673
+ }
+set N10925cf0 [stack 0]
+ Dot {
+  name Dot29
+  xpos 1164
+  ypos 673
+ }
+set N1092a5c0 [stack 0]
+ Dot {
+  name Dot17
+  xpos 990
+  ypos 673
+ }
+set N1092efd0 [stack 0]
+ Dot {
+  name Dot27
+  xpos 749
+  ypos 673
+ }
+set N10933890 [stack 0]
+ Dot {
+  name Dot15
+  xpos 614
+  ypos 673
+ }
+push $N108c8f30
+ Dot {
+  name Dot2
+  xpos 1173
+  ypos 429
+ }
+set N1093c9f0 [stack 0]
+push $N1093c9f0
+push $N1093c9f0
+push $N1093c9f0
+push $N108e4200
+ MergeExpression {
+  inputs 2
+  channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+  expr0 cos(Ag)
+  channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+  expr1 0
+  channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+  expr2 sin(Ag)
+  channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+  expr3 0
+  name MergeExpression13
+  xpos 990
+  ypos 426
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+  expr0 0
+  channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+  expr1 1
+  channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+  expr2 0
+  channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+  expr3 0
+  name MergeExpression14
+  xpos 990
+  ypos 450
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+  expr0 -sin(Ag)
+  channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+  expr1 0
+  channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+  expr2 cos(Ag)
+  channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+  expr3 0
+  name MergeExpression15
+  xpos 990
+  ypos 472
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+  expr0 0
+  channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+  expr1 0
+  channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+  expr2 0
+  channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+  expr3 1
+  name MergeExpression16
+  xpos 990
+  ypos 498
+ }
+ Dot {
+  name Dot13
+  xpos 1024
+  ypos 654
+ }
+set N10975350 [stack 0]
+ Dot {
+  name Dot36
+  xpos 914
+  ypos 654
+ }
+set N10979c80 [stack 0]
+ Dot {
+  name Dot26
+  xpos 809
+  ypos 654
+ }
+set N1097e550 [stack 0]
+ Dot {
+  name Dot14
+  xpos 583
+  ypos 654
+ }
+push $N108c46e0
+ Dot {
+  name Dot3
+  xpos 698
+  ypos 432
+ }
+set N109875e0 [stack 0]
+push $N109875e0
+push $N109875e0
+push $N109875e0
+push $N108df9c0
+ MergeExpression {
+  inputs 2
+  channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+  expr0 1
+  channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+  expr1 0
+  channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+  expr2 0
+  channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+  expr3 0
+  name MergeExpression9
+  xpos 515
+  ypos 429
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+  expr0 0
+  channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+  expr1 cos(Ar)
+  channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+  expr2 -sin(Ar)
+  channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+  expr3 0
+  name MergeExpression10
+  xpos 515
+  ypos 453
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+  expr0 0
+  channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+  expr1 sin(Ar)
+  channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+  expr2 cos(Ar)
+  channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+  expr3 0
+  name MergeExpression11
+  xpos 515
+  ypos 477
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+  expr0 0
+  channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+  expr1 0
+  channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+  expr2 0
+  channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+  expr3 1
+  name MergeExpression12
+  xpos 515
+  ypos 501
+ }
+ Dot {
+  name Dot11
+  xpos 549
+  ypos 636
+ }
+set N109c0090 [stack 0]
+push $N108db190
+ Dot {
+  name Dot10
+  xpos 378
+  ypos 721
+ }
+ Dot {
+  name Dot20
+  xpos 464
+  ypos 721
+ }
+set N109c9250 [stack 0]
+ Group {
+  inputs 2
+  name M_Product
+  xpos 430
+  ypos 799
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N109da200 [stack 0]
+push $N109da200
+push $N109da200
+push $N109da200
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+ Group {
+  inputs 2
+  name M_Product1
+  xpos 430
+  ypos 825
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10a28980 [stack 0]
+push $N10a28980
+push $N10a28980
+push $N10a28980
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+ Group {
+  inputs 2
+  name M_Product2
+  xpos 430
+  ypos 851
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10a77100 [stack 0]
+push $N10a77100
+push $N10a77100
+push $N10a77100
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+push $N1092efd0
+push $N109c0090
+ Dot {
+  name Dot25
+  xpos 728
+  ypos 636
+ }
+set N10ab8f90 [stack 0]
+ Dot {
+  name Dot16
+  xpos 969
+  ypos 636
+ }
+set N10abdb50 [stack 0]
+push $N10979c80
+push $N109c9250
+ Dot {
+  name Dot24
+  xpos 653
+  ypos 721
+ }
+set N10ac20d0 [stack 0]
+ Dot {
+  name Dot21
+  xpos 861
+  ypos 721
+ }
+set N10ac6950 [stack 0]
+ Group {
+  inputs 2
+  name M_Product6
+  xpos 827
+  ypos 803
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10ad7ad0 [stack 0]
+push $N10ad7ad0
+push $N10ad7ad0
+push $N10ad7ad0
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+ Group {
+  inputs 2
+  name M_Product7
+  xpos 827
+  ypos 829
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10b26260 [stack 0]
+push $N10b26260
+push $N10b26260
+push $N10b26260
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+ Group {
+  inputs 2
+  name M_Product8
+  xpos 827
+  ypos 855
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10b749e0 [stack 0]
+push $N10b749e0
+push $N10b749e0
+push $N10b749e0
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+push $N1097e550
+push $N10933890
+push $N10ab8f90
+push $N10ac20d0
+ Group {
+  inputs 2
+  name M_Product3
+  xpos 619
+  ypos 802
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10bc41b0 [stack 0]
+push $N10bc41b0
+push $N10bc41b0
+push $N10bc41b0
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+ Group {
+  inputs 2
+  name M_Product4
+  xpos 619
+  ypos 828
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10c12930 [stack 0]
+push $N10c12930
+push $N10c12930
+push $N10c12930
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+ Group {
+  inputs 2
+  name M_Product5
+  xpos 619
+  ypos 854
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10c610d0 [stack 0]
+push $N10c610d0
+push $N10c610d0
+push $N10c610d0
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+push $N10975350
+ Dot {
+  name Dot28
+  xpos 1134
+  ypos 654
+ }
+set N10ca2f60 [stack 0]
+ Dot {
+  name Dot19
+  xpos 1436
+  ypos 654
+ }
+set N10ca7ba0 [stack 0]
+push $N10abdb50
+ Dot {
+  name Dot30
+  xpos 1238
+  ypos 636
+ }
+set N10cac090 [stack 0]
+ Dot {
+  name Dot32
+  xpos 1399
+  ypos 636
+ }
+set N10cb0d10 [stack 0]
+push $N10925cf0
+push $N10ac6950
+ Dot {
+  name Dot23
+  xpos 1053
+  ypos 721
+ }
+set N10cb5200 [stack 0]
+ Dot {
+  name Dot33
+  xpos 1274
+  ypos 721
+ }
+set N10cb9a80 [stack 0]
+ Group {
+  inputs 2
+  name M_Product12
+  xpos 1240
+  ypos 795
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10ccabf0 [stack 0]
+push $N10ccabf0
+push $N10ccabf0
+push $N10ccabf0
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+ Group {
+  inputs 2
+  name M_Product13
+  xpos 1240
+  ypos 821
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10d19370 [stack 0]
+push $N10d19370
+push $N10d19370
+push $N10d19370
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+ Group {
+  inputs 2
+  name M_Product14
+  xpos 1240
+  ypos 847
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10d67af0 [stack 0]
+push $N10d67af0
+push $N10d67af0
+push $N10d67af0
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+push $N10cac090
+push $N1092a5c0
+push $N10ca2f60
+push $N10cb5200
+ Group {
+  inputs 2
+  name M_Product9
+  xpos 1019
+  ypos 795
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10db6290 [stack 0]
+push $N10db6290
+push $N10db6290
+push $N10db6290
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+ Group {
+  inputs 2
+  name M_Product10
+  xpos 1019
+  ypos 821
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10e04c30 [stack 0]
+push $N10e04c30
+push $N10e04c30
+push $N10e04c30
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+ Group {
+  inputs 2
+  name M_Product11
+  xpos 1019
+  ypos 847
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10e533f0 [stack 0]
+push $N10e533f0
+push $N10e533f0
+push $N10e533f0
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+push $N10cb0d10
+ Dot {
+  name Dot18
+  xpos 1668
+  ypos 636
+ }
+push $N10ca7ba0
+ Dot {
+  name Dot34
+  xpos 1595
+  ypos 654
+ }
+push $N10921620
+push $N10cb9a80
+ Dot {
+  name Dot35
+  xpos 1500
+  ypos 721
+ }
+ Group {
+  inputs 2
+  name M_Product15
+  xpos 1466
+  ypos 798
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10eaf4c0 [stack 0]
+push $N10eaf4c0
+push $N10eaf4c0
+push $N10eaf4c0
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+ Group {
+  inputs 2
+  name M_Product16
+  xpos 1466
+  ypos 824
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10efdce0 [stack 0]
+push $N10efdce0
+push $N10efdce0
+push $N10efdce0
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+ Group {
+  inputs 2
+  name M_Product17
+  xpos 1466
+  ypos 850
+ }
+  Input {
+   inputs 0
+   name matrixA
+   xpos 344
+   ypos 139
+  }
+  Dot {
+   name Dot3
+   xpos 378
+   ypos 252
+  }
+set N10f4c470 [stack 0]
+push $N10f4c470
+push $N10f4c470
+push $N10f4c470
+  Input {
+   inputs 0
+   name matrixB
+   xpos 21
+   ypos 142
+   number 1
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+   expr0 (Bmatrix0.0*Amatrix0.0)+(Bmatrix0.1*Amatrix1.0)+(Bmatrix0.2*Amatrix2.0)+(Bmatrix0.3*Amatrix3.0)
+   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
+   expr1 (Bmatrix0.0*Amatrix0.1)+(Bmatrix0.1*Amatrix1.1)+(Bmatrix0.2*Amatrix2.1)+(Bmatrix0.3*Amatrix3.1)
+   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
+   expr2 (Bmatrix0.0*Amatrix0.2)+(Bmatrix0.1*Amatrix1.2)+(Bmatrix0.2*Amatrix2.2)+(Bmatrix0.3*Amatrix3.2)
+   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+   expr3 (Bmatrix0.0*Amatrix0.3)+(Bmatrix0.1*Amatrix1.3)+(Bmatrix0.2*Amatrix2.3)+(Bmatrix0.3*Amatrix3.3)
+   name MergeExpression1
+   xpos 21
+   ypos 249
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
+   expr0 (Bmatrix1.0*Amatrix0.0)+(Bmatrix1.1*Amatrix1.0)+(Bmatrix1.2*Amatrix2.0)+(Bmatrix1.3*Amatrix3.0)
+   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+   expr1 (Bmatrix1.0*Amatrix0.1)+(Bmatrix1.1*Amatrix1.1)+(Bmatrix1.2*Amatrix2.1)+(Bmatrix1.3*Amatrix3.1)
+   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
+   expr2 (Bmatrix1.0*Amatrix0.2)+(Bmatrix1.1*Amatrix1.2)+(Bmatrix1.2*Amatrix2.2)+(Bmatrix1.3*Amatrix3.2)
+   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+   expr3 (Bmatrix1.0*Amatrix0.3)+(Bmatrix1.1*Amatrix1.3)+(Bmatrix1.2*Amatrix2.3)+(Bmatrix1.3*Amatrix3.3)
+   name MergeExpression2
+   xpos 21
+   ypos 273
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
+   expr0 (Bmatrix2.0*Amatrix0.0)+(Bmatrix2.1*Amatrix1.0)+(Bmatrix2.2*Amatrix2.0)+(Bmatrix2.3*Amatrix3.0)
+   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
+   expr1 (Bmatrix2.0*Amatrix0.1)+(Bmatrix2.1*Amatrix1.1)+(Bmatrix2.2*Amatrix2.1)+(Bmatrix2.3*Amatrix3.1)
+   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+   expr2 (Bmatrix2.0*Amatrix0.2)+(Bmatrix2.1*Amatrix1.2)+(Bmatrix2.2*Amatrix2.2)+(Bmatrix2.3*Amatrix3.2)
+   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+   expr3 (Bmatrix2.0*Amatrix0.3)+(Bmatrix2.1*Amatrix1.3)+(Bmatrix2.2*Amatrix2.3)+(Bmatrix2.3*Amatrix3.3)
+   name MergeExpression3
+   xpos 21
+   ypos 297
+  }
+  MergeExpression {
+   inputs 2
+   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
+   expr0 (Bmatrix3.0*Amatrix0.0)+(Bmatrix3.1*Amatrix1.0)+(Bmatrix3.2*Amatrix2.0)+(Bmatrix3.3*Amatrix3.0)
+   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
+   expr1 (Bmatrix3.0*Amatrix0.1)+(Bmatrix3.1*Amatrix1.1)+(Bmatrix3.2*Amatrix2.1)+(Bmatrix3.3*Amatrix3.1)
+   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
+   expr2 (Bmatrix3.0*Amatrix0.2)+(Bmatrix3.1*Amatrix1.2)+(Bmatrix3.2*Amatrix2.2)+(Bmatrix3.3*Amatrix3.2)
+   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
+   expr3 (Bmatrix3.0*Amatrix0.3)+(Bmatrix3.1*Amatrix1.3)+(Bmatrix3.2*Amatrix2.3)+(Bmatrix3.3*Amatrix3.3)
+   name MergeExpression4
+   xpos 21
+   ypos 321
+  }
+  Output {
+   name Output1
+   xpos 21
+   ypos 421
+  }
+ end_group
+ Switch {
+  inputs 6
+  which {{parent.rot_order}}
+  name Switch1
+  xpos 430
+  ypos 996
+ }
+ Output {
+  name Output1
+  xpos 430
+  ypos 1153
+ }
+ Axis2 {
+  inputs 0
+  name Axis1
+  xpos 97
+  ypos 187
+  addUserKnob {20 wpp}
+  addUserKnob {18 pointPosition l "Point Position"}
+  pointPosition {0 0 0}
+  addUserKnob {6 pointPosition_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 pointPosition_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 pointPosition_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 pointPosition_panelDropped_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+ }
+end_group
+Group {
+ inputs 0
+ name TranslateMatrix4_
+ xpos -2222
+ ypos 1054
+ addUserKnob {20 Matrix4x4_Translate}
+}
+ Input {
+  inputs 0
+  name vector
+  xpos 491
+  ypos 155
+  number 1
+ }
+ Dot {
+  name Dot1
+  xpos 525
+  ypos 252
+ }
+ Input {
+  inputs 0
+  name matrix
+  xpos 344
+  ypos 161
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
+  expr0 matrix0.3+Ar
+  channel1 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
+  expr1 matrix1.3+Ag
+  channel2 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
+  expr2 matrix2.3+Ab
+  channel3 none
+  name MergeExpression1
+  xpos 344
+  ypos 249
+ }
+ Output {
+  name Output1
+  xpos 344
+  ypos 349
+ }
+end_group
+Group {
+ inputs 0
+ name ScaleMatrix4_
+ xpos -2221
+ ypos 1007
+ addUserKnob {20 Matrix4x4_Scale}
+}
+ Input {
+  inputs 0
+  name vector
+  xpos 491
+  ypos 162
+  number 1
+ }
+ Dot {
+  name Dot1
+  xpos 525
+  ypos 252
+ }
+ Input {
+  inputs 0
+  name matrix
+  xpos 344
+  ypos 161
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
+  expr0 matrix0.0*Ar
+  channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
+  expr1 matrix1.1*Ag
+  channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
+  expr2 matrix2.2*Ab
+  channel3 none
+  name MergeExpression1
+  xpos 344
+  ypos 249
+ }
+ Output {
+  name Output1
+  xpos 344
+  ypos 349
+ }
+end_group
+Group {
+ inputs 0
+ name RotateVector3_1
  help "Rotate a Vector3 in 3 dimensions."
  knobChanged "node = nuke.thisNode()\nknob = nuke.thisKnob()\nif knob.name() == \"mode\":\n    if knob.value() == \"Knob\":\n        node\['rotate'].setEnabled(True)\n        node\['rot_order'].setEnabled(True)\n    else:\n        node\['rotate'].setEnabled(False)\n        node\['rot_order'].setEnabled(False)\n"
- xpos -2212
- ypos 377
+ xpos -1966
+ ypos 451
  addUserKnob {20 main_tab l TemplateMatrix4}
  addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
  addUserKnob {4 mode l "Rotate by" t "Either control the rotation by the knob present on this node, or via the Matrix input." M {Knob "Pixel Matrix" ""}}
@@ -1526,7 +4479,7 @@ Group {
   xpos 34
   ypos 72
  }
-set N7e29300 [stack 0]
+set N11eafd80 [stack 0]
  Shuffle {
   name vector_layer
   xpos 366
@@ -1545,7 +4498,7 @@ set N7e29300 [stack 0]
   xpos 400
   ypos 156
  }
-set N79729c0 [stack 0]
+set N11ee86d0 [stack 0]
  Dot {
   name Dot6
   tile_color 0x9e3c6300
@@ -1573,7 +4526,7 @@ set N79729c0 [stack 0]
    xpos 34
    ypos 108
   }
-set N7dca680 [stack 0]
+set N11efe840 [stack 0]
   Shuffle {
    name vector_layer
    xpos 140
@@ -1601,7 +4554,7 @@ set N7dca680 [stack 0]
    xpos 174
    ypos 364
   }
-push $N7dca680
+push $N11efe840
   ShuffleCopy {
    inputs 2
    in2 none
@@ -1625,14 +4578,14 @@ push $N7dca680
   xpos 220
   ypos 529
  }
-push $N79729c0
+push $N11ee86d0
  Dot {
   name Dot4
   tile_color 0x9e3c6300
   xpos 556
   ypos 156
  }
-set N7b496f0 [stack 0]
+set N11f47050 [stack 0]
  Input {
   inputs 0
   name matrix
@@ -1646,7 +4599,7 @@ set N7b496f0 [stack 0]
   xpos 614
   ypos 152
  }
-push $N7b496f0
+push $N11f47050
  Dot {
   name Dot5
   tile_color 0x9e3c6300
@@ -1658,7 +4611,7 @@ push $N7b496f0
   name MultiplyVector3Matrix3_2
   help "Multiply (transform) a Vector3 by a Matrix3. This is the equivalent of applying Rotation/Scale/Skew from a Matrix to the vector.\nA Matrix4 can be used, but the last row/column will be ignored."
   xpos 614
-  ypos 194
+  ypos 195
   addUserKnob {20 main_tab l "Mutiply Vector3 Matrix3"}
   addUserKnob {26 ""}
   addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
@@ -1683,7 +4636,7 @@ push $N7b496f0
    xpos 402
    ypos 109
   }
-set N7d55680 [stack 0]
+set N11f6d8b0 [stack 0]
   Shuffle {
    in matrix1
    name Shuffle2
@@ -1691,7 +4644,7 @@ set N7d55680 [stack 0]
    xpos 402
    ypos 147
   }
-set N7e2c6c0 [stack 0]
+set N11f7dc40 [stack 0]
   Shuffle {
    in matrix2
    name Shuffle3
@@ -1699,7 +4652,7 @@ set N7e2c6c0 [stack 0]
    xpos 402
    ypos 185
   }
-set N7b5f4d0 [stack 0]
+set N11f8df80 [stack 0]
   Shuffle {
    in matrix3
    name Shuffle4
@@ -1707,21 +4660,21 @@ set N7b5f4d0 [stack 0]
    xpos 402
    ypos 223
   }
-push $N7b5f4d0
+push $N11f8df80
   Dot {
    name Dot7
    tile_color 0x9e3c6300
    xpos 343
    ypos 195
   }
-push $N7e2c6c0
+push $N11f7dc40
   Dot {
    name Dot6
    tile_color 0x9e3c6300
    xpos 343
    ypos 157
   }
-push $N7d55680
+push $N11f6d8b0
   Dot {
    name Dot5
    tile_color 0x9e3c6300
@@ -1764,7 +4717,7 @@ push $N7d55680
   xpos 648
   ypos 364
  }
-push $N79729c0
+push $N11ee86d0
  ColorMatrix {
   matrix {
       {{Axis1.world_matrix.0} {Axis1.world_matrix.1} {Axis1.world_matrix.2}}
@@ -1803,7 +4756,7 @@ push $N79729c0
    xpos 34
    ypos 108
   }
-set N9141390 [stack 0]
+set N120003c0 [stack 0]
   Shuffle {
    name vector_layer
    xpos 140
@@ -1822,8 +4775,8 @@ set N9141390 [stack 0]
    xpos 174
    ypos 156
   }
-set N915d540 [stack 0]
-push $N915d540
+set N1201d510 [stack 0]
+push $N1201d510
   Dot {
    name Dot4
    tile_color 0x9e3c6300
@@ -1859,7 +4812,7 @@ push $N915d540
    xpos 174
    ypos 364
   }
-push $N9141390
+push $N120003c0
   ShuffleCopy {
    inputs 2
    in2 none
@@ -1891,7 +4844,7 @@ push $N9141390
   xpos 400
   ypos 601
  }
-push $N7e29300
+push $N11eafd80
  ShuffleCopy {
   inputs 2
   in2 none
@@ -1919,122 +4872,399 @@ push $N7e29300
 end_group
 Group {
  inputs 0
- name RotateVector2_
- help "Rotate a 2D vector on the same 2D plane."
- knobChanged "\nnode = nuke.thisNode()\nknob = nuke.thisKnob()\nif knob.name() == \"mode\":\n    if knob.value() == \"Knob (Degrees 0-360)\":\n        node\['angle'].setEnabled(True)\n    else:\n        node\['angle'].setEnabled(False)\n"
- xpos -2212
- ypos 322
- addUserKnob {20 main_tab l "Rotate Vector2"}
+ name RotateVector3_
+ help "Rotate a Vector3 in 3 dimensions."
+ knobChanged "node = nuke.thisNode()\nknob = nuke.thisKnob()\nif knob.name() == \"mode\":\n    if knob.value() == \"Knob\":\n        node\['rotate'].setEnabled(True)\n        node\['rot_order'].setEnabled(True)\n    else:\n        node\['rotate'].setEnabled(False)\n        node\['rot_order'].setEnabled(False)\n"
+ xpos -2213
+ ypos 379
+ addUserKnob {20 main_tab l TemplateMatrix4}
  addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
- addUserKnob {4 mode l "Rotate by" t "Pick whether to rotate the input vector by:\nKnob (Degrees 0-360)\nAngle Map (Degrees 0-360)\nAngle Map (Degrees 0-1)\nAngle Map (Radians)\n\nAn Angle map is a single channel image (expected in red channel) that represents an angle value at each pixel." M {"Knob (Degrees 0-360)" "Angle Map (Degrees 0-360)" "Angle Map (Degrees 0-1)" "Angle Map (Radians)" "" "" ""}}
+ addUserKnob {4 mode l "Rotate by" t "Either control the rotation by the knob present on this node, or via the Matrix input." M {Knob "Pixel Matrix" ""}}
  addUserKnob {26 ""}
- addUserKnob {7 angle l Angle R -180 180}
+ addUserKnob {4 rot_order l "rotation order" t "Specifies the order to apply euler angles to the rotation." M {XYZ XZY YXZ YZX ZXY ZYX "" "" ""}}
+ rot_order ZXY
+ addUserKnob {13 rotate}
  addUserKnob {26 ""}
  addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
 }
  Input {
   inputs 0
-  name angleMap
-  xpos 479
-  ypos 5
-  number 1
- }
- Multiply {
-  channels rgb
-  value 360
-  name Multiply_360
-  xpos 479
-  ypos 90
-  disable {{parent.mode!=2}}
- }
- Expression {
-  expr0 radians(r)
-  name Degrees_to_Radians
-  xpos 479
-  ypos 132
-  disable {{parent.mode==3}}
- }
- Dot {
-  name Dot5
-  tile_color 0xcccccc00
-  xpos 513
-  ypos 249
- }
- Input {
-  inputs 0
   name vectorB
   xpos 0
+  ypos -30
  }
  Dot {
   name Dot1
   tile_color 0xcccccc00
   xpos 34
-  ypos 108
+  ypos 72
  }
-set N92148a0 [stack 0]
+set N101e6610 [stack 0]
  Shuffle {
   name vector_layer
-  xpos 140
-  ypos 104
+  xpos 366
+  ypos 68
  }
  Remove {
   operation keep
   channels rgba
   name Remove1
-  xpos 140
-  ypos 130
+  xpos 366
+  ypos 94
  }
  Dot {
   name Dot3
   tile_color 0x9e3c6300
-  xpos 174
-  ypos 181
+  xpos 400
+  ypos 156
  }
-set N9230910 [stack 0]
+set N102036e0 [stack 0]
+ Dot {
+  name Dot6
+  tile_color 0x9e3c6300
+  xpos 220
+  ypos 156
+ }
+ Group {
+  name Magnitude_Vector3_
+  help "Calculate the magnitude (scalar) of an input Vector3."
+  xpos 186
+  ypos 231
+  addUserKnob {20 main_tab l "Magnitude Vector3"}
+  addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
+  addUserKnob {26 ""}
+  addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+ }
+  Input {
+   inputs 0
+   name vectorB
+   xpos 0
+  }
+  Dot {
+   name Dot1
+   tile_color 0xcccccc00
+   xpos 34
+   ypos 108
+  }
+set N10219760 [stack 0]
+  Shuffle {
+   name vector_layer
+   xpos 140
+   ypos 104
+  }
+  Remove {
+   operation keep
+   channels rgba
+   name Remove1
+   xpos 140
+   ypos 130
+  }
+  Expression {
+   channel0 rgba
+   expr0 sqrt((r*r)+(g*g)+(b*b))
+   channel2 {-rgba.red -rgba.green -rgba.blue none}
+   channel3 {none none none -rgba.alpha}
+   name Mag3
+   xpos 140
+   ypos 227
+  }
+  Dot {
+   name Dot2
+   tile_color 0xcccccc00
+   xpos 174
+   ypos 364
+  }
+push $N10219760
+  ShuffleCopy {
+   inputs 2
+   in2 none
+   red red
+   green green
+   blue blue
+   out {{{parent.UV_Channel.in}}}
+   name ShuffleCopy1
+   xpos 0
+   ypos 360
+  }
+  Output {
+   name Output1
+   xpos 0
+   ypos 506
+  }
+ end_group
+ Dot {
+  name Dot7
+  tile_color 0xcccccc00
+  xpos 220
+  ypos 529
+ }
+push $N102036e0
  Dot {
   name Dot4
   tile_color 0x9e3c6300
-  xpos 372
-  ypos 181
+  xpos 556
+  ypos 156
  }
- MergeExpression {
+set N10261db0 [stack 0]
+ Input {
+  inputs 0
+  name matrix
+  xpos 614
+  ypos -30
+  number 1
+ }
+ CopyBBox {
   inputs 2
-  expr0 "Br * cos(Ar) - Bg * sin(Ar)"
-  expr1 "Br * sin(Ar) + Bg * cos(Ar)"
-  name MergeExpression1
-  xpos 338
-  ypos 245
+  name CopyBBox1
+  xpos 614
+  ypos 152
  }
+push $N10261db0
  Dot {
-  name Dot6
-  tile_color 0x4b5ec600
-  xpos 372
-  ypos 311
+  name Dot5
+  tile_color 0x9e3c6300
+  xpos 556
+  ypos 198
  }
-push $N9230910
- Expression {
-  temp_name0 angleRad
-  temp_expr0 radians(parent.angle)
-  expr0 "r * cos(angleRad) - g * sin(angleRad)"
-  expr1 "r * sin(angleRad) + g * cos(angleRad)"
-  name Rotation
-  xpos 140
-  ypos 240
- }
- Switch {
+ Group {
   inputs 2
-  which {{parent.mode!=0}}
-  name Switch1
-  xpos 140
-  ypos 307
+  name MultiplyVector3Matrix3_2
+  help "Multiply (transform) a Vector3 by a Matrix3. This is the equivalent of applying Rotation/Scale/Skew from a Matrix to the vector.\nA Matrix4 can be used, but the last row/column will be ignored."
+  xpos 614
+  ypos 195
+  addUserKnob {20 main_tab l "Mutiply Vector3 Matrix3"}
+  addUserKnob {26 ""}
+  addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
  }
+  Input {
+   inputs 0
+   name InputMatrix3
+   xpos 402
+   ypos 7
+   number 1
+  }
+  Dot {
+   name Dot3
+   tile_color 0xcccccc00
+   xpos 436
+   ypos 62
+  }
+  Shuffle {
+   in matrix0
+   name Shuffle1
+   label "in \[value in]-->out \[value out]"
+   xpos 402
+   ypos 109
+  }
+set N102888a0 [stack 0]
+  Shuffle {
+   in matrix1
+   name Shuffle2
+   label "in \[value in]-->out \[value out]"
+   xpos 402
+   ypos 147
+  }
+set N10298df0 [stack 0]
+  Shuffle {
+   in matrix2
+   name Shuffle3
+   label "in \[value in]-->out \[value out]"
+   xpos 402
+   ypos 185
+  }
+set N102a9320 [stack 0]
+  Shuffle {
+   in matrix3
+   name Shuffle4
+   label "in \[value in]-->out \[value out]"
+   xpos 402
+   ypos 223
+  }
+push $N102a9320
+  Dot {
+   name Dot7
+   tile_color 0x9e3c6300
+   xpos 343
+   ypos 195
+  }
+push $N10298df0
+  Dot {
+   name Dot6
+   tile_color 0x9e3c6300
+   xpos 343
+   ypos 157
+  }
+push $N102888a0
+  Dot {
+   name Dot5
+   tile_color 0x9e3c6300
+   xpos 343
+   ypos 119
+  }
+  Input {
+   inputs 0
+   name InputVector3
+   xpos 219
+   ypos 8
+  }
+  Dot {
+   name Dot4
+   tile_color 0xcccccc00
+   xpos 253
+   ypos 115
+  }
+  BlinkScript {
+   inputs 4
+   recompileCount 12
+   ProgramGroup 1
+   KernelDescription "2 \"TransformVector3byMatrix3\" iterate pixelWise 156e29276da8287b847626148a2a784d9969b7d1a3ad81e28187d00a7aaafaca 5 \"src\" Read Point \"matrix0\" Read Point \"matrix1\" Read Point \"matrix2\" Read Point \"dst\" Write Point 0 0 0"
+   kernelSource "kernel TransformVector3byMatrix3 : ImageComputationKernel<ePixelWise>\n\{\n  Image<eRead, eAccessPoint, eEdgeClamped> src; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix0; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix1; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix2; // the input image\n  Image<eWrite> dst; // the output image\n\n  void process() \{\n    // Read the input image\n    SampleType(src) input = src();\n    SampleType(matrix0) m0 = matrix0();\n    SampleType(matrix1) m1 = matrix1();\n    SampleType(matrix2) m2 = matrix2();\n\n    // Create the matrix object (matrix3 in this case)\n    float3x3  matrix;\n    matrix\[0]\[0] = m0.x;\n    matrix\[0]\[1] = m0.y;\n    matrix\[0]\[2] = m0.z;\n    matrix\[1]\[0] = m1.x;\n    matrix\[1]\[1] = m1.y;\n    matrix\[1]\[2] = m1.z;\n    matrix\[2]\[0] = m2.x;\n    matrix\[2]\[1] = m2.y;\n    matrix\[2]\[2] = m2.z;\n\n    // Multiply the Matrix and the Vector\n    float3 vector(input.x, input.y, input.z);\n    vector = matrix*vector;\n\n    // Write the result to the output image\n    dst() = float4(vector.x, vector.y, vector.z, input.w);\n  \}\n\};\n"
+   rebuild ""
+   rebuild_finalise ""
+   name BlinkScript1
+   xpos 219
+   ypos 223
+  }
+  Output {
+   name Output1
+   xpos 219
+   ypos 323
+  }
+ end_group
  Dot {
   name Dot2
   tile_color 0xcccccc00
-  xpos 174
+  xpos 648
   ypos 364
  }
-push $N92148a0
+push $N102036e0
+ ColorMatrix {
+  matrix {
+      {{Axis1.world_matrix.0} {Axis1.world_matrix.1} {Axis1.world_matrix.2}}
+      {{Axis1.world_matrix.4} {Axis1.world_matrix.5} {Axis1.world_matrix.6}}
+      {{Axis1.world_matrix.8} {Axis1.world_matrix.9} {Axis1.world_matrix.10}}
+    }
+  name ColorMatrix1
+  xpos 366
+  ypos 269
+ }
+ Switch {
+  inputs 2
+  which {{parent.mode}}
+  name Switch1
+  xpos 366
+  ypos 360
+ }
+ Group {
+  name NormalizeVector3_
+  help "Normalize the magnitude of a Vector3 (to be of magnitude 1)"
+  xpos 366
+  ypos 450
+  addUserKnob {20 main_tab l "Normalize Vector3"}
+  addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
+  addUserKnob {26 ""}
+  addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+ }
+  Input {
+   inputs 0
+   name vectorB
+   xpos 0
+  }
+  Dot {
+   name Dot1
+   tile_color 0xcccccc00
+   xpos 34
+   ypos 108
+  }
+set N1031bd80 [stack 0]
+  Shuffle {
+   name vector_layer
+   xpos 140
+   ypos 104
+  }
+  Remove {
+   operation keep
+   channels rgba
+   name Remove1
+   xpos 140
+   ypos 130
+  }
+  Dot {
+   name Dot3
+   tile_color 0x9e3c6300
+   xpos 174
+   ypos 156
+  }
+set N10338e50 [stack 0]
+push $N10338e50
+  Dot {
+   name Dot4
+   tile_color 0x9e3c6300
+   xpos 377
+   ypos 156
+  }
+  Expression {
+   channel0 rgba
+   expr0 sqrt((r*r)+(g*g)+(b*b))
+   channel2 {-rgba.red -rgba.green -rgba.blue none}
+   channel3 {none none none -rgba.alpha}
+   name Mag3
+   xpos 343
+   ypos 209
+  }
+  Dot {
+   name Dot5
+   tile_color 0xcccccc00
+   xpos 377
+   ypos 271
+  }
+  Merge2 {
+   inputs 2
+   operation divide
+   bbox B
+   name Merge1
+   xpos 140
+   ypos 267
+  }
+  Dot {
+   name Dot2
+   tile_color 0x4b5ec600
+   xpos 174
+   ypos 364
+  }
+push $N1031bd80
+  ShuffleCopy {
+   inputs 2
+   in2 none
+   red red
+   green green
+   blue blue
+   out {{{parent.UV_Channel.in}}}
+   name ShuffleCopy1
+   xpos 0
+   ypos 360
+  }
+  Output {
+   name Output1
+   xpos 0
+   ypos 506
+  }
+ end_group
+ Merge2 {
+  inputs 2
+  operation multiply
+  bbox B
+  name Merge1
+  xpos 366
+  ypos 525
+ }
+ Dot {
+  name Dot8
+  tile_color 0x4b5ec600
+  xpos 400
+  ypos 601
+ }
+push $N101e6610
  ShuffleCopy {
   inputs 2
   in2 none
@@ -2044,78 +5274,427 @@ push $N92148a0
   out {{{parent.UV_Channel.in}}}
   name ShuffleCopy1
   xpos 0
-  ypos 360
+  ypos 597
  }
  Output {
   name Output1
   xpos 0
-  ypos 506
+  ypos 671
+ }
+ Axis2 {
+  inputs 0
+  rot_order {{parent.rot_order x1 2}}
+  rotate {{parent.rotate.x} {parent.rotate.y} {parent.rotate.z}}
+  name Axis1
+  xpos 471
+  ypos 252
  }
 end_group
 Group {
  inputs 0
- name TransformVector2_
- help "Transforms an image assuming it is a motion vector in RGBA.\nCompared to a regular transform, this will edit the pixel colors to compensate for vector direction and magnitude.\n\nWarning: This node breaks concatenation."
- tile_color 0xc692ccff
- xpos -2213
- ypos 439
- addUserKnob {20 transform l "Transform Vector2"}
- addUserKnob {41 matrix T Transform1.matrix}
- addUserKnob {41 translate T Transform1.translate}
- addUserKnob {41 rotate T Transform1.rotate}
- addUserKnob {41 scale T Transform1.scale}
- addUserKnob {41 skewX l "skew X" T Transform1.skewX}
- addUserKnob {41 skewY l "skew Y" T Transform1.skewY}
- addUserKnob {41 skew_order l "skew order" T Transform1.skew_order}
- addUserKnob {41 center T Transform1.center}
- addUserKnob {41 invert_matrix l invert T Transform1.invert_matrix}
- addUserKnob {41 filter T Transform1.filter}
- addUserKnob {41 clamp -STARTLINE T Transform1.clamp}
- addUserKnob {41 black_outside l "black outside" -STARTLINE T Transform1.black_outside}
- addUserKnob {41 motionblur T Transform1.motionblur}
- addUserKnob {41 shutter T Transform1.shutter}
- addUserKnob {41 shutteroffset l "shutter offset" T Transform1.shutteroffset}
- addUserKnob {41 shuttercustomoffset l "" -STARTLINE T Transform1.shuttercustomoffset}
- addUserKnob {26 ""}
- addUserKnob {26 copyright l "" t www.erwanleroy.com +STARTLINE T "v1.1 - Part of VectorTools by Erwan Leroy - 2016"}
+ name InvertMatrix4_1
+ help "Invert a pixel based Matrix4 (Defined as layers matrix0, matrix1, matrix2 and matrix3)"
+ knobChanged "node = nuke.thisNode()\nknob = nuke.thisKnob()\n\nif knob.name() == \"inputChange\":\n    with node:\n        format_knob = nuke.toNode('Constant1')\['format']\n    if node.input(0):\n        format_knob.setEnabled(False)\n    else:\n        format_knob.setEnabled(True)\n"
+ xpos -2212
+ ypos 645
+ addUserKnob {20 Matrix4 l InvertMatrix4}
+ addUserKnob {26 Description l "" +STARTLINE T "Invert matrix channels"}
+ addUserKnob {26 divider_copyright l "" +STARTLINE}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
 }
  Input {
   inputs 0
-  name vectorB
-  xpos -482
-  ypos -5
+  name Inputmatrix
+  xpos 276
+  ypos 144
  }
-set Ne3ffbc0 [stack 0]
- Transform {
-  center {1024 778}
-  shutteroffset centred
-  name Transform1
-  xpos -482
-  ypos 92
+ Dot {
+  name Dot3
+  tile_color 0xcccccc00
+  xpos 310
+  ypos 296
  }
-set Ne1e72e0 [stack 0]
- ColorMatrix {
-  matrix {
-      {{"\[python nuke.toNode('Transform1')\\\['matrix'\\].value()\\\[0\\]]"} {"\[python nuke.toNode('Transform1')\\\['matrix'\\].value()\\\[4\\]]"} 0}
-      {{"\[python nuke.toNode('Transform1')\\\['matrix'\\].value()\\\[1\\]]"} {"\[python nuke.toNode('Transform1')\\\['matrix'\\].value()\\\[5\\]]"} 0}
-      {0 0 0}
-    }
-  name ColorMatrix1
-  xpos -482
-  ypos 172
+set N105cacc0 [stack 0]
+ Dot {
+  name Dot20
+  tile_color 0xcccccc00
+  selected true
+  xpos 456
+  ypos 296
+ }
+ Shuffle {
+  in matrix0
+  name Shuffle1
+  label "in \[value in]-->out \[value out]"
+  selected true
+  xpos 422
+  ypos 343
+ }
+set N105d3e80 [stack 0]
+ Shuffle {
+  in matrix1
+  name Shuffle2
+  label "in \[value in]-->out \[value out]"
+  selected true
+  xpos 422
+  ypos 383
+ }
+set N105e41f0 [stack 0]
+ Shuffle {
+  in matrix2
+  name Shuffle3
+  label "in \[value in]-->out \[value out]"
+  selected true
+  xpos 422
+  ypos 419
+ }
+set N105f4510 [stack 0]
+ Shuffle {
+  in matrix3
+  name Shuffle4
+  label "in \[value in]-->out \[value out]"
+  selected true
+  xpos 422
+  ypos 456
+ }
+ Dot {
+  name Dot8
+  tile_color 0x9e3c6300
+  xpos 707
+  ypos 465
+ }
+set N10614b90 [stack 0]
+ Dot {
+  name Dot11
+  tile_color 0x9e3c6300
+  xpos 831
+  ypos 465
+ }
+set N10619360 [stack 0]
+ Dot {
+  name Dot12
+  tile_color 0x9e3c6300
+  xpos 965
+  ypos 465
+ }
+set N1061dca0 [stack 0]
+ Dot {
+  name Dot16
+  tile_color 0x9e3c6300
+  xpos 1113
+  ypos 465
+ }
+push $N105f4510
+ Dot {
+  name Dot7
+  tile_color 0x9e3c6300
+  xpos 666
+  ypos 428
+ }
+set N10626d20 [stack 0]
+ Dot {
+  name Dot10
+  tile_color 0x9e3c6300
+  xpos 821
+  ypos 428
+ }
+set N1062b5a0 [stack 0]
+ Dot {
+  name Dot13
+  tile_color 0x9e3c6300
+  xpos 949
+  ypos 428
+ }
+set N1062fe20 [stack 0]
+ Dot {
+  name Dot17
+  tile_color 0x9e3c6300
+  xpos 1100
+  ypos 428
+ }
+push $N105e41f0
+ Dot {
+  name Dot6
+  tile_color 0x9e3c6300
+  xpos 637
+  ypos 392
+ }
+set N10638f20 [stack 0]
+ Dot {
+  name Dot9
+  tile_color 0x9e3c6300
+  xpos 808
+  ypos 392
+ }
+set N1063d7a0 [stack 0]
+ Dot {
+  name Dot14
+  tile_color 0x9e3c6300
+  xpos 927
+  ypos 392
+ }
+set N10642160 [stack 0]
+ Dot {
+  name Dot18
+  tile_color 0x9e3c6300
+  xpos 1084
+  ypos 392
+ }
+push $N105d3e80
+ Dot {
+  name Dot5
+  tile_color 0x9e3c6300
+  xpos 592
+  ypos 352
+ }
+set N1064b1a0 [stack 0]
+ Dot {
+  name Dot4
+  tile_color 0x9e3c6300
+  xpos 776
+  ypos 352
+ }
+set N1064f980 [stack 0]
+ Dot {
+  name Dot15
+  tile_color 0x9e3c6300
+  xpos 905
+  ypos 352
+ }
+set N10654430 [stack 0]
+ Dot {
+  name Dot19
+  tile_color 0x9e3c6300
+  xpos 1068
+  ypos 352
+ }
+ BlinkScript {
+  inputs 4
+  recompileCount 14
+  ProgramGroup 1
+  KernelDescription "2 \"InvertMatrix4\" iterate pixelWise 24c0b57d50e6fc4d3de1ddabffc2c534b1cd8bf00f432f09e06cab24b7b23d50 5 \"matrix0\" Read Point \"matrix1\" Read Point \"matrix2\" Read Point \"matrix3\" Read Point \"dst\" Write Point 0 0 0"
+  kernelSource "kernel InvertMatrix4 : ImageComputationKernel<ePixelWise>\n\{\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix0; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix1; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix2; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix3; // the input image\n  Image<eWrite> dst; // the output image\n\n  void process() \{\n    // Read the input image\n    SampleType(matrix0) m0 = matrix0();\n    SampleType(matrix1) m1 = matrix1();\n    SampleType(matrix2) m2 = matrix2();\n    SampleType(matrix3) m3 = matrix3();\n\n    // Create the matrix object (matrix3 in this case)\n    float4x4  matrix;\n    matrix\[0]\[0] = m0.x;\n    matrix\[0]\[1] = m0.y;\n    matrix\[0]\[2] = m0.z;\n    matrix\[0]\[3] = m0.w;\n    matrix\[1]\[0] = m1.x;\n    matrix\[1]\[1] = m1.y;\n    matrix\[1]\[2] = m1.z;\n    matrix\[1]\[3] = m1.w;\n    matrix\[2]\[0] = m2.x;\n    matrix\[2]\[1] = m2.y;\n    matrix\[2]\[2] = m2.z;\n    matrix\[2]\[3] = m2.w;\n    matrix\[3]\[0] = m3.x;\n    matrix\[3]\[1] = m3.y;\n    matrix\[3]\[2] = m3.z;\n    matrix\[3]\[3] = m3.w;\n\n    // Inverse the matrix\n    matrix = matrix.invert();\n\n    // Write the result to the output image\n    dst() = float4(matrix\[3]\[0], matrix\[3]\[1], matrix\[3]\[2], matrix\[3]\[3]);\n  \}\n\};\n"
+  rebuild ""
+  rebuild_finalise ""
+  name BlinkScript4
+  xpos 1034
+  ypos 579
+ }
+ Dot {
+  name Dot2
+  tile_color 0xcccccc00
+  xpos 1068
+  ypos 866
+ }
+push $N1061dca0
+push $N1062fe20
+push $N10642160
+push $N10654430
+ BlinkScript {
+  inputs 4
+  recompileCount 14
+  ProgramGroup 1
+  KernelDescription "2 \"InvertMatrix4\" iterate pixelWise 18ad5fdc0440a3820ed7a9939c0cfbbf7fad1323aed420c38542f1e186aa8c86 5 \"matrix0\" Read Point \"matrix1\" Read Point \"matrix2\" Read Point \"matrix3\" Read Point \"dst\" Write Point 0 0 0"
+  kernelSource "kernel InvertMatrix4 : ImageComputationKernel<ePixelWise>\n\{\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix0; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix1; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix2; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix3; // the input image\n  Image<eWrite> dst; // the output image\n\n  void process() \{\n    // Read the input image\n    SampleType(matrix0) m0 = matrix0();\n    SampleType(matrix1) m1 = matrix1();\n    SampleType(matrix2) m2 = matrix2();\n    SampleType(matrix3) m3 = matrix3();\n\n    // Create the matrix object (matrix3 in this case)\n    float4x4  matrix;\n    matrix\[0]\[0] = m0.x;\n    matrix\[0]\[1] = m0.y;\n    matrix\[0]\[2] = m0.z;\n    matrix\[0]\[3] = m0.w;\n    matrix\[1]\[0] = m1.x;\n    matrix\[1]\[1] = m1.y;\n    matrix\[1]\[2] = m1.z;\n    matrix\[1]\[3] = m1.w;\n    matrix\[2]\[0] = m2.x;\n    matrix\[2]\[1] = m2.y;\n    matrix\[2]\[2] = m2.z;\n    matrix\[2]\[3] = m2.w;\n    matrix\[3]\[0] = m3.x;\n    matrix\[3]\[1] = m3.y;\n    matrix\[3]\[2] = m3.z;\n    matrix\[3]\[3] = m3.w;\n\n    // Inverse the matrix\n    matrix = matrix.invert();\n\n    // Write the result to the output image\n    dst() = float4(matrix\[2]\[0], matrix\[2]\[1], matrix\[2]\[2], matrix\[2]\[3]);\n  \}\n\};\n"
+  rebuild ""
+  rebuild_finalise ""
+  name BlinkScript3
+  xpos 871
+  ypos 585
+ }
+ Dot {
+  name Dot1
+  tile_color 0xcccccc00
+  xpos 905
+  ypos 776
+ }
+push $N10619360
+push $N1062b5a0
+push $N1063d7a0
+push $N1064f980
+ BlinkScript {
+  inputs 4
+  recompileCount 14
+  ProgramGroup 1
+  KernelDescription "2 \"InvertMatrix4\" iterate pixelWise e9f630cc235826bda0787271e2c79d1689a8462ddf208e8692d52b548c8b67e3 5 \"matrix0\" Read Point \"matrix1\" Read Point \"matrix2\" Read Point \"matrix3\" Read Point \"dst\" Write Point 0 0 0"
+  kernelSource "kernel InvertMatrix4 : ImageComputationKernel<ePixelWise>\n\{\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix0; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix1; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix2; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix3; // the input image\n  Image<eWrite> dst; // the output image\n\n  void process() \{\n    // Read the input image\n    SampleType(matrix0) m0 = matrix0();\n    SampleType(matrix1) m1 = matrix1();\n    SampleType(matrix2) m2 = matrix2();\n    SampleType(matrix3) m3 = matrix3();\n\n    // Create the matrix object (matrix3 in this case)\n    float4x4  matrix;\n    matrix\[0]\[0] = m0.x;\n    matrix\[0]\[1] = m0.y;\n    matrix\[0]\[2] = m0.z;\n    matrix\[0]\[3] = m0.w;\n    matrix\[1]\[0] = m1.x;\n    matrix\[1]\[1] = m1.y;\n    matrix\[1]\[2] = m1.z;\n    matrix\[1]\[3] = m1.w;\n    matrix\[2]\[0] = m2.x;\n    matrix\[2]\[1] = m2.y;\n    matrix\[2]\[2] = m2.z;\n    matrix\[2]\[3] = m2.w;\n    matrix\[3]\[0] = m3.x;\n    matrix\[3]\[1] = m3.y;\n    matrix\[3]\[2] = m3.z;\n    matrix\[3]\[3] = m3.w;\n\n    // Inverse the matrix\n    matrix = matrix.invert();\n\n    // Write the result to the output image\n    dst() = float4(matrix\[1]\[0], matrix\[1]\[1], matrix\[1]\[2], matrix\[1]\[3]);\n  \}\n\};\n"
+  rebuild ""
+  rebuild_finalise ""
+  name BlinkScript2
+  xpos 742
+  ypos 581
+ }
+ Dot {
+  name Dot37
+  tile_color 0xcccccc00
+  xpos 776
+  ypos 692
+ }
+push $N10614b90
+push $N10626d20
+push $N10638f20
+push $N1064b1a0
+ BlinkScript {
+  inputs 4
+  recompileCount 15
+  ProgramGroup 1
+  KernelDescription "2 \"InvertMatrix4\" iterate pixelWise 13aa95e9193320b60408dcef52f07d536b6bc8570746ebe3a513989e032825a7 5 \"matrix0\" Read Point \"matrix1\" Read Point \"matrix2\" Read Point \"matrix3\" Read Point \"dst\" Write Point 0 0 0"
+  kernelSource "kernel InvertMatrix4 : ImageComputationKernel<ePixelWise>\n\{\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix0; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix1; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix2; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix3; // the input image\n  Image<eWrite> dst; // the output image\n\n  void process() \{\n    // Read the input image\n    SampleType(matrix0) m0 = matrix0();\n    SampleType(matrix1) m1 = matrix1();\n    SampleType(matrix2) m2 = matrix2();\n    SampleType(matrix3) m3 = matrix3();\n\n    // Create the matrix object (matrix3 in this case)\n    float4x4  matrix;\n    matrix\[0]\[0] = m0.x;\n    matrix\[0]\[1] = m0.y;\n    matrix\[0]\[2] = m0.z;\n    matrix\[0]\[3] = m0.w;\n    matrix\[1]\[0] = m1.x;\n    matrix\[1]\[1] = m1.y;\n    matrix\[1]\[2] = m1.z;\n    matrix\[1]\[3] = m1.w;\n    matrix\[2]\[0] = m2.x;\n    matrix\[2]\[1] = m2.y;\n    matrix\[2]\[2] = m2.z;\n    matrix\[2]\[3] = m2.w;\n    matrix\[3]\[0] = m3.x;\n    matrix\[3]\[1] = m3.y;\n    matrix\[3]\[2] = m3.z;\n    matrix\[3]\[3] = m3.w;\n\n    // Inverse the matrix\n    matrix = matrix.invert();\n\n    // Write the result to the output image\n    dst() = float4(matrix\[0]\[0], matrix\[0]\[1], matrix\[0]\[2], matrix\[0]\[3]);\n  \}\n\};\n"
+  rebuild ""
+  rebuild_finalise ""
+  name BlinkScript1
+  xpos 558
+  ypos 588
+ }
+push $N105cacc0
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 matrix0.0
+  from1 rgba.green
+  to1 matrix0.1
+  from2 rgba.blue
+  to2 matrix0.2
+  from3 rgba.alpha
+  to3 matrix0.3
+  bbox B
+  name Copy2
+  xpos 276
+  ypos 569
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 matrix1.0
+  from1 rgba.green
+  to1 matrix1.1
+  from2 rgba.blue
+  to2 matrix1.2
+  from3 rgba.alpha
+  to3 matrix1.3
+  bbox B
+  name Copy1
+  xpos 276
+  ypos 664
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 matrix2.0
+  from1 rgba.green
+  to1 matrix2.1
+  from2 rgba.blue
+  to2 matrix2.2
+  from3 rgba.alpha
+  to3 matrix2.3
+  bbox B
+  name Copy4
+  xpos 276
+  ypos 748
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 matrix3.0
+  from1 rgba.green
+  to1 matrix3.1
+  from2 rgba.blue
+  to2 matrix3.2
+  from3 rgba.alpha
+  to3 matrix3.3
+  bbox B
+  name Copy5
+  xpos 276
+  ypos 838
  }
  Output {
   name Output1
-  xpos -482
-  ypos 232
+  xpos 276
+  ypos 1059
  }
-push $Ne1e72e0
-push $Ne3ffbc0
- Viewer {
-  inputs 2
-  frame_range 1001-1296
-  name Viewer1
-  xpos -191
-  ypos 172
+end_group
+Group {
+ inputs 0
+ name TransformVector3
+ xpos -1674
+ ypos 587
+}
+ Input {
+  inputs 0
+  name vector3
+  xpos 0
+  ypos -2
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 300
+ }
+ Input {
+  inputs 0
+  name axis
+  xpos -200
+  ypos 2
+  number 2
+ }
+ Input {
+  inputs 0
+  name matrix
+  xpos 358
+  ypos 7
+  number 1
+ }
+ Dot {
+  name Dot20
+  tile_color 0xcccccc00
+  xpos 392
+  ypos 60
+ }
+ Shuffle {
+  in matrix0
+  name Shuffle1
+  label "in \[value in]-->out \[value out]"
+  xpos 358
+  ypos 107
+ }
+set N11c330c0 [stack 0]
+ Shuffle {
+  in matrix1
+  name Shuffle2
+  label "in \[value in]-->out \[value out]"
+  xpos 358
+  ypos 147
+ }
+set N11c2cbd0 [stack 0]
+ Shuffle {
+  in matrix2
+  name Shuffle3
+  label "in \[value in]-->out \[value out]"
+  xpos 358
+  ypos 183
+ }
+set N12508d80 [stack 0]
+ Shuffle {
+  in matrix3
+  name Shuffle4
+  label "in \[value in]-->out \[value out]"
+  xpos 358
+  ypos 220
+ }
+push $N12508d80
+push $N11c2cbd0
+push $N11c330c0
+ BlinkScript {
+  inputs 4
+  recompileCount 16
+  ProgramGroup 1
+  KernelDescription "2 \"InvertMatrix4\" iterate pixelWise e3e241fd19d1ae2258c644f0b6d73d5e5b71001ed481de3d8f9c0fdcdb7983ea 6 \"src\" Read Point \"matrix0\" Read Point \"matrix1\" Read Point \"matrix2\" Read Point \"matrix3\" Read Point \"dst\" Write Point 0 0 0"
+  kernelSource "kernel InvertMatrix4 : ImageComputationKernel<ePixelWise>\n\{\n  Image<eRead, eAccessPoint, eEdgeClamped> src; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix0; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix1; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix2; // the input image\n  Image<eRead, eAccessPoint, eEdgeClamped> matrix3; // the input image\n  Image<eWrite> dst; // the output image\n\n  void process() \{\n    // Read the input image\n    SampleType(src) vector = src();\n    SampleType(matrix0) m0 = matrix0();\n    SampleType(matrix1) m1 = matrix1();\n    SampleType(matrix2) m2 = matrix2();\n    SampleType(matrix3) m3 = matrix3();\n\n    // Create the matrix object (matrix3 in this case)\n    float4x4  matrix;\n    matrix\[0]\[0] = m0.x;\n    matrix\[0]\[1] = m0.y;\n    matrix\[0]\[2] = m0.z;\n    matrix\[0]\[3] = m0.w;\n    matrix\[1]\[0] = m1.x;\n    matrix\[1]\[1] = m1.y;\n    matrix\[1]\[2] = m1.z;\n    matrix\[1]\[3] = m1.w;\n    matrix\[2]\[0] = m2.x;\n    matrix\[2]\[1] = m2.y;\n    matrix\[2]\[2] = m2.z;\n    matrix\[2]\[3] = m2.w;\n    matrix\[3]\[0] = m3.x;\n    matrix\[3]\[1] = m3.y;\n    matrix\[3]\[2] = m3.z;\n    matrix\[3]\[3] = m3.w;\n\n    // Transform\n    float a = vector.w;\n    vector.w = 1.0f;\n    vector  = matrix*vector;\n    vector  = vector/vector.w;\n\n    // Write the result to the output image\n    dst() = float4(vector.x, vector.y, vector.z, a);\n  \}\n\};\n"
+  rebuild ""
+  rebuild_finalise ""
+  name BlinkScript1
+  selected true
+  xpos 181
+  ypos 162
  }
 end_group

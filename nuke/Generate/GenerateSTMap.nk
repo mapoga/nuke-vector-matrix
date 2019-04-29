@@ -1,11 +1,6 @@
-set cut_paste_input [stack 0]
-version 10.0 v4
 Group {
  inputs 0
  name GenerateSTMap
- selected true
- xpos -504
- ypos -117
  postage_stamp true
  addUserKnob {20 STMap l "ST Map"}
  addUserKnob {41 format l Format T Reformat1.format}

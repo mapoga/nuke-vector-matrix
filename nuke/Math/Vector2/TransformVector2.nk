@@ -1,13 +1,7 @@
-set cut_paste_input [stack 0]
-version 10.0 v4
-push $cut_paste_input
 Group {
  name TransformVector2_
  help "Transforms an image assuming it is a motion vector in RGBA.\nCompared to a regular transform, this will edit the pixel colors to compensate for vector direction and magnitude.\n\nWarning: This node breaks concatenation."
  tile_color 0xc692ccff
- selected true
- xpos -2213
- ypos 439
  addUserKnob {20 transform l "Transform Vector2"}
  addUserKnob {41 matrix T Transform1.matrix}
  addUserKnob {41 translate T Transform1.translate}

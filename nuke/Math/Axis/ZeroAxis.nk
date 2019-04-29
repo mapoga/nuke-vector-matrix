@@ -1,13 +1,7 @@
-set cut_paste_input [stack 0]
-version 10.0 v4
-push $cut_paste_input
 Group {
  name ZeroAxis
- help "Inverts an input Axis"
+ help "Inverts an input Axis at a specified frame"
  tile_color 0x9c0000ff
- selected true
- xpos 583
- ypos 23
  addUserKnob {20 InvertAxis l "Invert Axis"}
  addUserKnob {41 ref_frame l "Reference Frame" T NoOp1.ref_frame}
  addUserKnob {26 "" +STARTLINE}

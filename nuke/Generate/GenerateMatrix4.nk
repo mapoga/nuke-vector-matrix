@@ -1,18 +1,12 @@
-set cut_paste_input [stack 0]
-version 10.0 v4
-push $cut_paste_input
 Group {
  name GenerateMatrix4_
  help "Generate a Matrix4 based on a Matrix Knob. (Defaults to an identity matrix)"
  knobChanged "node = nuke.thisNode()\nknob = nuke.thisKnob()\n\nif knob.name() == \"inputChange\":\n    with node:\n        format_knob = nuke.toNode('Constant1')\['format']\n    if node.input(0):\n        format_knob.setEnabled(False)\n    else:\n        format_knob.setEnabled(True)\n"
- selected true
- xpos -2106
- ypos 289
  addUserKnob {20 Matrix4}
  addUserKnob {41 format T Constant1.format}
- addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 ""}
  addUserKnob {41 matrix T MatrixKnob.matrix}
- addUserKnob {20 endGroup_1 l endGroup n -1}
+
  addUserKnob {26 divider_copyright l "" +STARTLINE}
  addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
 }
@@ -71,7 +65,6 @@ Group {
   inputs 0
   channels rgb
   name Constant1
-  selected true
   xpos 889
   ypos 13
  }
@@ -108,52 +101,52 @@ add_layer {matrix3 matrix3.0 matrix3.1 matrix3.2 matrix3.3}
  }
  Expression {
   channel0 {matrix0.0 -matrix0.1 -matrix0.2 -matrix0.3}
-  expr0 parent.world_matrix.0
+  expr0 MatrixKnob.world_matrix.0
   channel1 {-matrix0.0 matrix0.1 -matrix0.2 -matrix0.3}
-  expr1 parent.world_matrix.1
+  expr1 MatrixKnob.world_matrix.1
   channel2 {-matrix0.0 -matrix0.1 matrix0.2 -matrix0.3}
-  expr2 parent.world_matrix.2
+  expr2 MatrixKnob.world_matrix.2
   channel3 {-matrix0.0 -matrix0.1 -matrix0.2 matrix0.3}
-  expr3 parent.world_matrix.3
+  expr3 MatrixKnob.world_matrix.3
   name Expression1
   xpos 509
   ypos 568
  }
  Expression {
   channel0 {matrix1.0 -matrix1.1 -matrix1.2 -matrix1.3}
-  expr0 parent.world_matrix.4
+  expr0 MatrixKnob.world_matrix.4
   channel1 {-matrix1.0 matrix1.1 -matrix1.2 -matrix1.3}
-  expr1 parent.world_matrix.5
+  expr1 MatrixKnob.world_matrix.5
   channel2 {-matrix1.0 -matrix1.1 matrix1.2 -matrix1.3}
-  expr2 parent.world_matrix.6
+  expr2 MatrixKnob.world_matrix.6
   channel3 {-matrix1.0 -matrix1.1 -matrix1.2 matrix1.3}
-  expr3 parent.world_matrix.7
+  expr3 MatrixKnob.world_matrix.7
   name Expression2
   xpos 509
   ypos 594
  }
  Expression {
   channel0 {matrix2.0 -matrix2.1 -matrix2.2 -matrix2.3}
-  expr0 parent.world_matrix.8
+  expr0 MatrixKnob.world_matrix.8
   channel1 {-matrix2.0 matrix2.1 -matrix2.2 -matrix2.3}
-  expr1 parent.world_matrix.9
+  expr1 MatrixKnob.world_matrix.9
   channel2 {-matrix2.0 -matrix2.1 matrix2.2 -matrix2.3}
-  expr2 parent.world_matrix.10
+  expr2 MatrixKnob.world_matrix.10
   channel3 {-matrix2.0 -matrix2.1 -matrix2.2 matrix2.3}
-  expr3 parent.world_matrix.11
+  expr3 MatrixKnob.world_matrix.11
   name Expression3
   xpos 509
   ypos 620
  }
  Expression {
   channel0 {matrix3.0 -matrix3.1 -matrix3.2 -matrix3.3}
-  expr0 parent.world_matrix.12
+  expr0 MatrixKnob.world_matrix.12
   channel1 {-matrix3.0 matrix3.1 -matrix3.2 -matrix3.3}
-  expr1 parent.world_matrix.13
+  expr1 MatrixKnob.world_matrix.13
   channel2 {-matrix3.0 -matrix3.1 matrix3.2 -matrix3.3}
-  expr2 parent.world_matrix.14
+  expr2 MatrixKnob.world_matrix.14
   channel3 {-matrix3.0 -matrix3.1 -matrix3.2 matrix3.3}
-  expr3 parent.world_matrix.15
+  expr3 MatrixKnob.world_matrix.15
   name Expression4
   xpos 509
   ypos 646

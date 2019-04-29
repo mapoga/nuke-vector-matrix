@@ -1,12 +1,6 @@
-set cut_paste_input [stack 0]
-version 10.0 v4
-push $cut_paste_input
 Group {
  name NormalizeVector3_
  help "Normalize the magnitude of a Vector3 (to be of magnitude 1)"
- selected true
- xpos -2134
- ypos 37
  addUserKnob {20 main_tab l "Normalize Vector3"}
  addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
  addUserKnob {26 ""}
