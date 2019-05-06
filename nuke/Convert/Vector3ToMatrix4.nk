@@ -21,7 +21,7 @@ Group {
  }
  Input {
   inputs 0
-  name Input1
+  name vector3
   xpos -335
   ypos -120
  }
