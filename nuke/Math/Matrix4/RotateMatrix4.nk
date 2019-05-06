@@ -2279,7 +2279,6 @@ push $N3a446bf0
  }
  Axis2 {
   inputs 0
-  rot_order ZYX
   name Axis1
   label "Only used for rotation order knob"
   xpos 98
