@@ -1,8 +1,6 @@
 Group {
  name ScaleMatrix4_
  help "Scale a matrix4 using a control channel (rgb from vector input) for which each channel is considered as a scalar for x, y and z"
- xpos -2221
- ypos 1007
  addUserKnob {20 ScaleMatrix4}
  addUserKnob {26 Description l "" +STARTLINE T "Scale a matrix4 using a control channel (rgb) for which each channel is considered as a scalar for x, y and z"}
  addUserKnob {26 divider_copyright l "" +STARTLINE}

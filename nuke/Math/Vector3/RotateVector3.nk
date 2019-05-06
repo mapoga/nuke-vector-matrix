@@ -2,7 +2,7 @@ Group {
  name RotateVector3_
  help "Rotate a Vector3 in 3 dimensions."
  knobChanged "node = nuke.thisNode()\nknob = nuke.thisKnob()\nif knob.name() == \"mode\":\n    if knob.value() == \"Knob\":\n        node\['rotate'].setEnabled(True)\n        node\['rot_order'].setEnabled(True)\n    else:\n        node\['rotate'].setEnabled(False)\n        node\['rot_order'].setEnabled(False)\n"
- addUserKnob {20 main_tab l TemplateMatrix4}
+ addUserKnob {20 main_tab l RotateVector3}
  addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
  addUserKnob {4 mode l "Rotate by" t "Either control the rotation by the knob present on this node, or via the Matrix input." M {Knob "Pixel Matrix" ""}}
  addUserKnob {26 ""}

@@ -1,5 +1,5 @@
 Group {
- name Product_Matrix4_
+ name ProductMatrix4_
  help "Multiply two pixel based Matrix4 (Defined as layers matrix0, matrix1, matrix2 and matrix3)"
  addUserKnob {20 Matrix4Product l "Product Matrix4"}
  addUserKnob {26 Description l "" +STARTLINE T "Multiply two matrix4: matrixA*matrixB"}
