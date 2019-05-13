@@ -1,12 +1,6 @@
-set cut_paste_input [stack 0]
-version 10.0 v4
-push $cut_paste_input
 Group {
  name MultiplyVector3Matrix3_
  help "Multiply (transform) a Vector3 by a Matrix3. This is the equivalent of applying Rotation/Scale/Skew from a Matrix to the vector.\nA Matrix4 can be used, but the last row/column will be ignored."
- selected true
- xpos -2217
- ypos -119
  addUserKnob {20 main_tab l "Mutiply Vector3 Matrix3"}
  addUserKnob {26 ""}
  addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}

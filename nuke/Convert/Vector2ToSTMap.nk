@@ -1,9 +1,5 @@
-set cut_paste_input [stack 0]
-version 10.0 v4
-push $cut_paste_input
 Group {
  name Vector2ToSTMap
- selected true
  xpos -588
  ypos -1
  addUserKnob {20 VtoU l "Vector2 to STMap"}

@@ -1,13 +1,7 @@
-set cut_paste_input [stack 0]
-version 10.0 v4
-push $cut_paste_input
 Group {
  name RotateVector2_
  help "Rotate a 2D vector on the same 2D plane."
  knobChanged "\nnode = nuke.thisNode()\nknob = nuke.thisKnob()\nif knob.name() == \"mode\":\n    if knob.value() == \"Knob (Degrees 0-360)\":\n        node\['angle'].setEnabled(True)\n    else:\n        node\['angle'].setEnabled(False)\n"
- selected true
- xpos -2211
- ypos 326
  addUserKnob {20 main_tab l "Rotate Vector2"}
  addUserKnob {41 in l "Vector B Layer" t "Layer containing the vector information for input B" T vector_layer.in}
  addUserKnob {4 mode l "Rotate by" t "Pick whether to rotate the input vector by:\nKnob (Degrees 0-360)\nAngle Map (Degrees 0-360)\nAngle Map (Degrees 0-1)\nAngle Map (Radians)\n\nAn Angle map is a single channel image (expected in red channel) that represents an angle value at each pixel." M {"Knob (Degrees 0-360)" "Angle Map (Degrees 0-360)" "Angle Map (Degrees 0-1)" "Angle Map (Radians)" "" "" ""}}
