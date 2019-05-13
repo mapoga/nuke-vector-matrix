@@ -1,0 +1,43 @@
+Group {
+ name InvertAxis
+ help "Inverts an input Axis"
+ tile_color 0x9c0000ff
+ xpos 444
+ ypos 29
+ addUserKnob {20 InvertAxis l "Invert Axis"}
+ addUserKnob {41 world_matrix l "" -STARTLINE T Out_Axis.world_matrix}
+ addUserKnob {26 divider_copyright l "" +STARTLINE}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+ NoOp {
+  inputs 0
+  name NoOp1
+  xpos 806
+  ypos 609
+  addUserKnob {20 User}
+  addUserKnob {7 calculator}
+  calculator {{"\[python -execlocal in_matrix\\ =\\ nuke.math.Matrix4()\\nin_value\\ =\\ nuke.toNode('In_Axis')\\\['world_matrix'\\].getValue()\\nfor\\ index,\\ value\\ in\\ enumerate(in_value):\\n\\ \\ \\ \\ in_matrix\\\[index\\]\\ =\\ value\\nout_matrix\\ =\\ in_matrix.inverse()\\nnuke.toNode(\\\"Out_Axis\\\")\\\['matrix'\\].setValue(out_matrix)\\nret\\ =\\ 1]"}}
+ }
+ Axis2 {
+  useMatrix true
+  name Out_Axis
+  xpos 816
+  ypos 670
+ }
+ Output {
+  name Output1
+  xpos 806
+  ypos 780
+ }
+ Input {
+  inputs 0
+  name Inputaxis
+  xpos 806
+  ypos 434
+ }
+ Axis2 {
+  name In_Axis
+  xpos 816
+  ypos 499
+ }
+end_group

@@ -1,0 +1,43 @@
+Group {
+ name ZeroAxis
+ help "Inverts an input Axis at a specified frame"
+ tile_color 0x9c0000ff
+ addUserKnob {20 InvertAxis l "Invert Axis"}
+ addUserKnob {41 ref_frame l "Reference Frame" T NoOp1.ref_frame}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 world_matrix l "" -STARTLINE T Out_Axis.world_matrix}
+ addUserKnob {26 divider_copyright l "" +STARTLINE}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+ Input {
+  inputs 0
+  name Inputaxis
+  xpos 806
+  ypos 434
+ }
+ Axis2 {
+  name In_Axis
+  xpos 816
+  ypos 499
+ }
+ NoOp {
+  name NoOp1
+  xpos 806
+  ypos 609
+  addUserKnob {20 User}
+  addUserKnob {3 ref_frame l "Reference Frame" t "The incoming axis will be zero'd out at this frame."}
+  addUserKnob {7 calculator}
+  calculator {{"\[python -execlocal in_matrix\\ =\\ nuke.math.Matrix4()\\nframe\\ =\\ nuke.thisNode()\\\[\\\"ref_frame\\\"\\].value()\\nin_value\\ =\\ nuke.toNode(\\\"In_Axis\\\")\\\[\\\"world_matrix\\\"\\].getValueAt(frame)\\nfor\\ index,\\ value\\ in\\ enumerate(in_value):\\n\\ \\ \\ \\ in_matrix\\\[index\\]\\ =\\ value\\nout_matrix\\ =\\ in_matrix.inverse()\\nnuke.toNode(\\\"Out_Axis\\\")\\\[\\\"matrix\\\"\\].setValue(out_matrix)\\nret\\ =\\ 1]"}}
+ }
+ Axis2 {
+  useMatrix true
+  name Out_Axis
+  xpos 816
+  ypos 670
+ }
+ Output {
+  name Output1
+  xpos 806
+  ypos 780
+ }
+end_group
