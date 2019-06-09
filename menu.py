@@ -5,9 +5,12 @@ All subdirectories are added to the nuke.pluginPath() (see init.py)
 """
 
 import os
-import scandir
 import re
 import nuke
+try:
+    import scandir as walk_module
+except ImportError:
+    import os as walk_module
 
 CWD = os.path.dirname((os.path.abspath(__file__)))
 
@@ -28,7 +31,7 @@ def populate_menu_rcsv(tool_path, menu):
     if not tool_path.endswith(os.sep):
         tool_path += os.sep
 
-    for root, dirs, files in scandir.walk(tool_path):
+    for root, dirs, files in walk_module.walk(tool_path):
         category = root.replace(tool_path, '')
         # build the dynamic menus, ignoring empty dirs:
         for dir_name in natural_sort(dirs):
