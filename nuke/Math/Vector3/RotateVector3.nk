@@ -106,7 +106,7 @@ push $N10219760
    red red
    green green
    blue blue
-   out {{{parent.UV_Channel.in}}}
+   out {{{parent.vector_layer.in}}}
    name ShuffleCopy1
    xpos 0
    ypos 360
@@ -368,7 +368,7 @@ push $N1031bd80
    red red
    green green
    blue blue
-   out {{{parent.UV_Channel.in}}}
+   out {{{parent.vector_layer.in}}}
    name ShuffleCopy1
    xpos 0
    ypos 360
@@ -400,7 +400,7 @@ push $N101e6610
   red red
   green green
   blue blue
-  out {{{parent.UV_Channel.in}}}
+  out {{{parent.vector_layer.in}}}
   name ShuffleCopy1
   xpos 0
   ypos 597

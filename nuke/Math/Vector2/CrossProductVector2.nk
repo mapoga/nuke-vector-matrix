@@ -77,7 +77,7 @@ push $N71872f0
   red red
   green green
   blue blue
-  out {{{parent.UV_Channel.in}}}
+  out {{{parent.vector_layer.in}}}
   name ShuffleCopy1
   xpos 0
   ypos 360

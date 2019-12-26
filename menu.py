@@ -7,10 +7,11 @@ All subdirectories are added to the nuke.pluginPath() (see init.py)
 import os
 import re
 import nuke
+import matrix_utils
 try:
     import scandir as walk_module
 except ImportError:
-    import os as walk_module
+    walk_module = os
 
 CWD = os.path.dirname((os.path.abspath(__file__)))
 
@@ -27,17 +28,17 @@ def find_icon(name):
     return str(img) if img else None
 
 
-def populate_menu_rcsv(tool_path, menu):
+def populate_menu_recursive(tool_path, menu):
     if not tool_path.endswith(os.sep):
         tool_path += os.sep
 
-    for root, dirs, files in walk_module.walk(tool_path):
-        category = root.replace(tool_path, '')
+    for root, dirs, files in os.walk(tool_path):
+        category = root.replace(tool_path, '').replace('\\', '/')
         # build the dynamic menus, ignoring empty dirs:
         for dir_name in natural_sort(dirs):
             if os.listdir(os.path.join(root, dir_name)):
                 img = find_icon(dir_name)
-                menu.addMenu(os.path.join(category, dir_name), icon=img)
+                menu.addMenu(category + '/' + dir_name, icon=img)
 
         # if we have both dirs and files, add a separator
         if files and dirs:
@@ -45,18 +46,18 @@ def populate_menu_rcsv(tool_path, menu):
             submenu.addSeparator()
 
         # Populate the menus
-        for f in natural_sort(files):
-            f_name, ext = os.path.splitext(f)
-            if ext.lower() in ['.gizmo', '.so', '.nk']:
-                img = find_icon(f_name)
+        for nuke_file in natural_sort(files):
+            file_name, extension = os.path.splitext(nuke_file)
+            if extension.lower() in ['.gizmo', '.so', '.nk']:
+                img = find_icon(file_name)
                 # Adding the menu command
-                if ext.lower() in ['.nk']:
-                    menu.addCommand(os.path.join(category, f_name),
-                                    'nuke.nodePaste( "{}" )'.format(os.path.join(root, f)),
+                if extension.lower() in ['.nk']:
+                    menu.addCommand(category + '/' + file_name,
+                                    'nuke.nodePaste( "{}" )'.format(os.path.join(root, nuke_file).replace('\\', '/')),
                                     icon=img)
-                if ext.lower() in ['.gizmo', '.so']:
-                    menu.addCommand(os.path.join(category, f_name),
-                                    'nuke.createNode( "{}" )'.format(f_name),
+                if extension.lower() in ['.gizmo', '.so']:
+                    menu.addCommand(category + '/' + file_name,
+                                    'nuke.createNode( "{}" )'.format(file_name),
                                     icon=img)
     return menu
 
@@ -82,10 +83,17 @@ def natural_sort(values, case_sensitive=False):
     return sorted(values, key=natural_sort_key)
 
 
-# Running code
+# Nodes Menu
 toolbar = nuke.toolbar("Nodes")
 toolbar_math_tools = toolbar.addMenu("Math Tools", icon=find_icon("Math"))
 
 nuke_dir = os.path.join(CWD, 'nuke')
 
-populate_menu_rcsv(nuke_dir, toolbar_math_tools)
+populate_menu_recursive(nuke_dir, toolbar_math_tools)
+
+# Utilities Menu
+# By default in the main Nuke menu, change the next line to have the menu somewhere else.
+target_menu = nuke.menu('Nuke')
+transform_menu = target_menu.addMenu("Transform Utils", icon="transforms.png")
+transform_menu.addCommand("Convert Node Matrix", matrix_utils.run_convert_matrix)
+transform_menu.addCommand("Merge Transforms", matrix_utils.run_merge_transforms)
