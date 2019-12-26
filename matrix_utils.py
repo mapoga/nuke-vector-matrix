@@ -530,6 +530,12 @@ def reconcile_card(card, camera, frame):
     if cam_matrix is None:
         raise RuntimeError("matrix_util.get_camera_projection() returned None for camera.")
     matrix_2d = cam_matrix * card_matrix
+    # 2D Matrices don't like to have 3D attributes, let's kill them
+    matrix_2d[10] = 1
+    for index in [2, 6, 8, 9, 11, 14]:
+        matrix_2d[index] = 0
+    # TODO: When the card is behind the camera, right now the 2D matrix doesn't know.
+    #       Hard to handle as the card center could be behind while some corners are in front.
     return matrix_2d
 
 
