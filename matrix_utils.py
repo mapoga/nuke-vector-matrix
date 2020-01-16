@@ -534,6 +534,10 @@ def reconcile_card(card, camera, frame):
     matrix_2d[10] = 1
     for index in [2, 6, 8, 9, 11, 14]:
         matrix_2d[index] = 0
+    try:
+        matrix_2d = matrix_2d / matrix_2d[15]
+    except ZeroDivisionError:
+        pass
     # TODO: When the card is behind the camera, right now the 2D matrix doesn't know.
     #       Hard to handle as the card center could be behind while some corners are in front.
     return matrix_2d
