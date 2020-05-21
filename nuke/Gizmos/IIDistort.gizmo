@@ -1,25 +1,24 @@
-#! C:/Program Files/Nuke11.3v4/nuke-11.3.4.dll -nx
 version 11.3 v4
 Gizmo {
  inputs 2
  name IIDistort
  help "Recursuve IDistort Node, the vectors advect themselves multiple times, creating more different patterns than a regular IDistort node."
- addUserKnob {20 User}
+ addUserKnob {20 iidistort_tab l IIDistort}
  addUserKnob {7 scale l Scale t "Amount of vector advection" R 0 10}
  scale 1
  addUserKnob {3 samples l "Number of Samples" t "Add samples for a smoother curve, reduce for faster results."}
  samples 10
- addUserKnob {26 "" +STARTLINE}
- addUserKnob {4 output l Output t "Choose the desired output.\n\nDistorted image: Image from img input distorted by vectors.\nModified Vectors: Vectors modified so that feeding these in a regular IDistort would produce the same result as this node's distorted image.\nSTMap: An STMap whch would match this node's distortion." M {"Distorted image" "Modified Vectors" STMap}}
- output "Distorted image"
  addUserKnob {26 ""}
- addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+ addUserKnob {4 output l Output t "Choose the desired output.\n\nDistorted image: Image from img input distorted by vectors.\nModified Vectors: Vectors modified so that feeding these in a regular IDistort would produce the same result as this node's distorted image.\nSTMap: An STMap whch would match this node's distortion." M {"Distorted image" "Modified Vectors" STMap}}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" +STARTLINE T "v1.1 -  Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
 }
  Input {
   inputs 0
   name vectors
   xpos 223
-  ypos -65
+  ypos -56
+  number 1
  }
  BlinkScript {
   ProgramGroup 1
@@ -30,11 +29,10 @@ Gizmo {
   FlowKernel_strength {{parent.scale}}
   rebuild_finalise ""
   name BlinkScript1
-  selected true
   xpos 223
   ypos 59
  }
-set N57f51000 [stack 0]
+set Ne07e6000 [stack 0]
  Group {
   name Vector2ToSTMap
   xpos 362
@@ -50,7 +48,7 @@ set N57f51000 [stack 0]
    xpos -303
    ypos 114
   }
-set N5ba8f000 [stack 0]
+set Ne07e7c00 [stack 0]
   Shuffle {
    name UV_Channel
    xpos -163
@@ -65,7 +63,7 @@ set N5ba8f000 [stack 0]
    xpos -163
    ypos 228
   }
-push $N5ba8f000
+push $Ne07e7c00
   ShuffleCopy {
    inputs 2
    in2 none
@@ -83,7 +81,7 @@ push $N5ba8f000
    ypos 299
   }
  end_group
-set N652d0000 [stack 0]
+set Nf9650480 [stack 0]
  Viewer {
   frame 10
   frame_range 1-100
@@ -91,20 +89,19 @@ set N652d0000 [stack 0]
   xpos 222
   ypos 209
  }
-push $N652d0000
-push $N57f51000
+push $Nf9650480
+push $Ne07e6000
  Dot {
   name Dot1
   xpos 257
   ypos 171
  }
-push $N652d0000
+push $Nf9650480
  Input {
   inputs 0
   name img
   xpos 515
-  ypos -76
-  number 1
+  ypos -53
  }
  STMap {
   inputs 2
