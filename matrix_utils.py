@@ -213,8 +213,11 @@ class MatrixConversionPanel(nukescripts.PythonPanel):
         self.reference.setEnabled(False)
         self.reference.setValue(nuke.frame())
 
+        self.invert = nuke.Boolean_Knob('invert', 'Invert Matrix')
+
         # ADD KNOBS
-        for k in (self.first, self.last, self.node, self.camera, self.destination, self.force_ref, self.reference):
+        for k in (self.first, self.last, self.node, self.camera, self.destination, self.force_ref, self.reference,
+                  self.invert):
             self.addKnob(k)
 
     def knobChanged(self, knob):
@@ -674,7 +677,8 @@ def merge_transforms(transform_list, first, last, cornerpin=False, force_matrix=
         del task
 
 
-def do_matrix_conversion(old_node, new_class, first, last, raw_matrix=False, camera=None, force_reference=None):
+def do_matrix_conversion(old_node, new_class, first, last,
+                         raw_matrix=False, camera=None, reference_frame=None, invert=False):
     """ Create a new node with a matrix from another node, for multiple frames.
 
     :param nuke.Node old_node: Original Node to extract the matrix from
@@ -683,7 +687,8 @@ def do_matrix_conversion(old_node, new_class, first, last, raw_matrix=False, cam
     :param int last: Last Frame
     :param bool raw_matrix: For nodes that can have either corners or a matrix set, set True to force matrix
     :param nuke.Node camera: Camera Node, only used when converting a card
-    :param int force_reference: Set frame as reference frame (makes the resulting matrix identity at that frame)
+    :param int reference_frame: Set frame as reference frame (makes the resulting matrix identity at that frame)
+    :param bool invert: Invert the matrix
     """
     # Set Threading
     task = nuke.ProgressTask("Converting Matrix")
@@ -704,8 +709,8 @@ def do_matrix_conversion(old_node, new_class, first, last, raw_matrix=False, cam
     new_node.setXpos(old_node.xpos() + 100)
     new_node.setYpos(old_node.ypos())
     label_string = "Baked Matrix from {}".format(old_node.name())
-    if force_reference is not None:
-        label_string += "\nReference Frame {}".format(force_reference)
+    if reference_frame is not None:
+        label_string += "\nReference Frame {}".format(reference_frame)
     new_node['label'].setValue(label_string)
     if new_class == "Transform":
         new_node['center'].setValue(image_format.width() / 2, 0)
@@ -717,11 +722,11 @@ def do_matrix_conversion(old_node, new_class, first, last, raw_matrix=False, cam
 
     task.setMessage("Baking Matrix")
     ref_matrix = None
-    if force_reference is not None:
+    if reference_frame is not None:
         if old_node.Class() in ['Transform', 'CornerPin2D', 'Tracker4']:
-            ref_matrix = get_matrix_at_frame(old_node, force_reference)
+            ref_matrix = get_matrix_at_frame(old_node, reference_frame)
         elif old_node.Class() in ['Card2', 'Card3D']:
-            ref_matrix = reconcile_card(old_node, camera, force_reference)
+            ref_matrix = reconcile_card(old_node, camera, reference_frame)
 
     # We need the calculation for each frame
     try:
@@ -739,8 +744,11 @@ def do_matrix_conversion(old_node, new_class, first, last, raw_matrix=False, cam
             if not current_matrix:
                 raise RuntimeError("Something went wrong, could not calculate matrix")
 
-            if force_reference is not None:
+            if reference_frame is not None:
                 current_matrix = current_matrix * ref_matrix.inverse()
+
+            if invert:
+                current_matrix = current_matrix.inverse()
 
             if raw_matrix:
                 wrapped_node.set_matrix_at(current_matrix, frame, animated)
@@ -812,11 +820,12 @@ def run_convert_matrix():
             new_class = 'SplineWarp3'
         else:
             raise ValueError('Unknown Conversion Target')
-
+        invert = panel.invert.value()
         # Force a reference number
         ref = None
         if panel.force_ref.value():
             ref = panel.reference.value()
 
-        exec_thread = threading.Thread(None, do_matrix_conversion(node, new_class, first, last, matrix, camera, ref))
+        exec_thread = threading.Thread(None, do_matrix_conversion(node, new_class, first, last,
+                                                                  matrix, camera, ref, invert))
         exec_thread.start()
