@@ -19,7 +19,7 @@ def split_axis_order(order='XYZ'):
 def flip_euler(euler, rotation_order):
     axis0, axis1, axis2 = split_axis_order(rotation_order)
 
-    flipped = nuke.math.Vector3(euler)
+    flipped = list(euler)
     flipped[axis0] += pi
     flipped[axis1] *= -1
     flipped[axis1] += pi
@@ -42,19 +42,28 @@ def euler_filter_1d(previous, current):
 
     return current
 
+def distance_squared(vec1, vec2):
+    """ Calculate distance between two vector3 represented as lists of len 3
+
+    :param list vec1: List of 3 floats
+    :param list vec2: List of 3 floats
+    :return: Squared distance between the 2 vectors
+    """
+    return (vec1[0] - vec2[0])**2 + (vec1[1]  -vec2[1])**2 + (vec1[2] - vec2[2])**2
+
 def euler_filter_3d(previous, current, rotation_order="XYZ"):
     """ Attempts to minimize the amount of rotation between the current orientation and the previous one.
 
     Orientations are preserved, but amount of rotation is minimized.
 
-    :param nuke.math.Vector3 previous: Previous XYZ rotation values as a vector
-    :param nuke.math.Vector3 current: Current XYZ rotation values as a vector
+    :param list previous: Previous XYZ rotation values as a vector
+    :param list current: Current XYZ rotation values as a vector
     :param str rotation_order: String representing the rotation order (ex: "XYZ" or "ZXY")
     :return: Modified angles to minimize rotation
-    :rtype: nuke.math.Vector3
+    :rtype: list
     """
     # Start with a pass of Naive 1D filtering
-    filtered = nuke.math.Vector3(current)
+    filtered = list(current)
     for axis in range(3):
         filtered[axis] = euler_filter_1d(previous[axis], filtered[axis])
 
@@ -64,47 +73,114 @@ def euler_filter_3d(previous, current, rotation_order="XYZ"):
         flipped[axis] = euler_filter_1d(previous[axis], flipped[axis])
 
     # Return the vector with the shortest distance from the target value.
-    if filtered.distanceSquared(previous) > flipped.distanceSquared(previous):
+    if distance_squared(filtered, previous) > distance_squared(flipped, previous):
         return flipped
     return filtered
 
 
+def angular_velocity_1d(previous, current, target_velocity):
+    # TODO: Test
+    target = previous + target_velocity
+    while abs(target - current) > pi:
+        if current < target:
+            current += 2 * pi
+        else:
+            current -= 2 * pi
+
+    return current
+
+
 # Nuke functions
-def get_keyframes_for_knob(knob):
-    return sorted(list(set([key.x for curve in knob.animations() for key in curve.keys()])))
+class CurveList:
+    def __init__(self, knob):
+        values = []
+        # TODO: Test behavior on multiview scripts
+        for channel in range(knob.arraySize()):
+            curve = knob.animation(channel)
+            if curve is None:
+                knob.setAnimated(channel)
+                curve = knob.animation(channel)
+            values.append(curve)
+        self.list = values
+
+    def __getitem__(self, idx):
+        return self.list[idx]
+
+    def __len__(self):
+        return len(self.list)
+
+    def value_at(self, frame, convert_to_rad=False):
+        if len(self) == 1:
+            value = self[0].evaluate(frame)
+            if convert_to_rad:
+                value = radians(value)
+            return value
+        else:
+            values = [curve.evaluate(frame) for curve in self.list]
+            if convert_to_rad:
+                values = [radians(val) for val in values]
+            return values
+
+    def set_values_at(self, values, frame, convert_to_deg=False):
+        if len(values) != len(self):
+            raise ValueError("Number of values to set doesn't match number of curves")
+        if convert_to_deg:
+            values = [degrees(value) for value in values]
+        for idx, value in enumerate(values):
+            self.list[idx].setKey(frame, value)
+
+    def get_all_keyframes(self):
+        return sorted(list(set([key.x for curve in self.list for key in curve.keys()])))
 
 
-def filter_rotations(knob, strategy, use_3d=False, rotation_order=None, use_degrees=True):
-    # TODO: Implement different strategies, cleanup implementation
-    keyframes = get_keyframes_for_knob(knob)
+def euler_filter(knob, use_3d=False, rotation_order=None, use_degrees=True):
+    curves = CurveList(knob)
+    keyframes = curves.get_all_keyframes()
     new_keys = []
     previous = None
 
     for frame in keyframes:
-        # We probably want to sample all the values before we start modifying the curves, otherwise we may sample wrong stuff
-        current = knob.valueAt(frame)
+        current = curves.value_at(frame, convert_to_rad=use_degrees)
         if previous is not None:  # This filters out the first keyframe
             if use_3d:
-                # TODO: Need to convert the lists to vectors, or not use vectors at all, this currently fails
-                if use_degrees:
-                    current = [radians(value) for value in current]
-                    previous = [radians(value) for value in previous]
                 current = euler_filter_3d(previous, current, rotation_order)
-                if use_degrees:
-                    current = [degrees(value) for value in current]
             else:
-                if use_degrees:
-                    current = radians(current)
-                    previous = radians(previous)
                 current = euler_filter_1d(previous, current)
-                if use_degrees:
-                    current = degrees(current)
 
         new_keys.append(current)
         previous = current
 
     for frame, value in zip(keyframes, new_keys):
-        knob.setValueAt(value, frame)
+        curves.set_values_at(value, frame, convert_to_deg=use_degrees)
+
+
+def angular_velocity_filter(knob, use_degrees=True):
+    """ Naive angular velocity filter, calculates velocity on a per axis basis """
+    curves = CurveList(knob)
+    keyframes = curves.get_all_keyframes()
+    new_keys = []
+    velocities = []
+    previous = None
+    previous_frame = None
+
+    for frame in keyframes:
+        current = curves.value_at(frame, convert_to_rad=use_degrees)
+        if previous is not None:  # This filters out the first keyframe
+            if velocities:
+                for channel in range(len(current)):
+                    current_value = angular_velocity_1d(previous=previous[channel],
+                                                        current=current[channel],
+                                                        target_velocity=velocities[channel]*(frame-previous_frame))
+                    current[channel] = current_value
+            # Calculate new velocities
+            velocities = [(c-p)/(frame-previous_frame) for p, c in zip(previous, current)]
+
+        new_keys.append(current)
+        previous = current
+        previous_frame = frame
+
+    for frame, value in zip(keyframes, new_keys):
+        curves.set_values_at(value, frame, convert_to_deg=use_degrees)
 
 
 def setup_filter_rotations(knob=None):
@@ -138,7 +214,7 @@ def setup_filter_rotations(knob=None):
         rotation_orders= valid_rotation_orders if use_3d_filter and rotation_order is None else None)
 
     if panel.showModalDialog():
-        filter_rotations(knob, None, use_3d_filter, rotation_order)
+        euler_filter(knob, use_3d_filter, rotation_order)
         # TODO: This is super WIP, will need to hookup the functions and arguments
 
 
@@ -161,7 +237,7 @@ class RotationFilterPanel(nukescripts.PythonPanel):
         self.unit = nuke.Enumeration_Knob('unit', 'Angle Units', ['Degrees', 'Radians'])
         self.addKnob(self.unit)
 
-        # TODO: Option to specify initial Angular Velocity
+        # TODO: Option to specify initial Angular Velocity?
 
 
-nuke.menu('Animation').addCommand('Edit/Test', 'setup_filter_rotations()')
+nuke.menu('Animation').addCommand('Edit/Filter Rotations', 'setup_filter_rotations()')
