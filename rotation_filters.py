@@ -78,11 +78,11 @@ def euler_filter_3d(previous, current, rotation_order="XYZ"):
     return filtered
 
 
-def angular_velocity_1d(previous, current, target_velocity):
-    # TODO: Test
-    target = previous + target_velocity
-    while abs(target - current) > pi:
-        if current < target:
+def match_target_rotation_1d(current, target_rotation):
+    """ Applies 360 degree (2pi radians) rotations to a value to approach a target value,
+    without modifying apparent orientation"""
+    while abs(target_rotation - current) > pi:
+        if current < target_rotation:
             current += 2 * pi
         else:
             current -= 2 * pi
@@ -114,7 +114,7 @@ class CurveList:
             value = self[0].evaluate(frame)
             if convert_to_rad:
                 value = radians(value)
-            return value
+            return [value]
         else:
             values = [curve.evaluate(frame) for curve in self.list]
             if convert_to_rad:
@@ -145,7 +145,7 @@ def euler_filter(knob, use_3d=False, rotation_order=None, use_degrees=True):
             if use_3d:
                 current = euler_filter_3d(previous, current, rotation_order)
             else:
-                current = euler_filter_1d(previous, current)
+                current = [euler_filter_1d(previous[0], current[0])]  # Value is in a list for consistency with 3d
 
         new_keys.append(current)
         previous = current
@@ -168,9 +168,9 @@ def angular_velocity_filter(knob, use_degrees=True):
         if previous is not None:  # This filters out the first keyframe
             if velocities:
                 for channel in range(len(current)):
-                    current_value = angular_velocity_1d(previous=previous[channel],
-                                                        current=current[channel],
-                                                        target_velocity=velocities[channel]*(frame-previous_frame))
+                    current_value = match_target_rotation_1d(
+                        current=current[channel],
+                        target_rotation=previous[channel] + velocities[channel] * (frame - previous_frame))
                     current[channel] = current_value
             # Calculate new velocities
             velocities = [(c-p)/(frame-previous_frame) for p, c in zip(previous, current)]
@@ -186,8 +186,8 @@ def angular_velocity_filter(knob, use_degrees=True):
 def setup_filter_rotations(knob=None):
 
     valid_rotation_orders = ['XYZ', 'XZY', 'YXZ', 'YZX', 'ZXY', 'ZYX']
-    strategies_1d = ["Minimum Rotation (Euler Filter)", "Preserve Angular Velocity"]
-    strategies_3d = ["Minimum Rotation (Euler Filter)"]  # 3d Angular Velocity needs to be figured out (but could try Naive Angular, on a per curve basis)
+    strategies = ["Minimum Rotation (Euler Filter)", "Preserve Angular Velocity"]
+    #strategies_3d = ["Minimum Rotation (Euler Filter)"]  # 3d Angular Velocity needs to be figured out (but could try Naive Angular, on a per curve basis)
 
     if knob is None:
         knob = nuke.thisKnob()
@@ -210,13 +210,18 @@ def setup_filter_rotations(knob=None):
 
     # Build panel
     panel = RotationFilterPanel(
-        strategies_3d if use_3d_filter else strategies_1d,
+        strategies,
         rotation_orders= valid_rotation_orders if use_3d_filter and rotation_order is None else None)
 
     if panel.showModalDialog():
-        euler_filter(knob, use_3d_filter, rotation_order)
-        # TODO: This is super WIP, will need to hookup the functions and arguments
-
+        strategy = strategies.index(panel.strategy.value())
+        use_degrees = panel.unit.value() == 'Degrees'
+        if strategy == 0:
+            if use_3d_filter and rotation_order is None:
+                rotation_order = panel.rotation_order.value()
+            euler_filter(knob, use_3d_filter, rotation_order, use_degrees)
+        elif strategy == 1:
+            angular_velocity_filter(knob, use_degrees)
 
 
 # Panel Classes
@@ -236,8 +241,6 @@ class RotationFilterPanel(nukescripts.PythonPanel):
 
         self.unit = nuke.Enumeration_Knob('unit', 'Angle Units', ['Degrees', 'Radians'])
         self.addKnob(self.unit)
-
-        # TODO: Option to specify initial Angular Velocity?
 
 
 nuke.menu('Animation').addCommand('Edit/Filter Rotations', 'setup_filter_rotations()')
