@@ -1,0 +1,46 @@
+Group {
+name TransformAxis
+help "Transforms AxisB by AxisA (similar to adding axis A above axis B)"
+tile_color 0x9c0000ff
+addUserKnob {20 InvertAxis l "Invert Axis"}
+addUserKnob {26 tip l "" +STARTLINE T "Results are similar to connecting Axis A to Axis B's axis input"}
+addUserKnob {41 world_matrix l "" -STARTLINE T Out_Axis.world_matrix}
+addUserKnob {26 divider_copyright l "" +STARTLINE}
+addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
+}
+Input {
+inputs 0
+name InputaxisB
+xpos 806
+ypos 436
+}
+Axis2 {
+name In_Axis
+xpos 816
+ypos 498
+}
+Input {
+inputs 0
+name InputaxisA
+xpos 954
+ypos 433
+number 1
+}
+Axis2 {
+useMatrix true
+matrix {
+    {{parent.In_Axis.world_matrix} {parent.In_Axis.world_matrix} {parent.In_Axis.world_matrix} {parent.In_Axis.world_matrix}}
+    {{parent.In_Axis.world_matrix} {parent.In_Axis.world_matrix} {parent.In_Axis.world_matrix} {parent.In_Axis.world_matrix}}
+    {{parent.In_Axis.world_matrix} {parent.In_Axis.world_matrix} {parent.In_Axis.world_matrix} {parent.In_Axis.world_matrix}}
+    {{parent.In_Axis.world_matrix} {parent.In_Axis.world_matrix} {parent.In_Axis.world_matrix} {parent.In_Axis.world_matrix}}
+  }
+name Out_Axis
+xpos 964
+ypos 655
+}
+Output {
+name Output1
+xpos 954
+ypos 778
+}
+end_group
