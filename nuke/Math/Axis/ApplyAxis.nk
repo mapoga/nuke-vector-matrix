@@ -4,6 +4,7 @@ help "Transforms AxisB by AxisA (similar to adding axis A above axis B)"
 tile_color 0x9c0000ff
 addUserKnob {20 InvertAxis l "Invert Axis"}
 addUserKnob {26 tip l "" +STARTLINE T "Results are similar to connecting Axis A to Axis B's axis input"}
+addUserKnob {26 divider_matrix l "" +STARTLINE}
 addUserKnob {41 world_matrix l "" -STARTLINE T Out_Axis.world_matrix}
 addUserKnob {26 divider_copyright l "" +STARTLINE}
 addUserKnob {26 copyright l "" +STARTLINE T "v1.0 -  Mathieu Goulet-Aubin & Erwan Leroy - <a href=\"https://github.com/mapoga/nuke-vector-matrix\" style=\"color:#aaa\">Github</a>"}
