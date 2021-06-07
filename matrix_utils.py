@@ -293,7 +293,7 @@ def get_camera_projection_matrix(camera, frame, image_format):
     # Matrix to transform points into camera-relative coordinates.
     matrix_world = nuke.math.Matrix4()
     for index in range(16):
-        matrix_world[index] = camera['matrix'].getValueAt(frame, index)
+        matrix_world[index] = camera['world_matrix'].getValueAt(frame, index)
     matrix_world.transpose()
     cam_transform = matrix_world.inverse()
 
