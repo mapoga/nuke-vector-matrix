@@ -274,12 +274,6 @@ push $N12b61dd0
   }
  end_group
 set N122b60e0 [stack 0]
- Viewer {
-  frame_range 1001-1296
-  name Viewer1
-  xpos 841
-  ypos 259
- }
 push $N260f03c0
  Group {
   name Magnitude_Vector3_

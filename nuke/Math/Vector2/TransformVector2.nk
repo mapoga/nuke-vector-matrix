@@ -54,11 +54,4 @@ set N9f756d0 [stack 0]
  }
 push $N9f756d0
 push $N9f70fb0
- Viewer {
-  inputs 2
-  frame_range 1001-1296
-  name Viewer1
-  xpos -191
-  ypos 172
- }
 end_group

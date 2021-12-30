@@ -82,14 +82,6 @@ push $Ne07e7c00
   }
  end_group
 set Nf9650480 [stack 0]
- Viewer {
-  frame 10
-  frame_range 1-100
-  name Viewer1
-  xpos 222
-  ypos 209
- }
-push $Nf9650480
 push $Ne07e6000
  Dot {
   name Dot1
