@@ -76,7 +76,7 @@ def natural_sort(values, case_sensitive=False):
 
     def natural_sort_key(_values):
         try:
-            return tuple(alpha_to_int(c, case_sensitive) for c in re.split('(\d+)', _values) if c)
+            return tuple(alpha_to_int(c, case_sensitive) for c in re.split(r'(\d+)', _values) if c)
         except (TypeError, ValueError):
             return _values
 
