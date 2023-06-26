@@ -705,6 +705,18 @@ def set_value_on_tracker(tracker, point, point_index, frame, set_animated):
     tracks.setValueAt(point.y, frame, y_knob_index)
 
 
+def set_cornerpin_to_size(node, width, height, set_from=True, set_to=True):
+    """
+    Set the 'to' and/or 'from' points on a CornerPin to the provided width/height
+    """
+
+    for (point, (x, y)) in enumerate([(0, 0), (1, 0), (1, 1), (0, 1)]):
+        if set_from:
+            node['from%d' % (point + 1)].setValue((x * width, y * height))
+        if set_to:
+            node['to%d' % (point + 1)].setValue((x * width, y * height))
+
+
 def sort_nodes(node_list):
     """ Sort nodes in tree order """
     # Sorts selected nodes by number of parents of an allowed class
@@ -763,6 +775,8 @@ def merge_transforms(transform_list, first, last, cornerpin=False, force_matrix=
     # Create the node to receive the baked transformations
     if cornerpin:
         new_node = nuke.nodes.CornerPin2D(inputs=[transform_list[0].input(0)])
+        set_cornerpin_to_size(new_node, width, height)
+
     else:
         new_node = nuke.nodes.Transform(inputs=[transform_list[0].input(0)])
         new_node['center'].setValue(width / 2, 0)
@@ -839,6 +853,8 @@ def do_matrix_conversion(old_node, new_class, first, last,
     if reference_frame is not None:
         label_string += "\nReference Frame {}".format(reference_frame)
     new_node['label'].setValue(label_string)
+    if new_class == 'CornerPin2D':
+        set_cornerpin_to_size(new_node, image_format.width(), image_format.height())
     if new_class == "Transform":
         new_node['center'].setValue(image_format.width() / 2, 0)
         new_node['center'].setValue(image_format.height() / 2, 1)
