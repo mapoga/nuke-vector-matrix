@@ -53,8 +53,38 @@ class NodeMatrixWrapper(object):
                     knob = node[knob_name]
                     if not knob.isAnimated():
                         knob.setAnimated()
+
             center_x = node['center'].getValueAt(frame, 0)
             center_y = node['center'].getValueAt(frame, 1)
+
+            # If the pixel aspect ratio is not 1, a Transform would take it into account,
+            # resulting in a different result than our Matrix. Compensate for it.
+            par = node.format().pixelAspect()
+            if par != 1.0:
+                # The transform already sandwiches our transform with 2 pixel aspect transforms:
+                # First is applies the pixel aspect ratio, then puts the matrix, then un-applies it.
+                # In order to compensate, we need to do the opposite.
+
+                # We start by centering our center (putting it a 0, 0)
+                ctr_m = nuke.math.Matrix4()
+                ctr_m.makeIdentity()
+                ctr_m.translate(center_x, center_y, 0)
+                # Prepare the matrix to stretch the PAR
+                par_m = nuke.math.Matrix4()
+                par_m.makeIdentity()
+                par_m.scale(par, 1, 1)
+                # To un_apply properly, we move center to 0, stretch, move center back in place.
+                un_apply_par = ctr_m * par_m.inverse() * ctr_m.inverse()
+                # To re-apply the transform, we need to do the opposite, but the center may have moved.
+                # Get the new center
+                vector = nuke.math.Vector3(center_x, center_y, 0)
+                offset = matrix.transform(vector)
+                ctr_m.translate(offset[0] - center_x, offset[1] - center_y, 0)
+                # Now undo the PAR transformed, base don the new center
+                apply_par = ctr_m * par_m * ctr_m.inverse()
+                # Prep the final matrix
+                matrix = apply_par * matrix * un_apply_par
+
             translate_x, translate_y, rotation, scale_x, scale_y, skew_x = decompose_matrix(matrix, center_x, center_y)
             node['translate'].setValueAt(translate_x, frame, 0)
             node['translate'].setValueAt(translate_y, frame, 1)
