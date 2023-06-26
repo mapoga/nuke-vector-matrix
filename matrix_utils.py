@@ -432,6 +432,90 @@ def get_card_matrix(card, frame):
     return matrix * card_matrix
 
 
+def get_reformat_matrix(node):
+    """ Convert a Reformat node to a Matrix. """
+    from_resolution = node.input(0).format() if node.input(0) else nuke.root().format()
+    from_par = from_resolution.pixelAspect()
+    from_width = from_resolution.width() * from_par
+    from_height = from_resolution.height()
+    from_aspect = from_width/from_height
+    to_resolution = node.format()
+    to_par = to_resolution.pixelAspect()
+    to_width = to_resolution.width() * to_par
+    to_height = to_resolution.height()
+    to_aspect = to_width / to_height
+
+    resize_mode = node['resize'].value()
+
+    # Make input pixels square
+    par_in = nuke.math.Matrix4()
+    par_in.makeIdentity()
+    par_in.scale(from_par, 1, 1)
+
+    # We need a few matrices:
+    # center matrix ( places center of original res at 0, 0)
+    center_matrix = nuke.math.Matrix4()
+    center_matrix.makeIdentity()
+    center_matrix.translate(from_width / -2.0, from_height / -2.0, 0)
+
+    # If "Turn" is enabled, the source width and height must be swapped.
+    if node['turn'].value():
+        from_width, from_height = from_height, from_width
+        from_aspect = 1 / from_aspect
+
+    # invert center matrix (places 0, 0 at center of new res)
+    invert_center_matrix = nuke.math.Matrix4()
+    invert_center_matrix.makeIdentity()
+    if node['center'].value():
+        # If center is enabled, we want to go to the center of the new format
+        invert_center_matrix.translate(to_width / 2.0, to_height / 2.0, 0)
+    else:
+        # otherwise just invert of center_matrix
+        invert_center_matrix.translate(from_width / 2.0, from_height / 2.0, 0)
+
+    # Resize matrix
+    resize_matrix = nuke.math.Matrix4()
+    resize_matrix.makeIdentity()
+    if resize_mode == 'fill':
+        # Fill is only really an alias to pick between width and height
+        resize_mode = 'width' if to_aspect > from_aspect else 'height'
+    elif resize_mode == 'fit':
+        # Fill is only really an alias to pick between width and height
+        resize_mode = 'width' if to_aspect < from_aspect else 'height'
+    if resize_mode == 'width':
+        scale_factor = to_width / float(from_width)
+        resize_matrix.scale(scale_factor, scale_factor, 1)
+    elif resize_mode == 'height':
+        scale_factor = (to_height / float(from_height))
+        resize_matrix.scale(scale_factor, scale_factor, 1)
+    elif resize_mode == 'distort':
+        scale_factor_x = to_width / float(from_width)
+        scale_factor_y = to_height / float(from_height)
+        resize_matrix.scale(scale_factor_x, scale_factor_y, 1)
+
+    # Flip/flop/turn
+    flipflop_matrix = nuke.math.Matrix4()
+    flipflop_matrix.makeIdentity()
+    if node['turn'].value():
+        flipflop_matrix.rotateZ(math.radians(90))
+    if node['flop'].value():
+        flipflop_matrix.scale(-1, 1, 1)
+    if node['flip'].value():
+        flipflop_matrix.scale(1, -1, 1)
+
+    # Apply the output pixel aspect ratio
+    par_out = nuke.math.Matrix4()
+    par_out.makeIdentity()
+    par_out.scale(1/to_par, 1, 1)
+
+    # The flip/flop/turn is always centered, but not the resize
+    if node['center'].value():
+        result = par_out * invert_center_matrix * resize_matrix * flipflop_matrix * center_matrix * par_in
+    else:
+        result = par_out * resize_matrix * invert_center_matrix * flipflop_matrix * center_matrix * par_in
+    return result
+
+
 def get_matrix_at_frame(node, frame):
     """ Calculate a matrix for a Transform, Tracker4 or CornerPin2D node at a given frame
 
@@ -481,6 +565,17 @@ def get_matrix_at_frame(node, frame):
         if node['invert'].getValueAt(frame):
             matrix = matrix.inverse()
 
+    elif node.Class() == 'Reformat':
+        # Dealing with animated reformats is an absolute pain...
+        # Nuke does not allow to query formats with a frame number, however,
+        # getting it from TCL does seem to force Nuke to refresh its internal state,
+        # and python then returns the correct values.
+        original_frame = nuke.frame()  # Store current frame
+        nuke.frame(frame)  # Set frame of interest
+        nuke.tcl('value {}.pixel_aspect'.format(node.fullName()))  # Kick Nuke so it refreshes
+        matrix = get_reformat_matrix(node)  # Reformats aren't animated as far as I know
+        nuke.frame(original_frame)  # Restore current frame so user UI doesn't change frame
+
     return matrix
 
 
@@ -510,10 +605,12 @@ def matrix_to_corners(matrix, frame_width, frame_height):
 def print_matrix4(matrix):
     """ Print a matrix """
     row = '| ' + 4 * '{: .4f} ' + '|'
+    print('\n' + 'Matrix4'.center(35, '-'))
     print(row.format(matrix[0], matrix[4], matrix[8], matrix[12]))
     print(row.format(matrix[1], matrix[5], matrix[9], matrix[13]))
     print(row.format(matrix[2], matrix[6], matrix[10], matrix[14]))
     print(row.format(matrix[3], matrix[7], matrix[11], matrix[15]))
+    print('-'*35)
 
 
 def reconcile_card(card, camera, frame):
@@ -656,6 +753,9 @@ def merge_transforms(transform_list, first, last, cornerpin=False, force_matrix=
         for frame in range(first, last + 1):
             if task.isCancelled():
                 break
+            # set thread progress
+            task.setProgress(int((frame - first) / ((last - first + 1) * 0.01)))
+            # Generate matrix
             current_matrix = get_matrix_at_frame(transform_list[0], frame)
             # We merge the nodes 2 by two
             for index in range(1, len(transform_list)):
@@ -668,8 +768,6 @@ def merge_transforms(transform_list, first, last, cornerpin=False, force_matrix=
             else:
                 points = matrix_to_corners(current_matrix, width, height)
                 wrapped_node.set_points_at(points, frame, animated)
-            # set thread progress
-            task.setProgress(int((frame - first) / ((last - first) * 0.01)))
 
     finally:
         task.setProgress(100)
@@ -766,7 +864,7 @@ def do_matrix_conversion(old_node, new_class, first, last,
 def run_merge_transforms():
     """ Show the merge transforms panel and starts the merge process"""
     nodes = nuke.selectedNodes()
-    valid_nodes = check_classes(nodes, ['Transform', 'CornerPin2D', 'Tracker4'])
+    valid_nodes = check_classes(nodes, ['Transform', 'CornerPin2D', 'Tracker4', 'Reformat'])
     if valid_nodes:
         transform_list = sort_nodes(nodes)
     else:
