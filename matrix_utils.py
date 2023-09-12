@@ -80,7 +80,7 @@ class NodeMatrixWrapper(object):
                 vector = nuke.math.Vector3(center_x, center_y, 0)
                 offset = matrix.transform(vector)
                 ctr_m.translate(offset[0] - center_x, offset[1] - center_y, 0)
-                # Now undo the PAR transformed, base don the new center
+                # Now undo the PAR transformed, based on the new center
                 apply_par = ctr_m * par_m * ctr_m.inverse()
                 # Prep the final matrix
                 matrix = apply_par * matrix * un_apply_par
@@ -107,6 +107,7 @@ class NodeMatrixWrapper(object):
                     else:
                         curve.constantValue = matrix[index]
                     transform.setExtraMatrixAnimCurve(x_index, y_index, curve)
+            node['curves'].changed()
 
         elif self.type == 'Tracker4':
             points = matrix_to_corners(matrix, self.node.width(), self.node.height())
@@ -160,6 +161,132 @@ class NodeMatrixWrapper(object):
         return layer
 
 
+class ReformatWrapper(object):
+    """ Wrapper class to easily extract Matrices from Reformats, including non-existent reformats. """
+
+    NoneMode = 'none'
+    WidthMode = 'width'
+    HeightMode = 'height'
+    FitMode = 'fit'
+    FillMode = 'fill'
+    DistortMode = 'distort'
+    Modes = [NoneMode, WidthMode, HeightMode, FitMode, FillMode, DistortMode]
+
+    @classmethod
+    def from_node(cls, node):
+        """ Init from an existing node """
+        from_format = node.input(0).format() if node.input(0) else nuke.root().format()
+        to_format = node.format()
+        wrapper = cls(from_format, to_format)
+        wrapper.resize = node['resize'].value()
+        wrapper.center = node['center'].value()
+        wrapper.flip = node['flip'].value()
+        wrapper.flop = node['flop'].value()
+        wrapper.turn = node['turn'].value()
+        return wrapper
+
+    def __init__(self, from_format=None, to_format=None):
+        self.from_format = from_format
+        self.to_format = to_format
+        self.resize = self.NoneMode
+        self.center = True
+        self.flip = False
+        self.flop = False
+        self.turn = False
+
+    def to_node(self):
+        """
+        Create a node for this reformat.
+        Note that "from_format" is ignored as it will depend on what the node gets connected to.
+        """
+        # TODO
+        raise NotImplementedError
+
+    def get_matrix(self):
+        """ Convert Reformat to a Matrix. """
+        from_format = self.from_format
+        to_format = self.to_format
+        if not from_format or not to_format:
+            raise ValueError("Both from_format and to_format must be provided in order to calculate a matrix.")
+        from_par = from_format.pixelAspect()
+        from_width = from_format.width() * from_par
+        from_height = from_format.height()
+        from_aspect = from_width / from_height
+        to_par = to_format.pixelAspect()
+        to_width = to_format.width() * to_par
+        to_height = to_format.height()
+        to_aspect = to_width / to_height
+
+        # Make input pixels square
+        par_in = nuke.math.Matrix4()
+        par_in.makeIdentity()
+        par_in.scale(from_par, 1, 1)
+
+        # We need a few matrices:
+        # center matrix ( places center of original res at 0, 0)
+        center_matrix = nuke.math.Matrix4()
+        center_matrix.makeIdentity()
+        center_matrix.translate(from_width / -2.0, from_height / -2.0, 0)
+
+        # If "Turn" is enabled, the source width and height must be swapped.
+        if self.turn:
+            from_width, from_height = from_height, from_width
+            from_aspect = 1 / from_aspect
+
+        # invert center matrix (places 0, 0 at center of new res)
+        invert_center_matrix = nuke.math.Matrix4()
+        invert_center_matrix.makeIdentity()
+        if self.center:
+            # If center is enabled, we want to go to the center of the new format
+            invert_center_matrix.translate(to_width / 2.0, to_height / 2.0, 0)
+        else:
+            # otherwise just invert of center_matrix
+            invert_center_matrix.translate(from_width / 2.0, from_height / 2.0, 0)
+
+        # Resize matrix
+        resize_mode = self.resize
+        resize_matrix = nuke.math.Matrix4()
+        resize_matrix.makeIdentity()
+        if resize_mode == self.FillMode:
+            # Fill is only really an alias to pick between width and height based on aspect
+            resize_mode = self.WidthMode if to_aspect > from_aspect else self.HeightMode
+        elif resize_mode == self.FitMode:
+            # Fit is only really an alias to pick between width and height based on aspect
+            resize_mode = self.WidthMode if to_aspect < from_aspect else self.HeightMode
+        if resize_mode == self.WidthMode:
+            scale_factor = to_width / float(from_width)
+            resize_matrix.scale(scale_factor, scale_factor, 1)
+        elif resize_mode == self.HeightMode:
+            scale_factor = (to_height / float(from_height))
+            resize_matrix.scale(scale_factor, scale_factor, 1)
+        elif resize_mode == self.DistortMode:
+            scale_factor_x = to_width / float(from_width)
+            scale_factor_y = to_height / float(from_height)
+            resize_matrix.scale(scale_factor_x, scale_factor_y, 1)
+
+        # Flip/flop/turn
+        flipflop_matrix = nuke.math.Matrix4()
+        flipflop_matrix.makeIdentity()
+        if self.turn:
+            flipflop_matrix.rotateZ(math.radians(90))
+        if self.flop:
+            flipflop_matrix.scale(-1, 1, 1)
+        if self.flip:
+            flipflop_matrix.scale(1, -1, 1)
+
+        # Apply the output pixel aspect ratio
+        par_out = nuke.math.Matrix4()
+        par_out.makeIdentity()
+        par_out.scale(1 / to_par, 1, 1)
+
+        # The flip/flop/turn is always centered, but not the resize
+        if self.center:
+            result = par_out * invert_center_matrix * resize_matrix * flipflop_matrix * center_matrix * par_in
+        else:
+            result = par_out * resize_matrix * invert_center_matrix * flipflop_matrix * center_matrix * par_in
+        return result
+
+
 # Panel Classes
 class MergeTransformsPanel(nukescripts.PythonPanel):
     """ Panel presenting options for merging transforms """
@@ -199,18 +326,23 @@ class MatrixConversionPanel(nukescripts.PythonPanel):
         # ANALYZE NUKE SCRIPT TO GATHER VALUES
         camera_nodes = []
         nodes_with_matrix = []
+        selected_cam = None
+        selected_node = None
+        selected_reformat = None
         for node in nuke.allNodes():
             if 'Camera' in node.Class():
                 camera_nodes.append(node.name())
+                if node.isSelected():
+                    selected_cam = node
             elif node.Class() in ['Transform', 'CornerPin2D', 'Tracker4', 'Card2', 'Card3D']:
                 nodes_with_matrix.append(node.name())
+                if node.isSelected():
+                    selected_node = node
+            elif node.Class() == 'Reformat':
+                if node.isSelected() and node['type'].getValue() == 0.0:
+                    selected_reformat = node
         camera_nodes.sort()
         nodes_with_matrix.sort()
-
-        try:
-            node = nuke.selectedNode()
-        except ValueError:
-            node = None
 
         # CREATE KNOBS
         self.first = nuke.Int_Knob('first', 'First Frame')
@@ -219,9 +351,14 @@ class MatrixConversionPanel(nukescripts.PythonPanel):
         self.last.setValue(int(nuke.root()['last_frame'].value()))
         self.last.clearFlag(nuke.STARTLINE)
         self.node = nuke.Enumeration_Knob('original_node', 'Node to Convert', nodes_with_matrix)
-        if node and node.name() in nodes_with_matrix:
-            self.node.setValue(node.name())
+
+        # Set defaults based on selection
+        if selected_node:
+            self.node.setValue(selected_node.name())
         self.camera = nuke.Enumeration_Knob('camera_node', 'Camera', camera_nodes)
+        if selected_cam:
+            self.camera.setValue(selected_cam.name())
+
         # In cases where no node was selected in the first place, the current node is the first entry in the list
         node = nuke.toNode(self.node.value())
         if not node or node.Class() not in ['Card2', 'Card3D']:
@@ -235,6 +372,7 @@ class MatrixConversionPanel(nukescripts.PythonPanel):
                    'SplineWarp']
         self.destination = nuke.Enumeration_Knob('target', 'Convert to', options)
 
+        div1 = nuke.Text_Knob('div1', '')
         self.force_ref = nuke.Boolean_Knob('force_reference', '')
         self.force_ref.setTooltip("Forces the resulting node to leave the reference frame untouched")
         self.force_ref.setFlag(nuke.STARTLINE)
@@ -245,9 +383,26 @@ class MatrixConversionPanel(nukescripts.PythonPanel):
 
         self.invert = nuke.Boolean_Knob('invert', 'Invert Matrix')
 
+        # Reformat knobs
+        div2 = nuke.Text_Knob('div2', '')
+        self.specify_format = nuke.Boolean_Knob('specify_format', 'Specify Format')
+        self.specify_format.setTooltip("If Enabled, will allow you to specify at which resolution the "
+                                       "transform should be converted.\nIf not enabled, the resolution "
+                                       "will be guessed based on the node being converted.")
+        self.specify_format.setFlag(nuke.STARTLINE)
+        self.format = nuke.Format_Knob('format')
+
+        if selected_reformat:
+            self.specify_format.setValue(True)
+            self.format.setValue(selected_reformat['format'].value())
+        else:
+            self.format.setEnabled(False)
+
+        div3 = nuke.Text_Knob('div3', '')
+
         # ADD KNOBS
-        for k in (self.first, self.last, self.node, self.camera, self.destination, self.force_ref, self.reference,
-                  self.invert):
+        for k in (self.first, self.last, self.node, self.camera, self.destination, div1, self.force_ref, self.reference,
+                  self.invert, div2, self.specify_format, self.format, div3):
             self.addKnob(k)
 
     def knobChanged(self, knob):
@@ -260,6 +415,9 @@ class MatrixConversionPanel(nukescripts.PythonPanel):
                 self.camera.setVisible(False)
         elif knob is self.force_ref:
             self.reference.setEnabled(knob.value())
+        elif knob is self.specify_format:
+            value = knob.value()
+            self.format.setEnabled(value)
 
 
 # Defining Helper Functions
@@ -299,7 +457,7 @@ def decompose_matrix(matrix, center_x=0, center_y=0):
     vector_trans = matrix.transform(vector)
     translate_x = vector_trans[0] - center_x
     translate_y = vector_trans[1] - center_y
-    # Solve Rotation/Scale/Skew
+    # Solve Rotation/Scale/Skew.
     # Skew Y is never solved, will be reflected in Rotation instead.
     delta = (matrix[0] * matrix[5]) - (matrix[4] * matrix[1])
     ratio = pow(matrix[0], 2) + pow(matrix[1], 2)
@@ -462,90 +620,6 @@ def get_card_matrix(card, frame):
     return matrix * card_matrix
 
 
-def get_reformat_matrix(node):
-    """ Convert a Reformat node to a Matrix. """
-    from_resolution = node.input(0).format() if node.input(0) else nuke.root().format()
-    from_par = from_resolution.pixelAspect()
-    from_width = from_resolution.width() * from_par
-    from_height = from_resolution.height()
-    from_aspect = from_width/from_height
-    to_resolution = node.format()
-    to_par = to_resolution.pixelAspect()
-    to_width = to_resolution.width() * to_par
-    to_height = to_resolution.height()
-    to_aspect = to_width / to_height
-
-    resize_mode = node['resize'].value()
-
-    # Make input pixels square
-    par_in = nuke.math.Matrix4()
-    par_in.makeIdentity()
-    par_in.scale(from_par, 1, 1)
-
-    # We need a few matrices:
-    # center matrix ( places center of original res at 0, 0)
-    center_matrix = nuke.math.Matrix4()
-    center_matrix.makeIdentity()
-    center_matrix.translate(from_width / -2.0, from_height / -2.0, 0)
-
-    # If "Turn" is enabled, the source width and height must be swapped.
-    if node['turn'].value():
-        from_width, from_height = from_height, from_width
-        from_aspect = 1 / from_aspect
-
-    # invert center matrix (places 0, 0 at center of new res)
-    invert_center_matrix = nuke.math.Matrix4()
-    invert_center_matrix.makeIdentity()
-    if node['center'].value():
-        # If center is enabled, we want to go to the center of the new format
-        invert_center_matrix.translate(to_width / 2.0, to_height / 2.0, 0)
-    else:
-        # otherwise just invert of center_matrix
-        invert_center_matrix.translate(from_width / 2.0, from_height / 2.0, 0)
-
-    # Resize matrix
-    resize_matrix = nuke.math.Matrix4()
-    resize_matrix.makeIdentity()
-    if resize_mode == 'fill':
-        # Fill is only really an alias to pick between width and height
-        resize_mode = 'width' if to_aspect > from_aspect else 'height'
-    elif resize_mode == 'fit':
-        # Fill is only really an alias to pick between width and height
-        resize_mode = 'width' if to_aspect < from_aspect else 'height'
-    if resize_mode == 'width':
-        scale_factor = to_width / float(from_width)
-        resize_matrix.scale(scale_factor, scale_factor, 1)
-    elif resize_mode == 'height':
-        scale_factor = (to_height / float(from_height))
-        resize_matrix.scale(scale_factor, scale_factor, 1)
-    elif resize_mode == 'distort':
-        scale_factor_x = to_width / float(from_width)
-        scale_factor_y = to_height / float(from_height)
-        resize_matrix.scale(scale_factor_x, scale_factor_y, 1)
-
-    # Flip/flop/turn
-    flipflop_matrix = nuke.math.Matrix4()
-    flipflop_matrix.makeIdentity()
-    if node['turn'].value():
-        flipflop_matrix.rotateZ(math.radians(90))
-    if node['flop'].value():
-        flipflop_matrix.scale(-1, 1, 1)
-    if node['flip'].value():
-        flipflop_matrix.scale(1, -1, 1)
-
-    # Apply the output pixel aspect ratio
-    par_out = nuke.math.Matrix4()
-    par_out.makeIdentity()
-    par_out.scale(1/to_par, 1, 1)
-
-    # The flip/flop/turn is always centered, but not the resize
-    if node['center'].value():
-        result = par_out * invert_center_matrix * resize_matrix * flipflop_matrix * center_matrix * par_in
-    else:
-        result = par_out * resize_matrix * invert_center_matrix * flipflop_matrix * center_matrix * par_in
-    return result
-
-
 def get_matrix_at_frame(node, frame):
     """ Calculate a matrix for a Transform, Tracker4 or CornerPin2D node at a given frame
 
@@ -603,7 +677,8 @@ def get_matrix_at_frame(node, frame):
         original_frame = nuke.frame()  # Store current frame
         nuke.frame(frame)  # Set frame of interest
         nuke.tcl('value {}.pixel_aspect'.format(node.fullName()))  # Kick Nuke so it refreshes
-        matrix = get_reformat_matrix(node)  # Reformats aren't animated as far as I know
+        reformat = ReformatWrapper.from_node(node)
+        matrix = reformat.get_matrix()
         nuke.frame(original_frame)  # Restore current frame so user UI doesn't change frame
 
     return matrix
@@ -802,6 +877,7 @@ def merge_transforms(transform_list, first, last, cornerpin=False, force_matrix=
             # Generate matrix
             current_matrix = get_matrix_at_frame(transform_list[0], frame)
             # We merge the nodes 2 by two
+            # TODO: Keep track of reformats to include them if needed
             for index in range(1, len(transform_list)):
                 # Access the matrix knobs of the next transformation
                 transform_matrix = get_matrix_at_frame(transform_list[index], frame)
@@ -819,7 +895,7 @@ def merge_transforms(transform_list, first, last, cornerpin=False, force_matrix=
 
 
 def do_matrix_conversion(old_node, new_class, first, last,
-                         raw_matrix=False, camera=None, reference_frame=None, invert=False):
+                         raw_matrix=False, camera=None, reference_frame=None, invert=False, target_format=None):
     """ Create a new node with a matrix from another node, for multiple frames.
 
     :param nuke.Node old_node: Original Node to extract the matrix from
@@ -830,6 +906,7 @@ def do_matrix_conversion(old_node, new_class, first, last,
     :param nuke.Node camera: Camera Node, only used when converting a card
     :param int reference_frame: Set frame as reference frame (makes the resulting matrix identity at that frame)
     :param bool invert: Invert the matrix
+    :param nuke.Format target_format: If provided, bake the matrix as if in that format.
     """
     # Set Threading
     task = nuke.ProgressTask("Converting Matrix")
@@ -844,20 +921,44 @@ def do_matrix_conversion(old_node, new_class, first, last,
     except AttributeError:
         image_format = nuke.root()['format'].value()
 
+    if target_format is None:
+        reformat_node = None
+        reformat_matrix = None
+        target_format = image_format
+    else:
+        reformat_node = nuke.nodes.Reformat()
+        reformat_node['format'].setValue(target_format)
+        reformat_node['pbb'].setValue(True)
+        reformat_node.setInput(0, old_node.input(0))
+        reformat_node.setXpos(old_node.xpos() + 100)
+        reformat_node.setYpos(old_node.ypos())
+        reformat_wrapper = ReformatWrapper.from_node(reformat_node)
+        reformat_matrix = reformat_wrapper.get_matrix()
+
     # Create the node to receive the baked transformations
     new_node = nuke.createNode(new_class, inpanel=False)
-    new_node.setInput(0, old_node.input(0))
+    if reformat_node:
+        new_node.setInput(0, reformat_node)
+        new_node.setYpos(old_node.ypos() + 36)
+    else:
+        new_node.setInput(0, old_node.input(0))
+        new_node.setYpos(old_node.ypos())
     new_node.setXpos(old_node.xpos() + 100)
-    new_node.setYpos(old_node.ypos())
+
     label_string = "Baked Matrix from {}".format(old_node.name())
+    label_string += "\n{}x{}".format(int(target_format.width()), int(target_format.height()))
     if reference_frame is not None:
         label_string += "\nReference Frame {}".format(reference_frame)
     new_node['label'].setValue(label_string)
+
     if new_class == 'CornerPin2D':
-        set_cornerpin_to_size(new_node, image_format.width(), image_format.height())
-    if new_class == "Transform":
-        new_node['center'].setValue(image_format.width() / 2, 0)
-        new_node['center'].setValue(image_format.height() / 2, 1)
+        set_cornerpin_to_size(new_node, target_format.width(), target_format.height())
+    elif new_class == "Transform":
+        new_node['center'].setValue(target_format.width() / 2, 0)
+        new_node['center'].setValue(target_format.height() / 2, 1)
+    elif new_class in ['Roto', 'RotoPaint']:
+        # Set format value, so we can disconnect the node without risk
+        new_node['format'].setValue(target_format)
 
     wrapped_node = NodeMatrixWrapper(new_node)
 
@@ -886,6 +987,9 @@ def do_matrix_conversion(old_node, new_class, first, last,
 
             if not current_matrix:
                 raise RuntimeError("Something went wrong, could not calculate matrix")
+            if reformat_matrix:  # Maybe??
+                # current_matrix = reformat_matrix * current_matrix
+                current_matrix = current_matrix * reformat_matrix.inverse()
 
             if reference_frame is not None:
                 current_matrix = current_matrix * ref_matrix.inverse()
@@ -893,10 +997,14 @@ def do_matrix_conversion(old_node, new_class, first, last,
             if invert:
                 current_matrix = current_matrix.inverse()
 
+            if reformat_matrix:
+                current_matrix = reformat_matrix * current_matrix
+                # current_matrix = current_matrix * reformat_matrix
+
             if raw_matrix:
                 wrapped_node.set_matrix_at(current_matrix, frame, animated)
             else:
-                current_points = matrix_to_corners(current_matrix, image_format.width(), image_format.height())
+                current_points = matrix_to_corners(current_matrix, target_format.width(), target_format.height())
                 wrapped_node.set_points_at(current_points, frame, animated)
 
             # set thread progress
@@ -957,6 +1065,7 @@ def run_convert_matrix():
             new_class = 'CornerPin2D'
         elif target == 'Transform (No Perspective)':
             new_class = 'Transform'
+            # matrix = False
         elif target == 'Tracker':
             new_class = 'Tracker4'
         elif target == 'SplineWarp':
@@ -969,6 +1078,12 @@ def run_convert_matrix():
         if panel.force_ref.value():
             ref = panel.reference.value()
 
+        # Set the format
+        if panel.specify_format.value():
+            target_format = panel.format.value()
+        else:
+            target_format = None
+
         exec_thread = threading.Thread(None, do_matrix_conversion(node, new_class, first, last,
-                                                                  matrix, camera, ref, invert))
+                                                                  matrix, camera, ref, invert, target_format))
         exec_thread.start()
