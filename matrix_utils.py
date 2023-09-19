@@ -121,6 +121,9 @@ class NodeMatrixWrapper(object):
             for index in range(16):
                 matrix_knob.setValueAt(matrix[index], frame, index)
 
+        else:
+            raise NotImplementedError("Method not implemented for class {}".format(self.type))
+
     def set_points_at(self, points, frame, set_animated=True):
         """ Set points in a certain position at a defined frame. Depending on the node type, the points might get
         converted to a matrix and set instead.
@@ -144,6 +147,9 @@ class NodeMatrixWrapper(object):
         elif self.type == "Tracker4":
             for index, point in enumerate(points):
                 set_value_on_tracker(self.node, point, index, frame, set_animated)
+
+        else:
+            raise NotImplementedError("Method not implemented for class {}".format(self.type))
 
     def _get_rp_layer(self, name):
         """ Get (or make) the rotopaint layer of a certain name
@@ -477,38 +483,51 @@ def get_camera_projection_matrix(camera, frame, image_format):
     :return: projection matrix
     """
     # modified code from nukescripts/Snap3D
+    # We support camera == None for the case of ScanlineRender or Card3D without a CAM, they use a default cam
 
     # Matrix to transform points into camera-relative coordinates.
     matrix_world = nuke.math.Matrix4()
-    for index in range(16):
-        matrix_world[index] = camera['world_matrix'].getValueAt(frame, index)
-    matrix_world.transpose()
-    cam_transform = matrix_world.inverse()
+    if camera:
+        for index in range(16):
+            matrix_world[index] = camera['world_matrix'].getValueAt(frame, index)
+        matrix_world.transpose()
+        cam_transform = matrix_world.inverse()
+    else:
+        matrix_world.makeIdentity()
+        cam_transform = matrix_world
 
     # Matrix to take the camera projection knobs into account
-    roll = float(camera['winroll'].getValueAt(frame, 0))
-    scale_x = float(camera['win_scale'].getValueAt(frame, 0))
-    scale_y = float(camera['win_scale'].getValueAt(frame, 1))
-    translate_x = float(camera['win_translate'].getValueAt(frame, 0))
-    translate_y = float(camera['win_translate'].getValueAt(frame, 1))
+
     post_matrix = nuke.math.Matrix4()
     post_matrix.makeIdentity()
-    post_matrix.rotateZ(math.radians(roll))
-    post_matrix.scale(1.0 / scale_x, 1.0 / scale_y, 1.0)
-    post_matrix.translate(-translate_x, -translate_y, 0.0)
+    if camera:
+        roll = float(camera['winroll'].getValueAt(frame, 0))
+        scale_x = float(camera['win_scale'].getValueAt(frame, 0))
+        scale_y = float(camera['win_scale'].getValueAt(frame, 1))
+        translate_x = float(camera['win_translate'].getValueAt(frame, 0))
+        translate_y = float(camera['win_translate'].getValueAt(frame, 1))
+        post_matrix.rotateZ(math.radians(roll))
+        post_matrix.scale(1.0 / scale_x, 1.0 / scale_y, 1.0)
+        post_matrix.translate(-translate_x, -translate_y, 0.0)
 
     # Projection matrix based on the focal length, aperture and clipping planes of the camera
-    focal_length = float(camera['focal'].getValueAt(frame))
-    h_aperture = float(camera['haperture'].getValueAt(frame))
-    near = float(camera['near'].getValueAt(frame))
-    far = float(camera['far'].getValueAt(frame))
-    projection_mode = int(camera['projection_mode'].getValueAt(frame))
+    if camera:
+        focal_length = float(camera['focal'].getValueAt(frame))
+        h_aperture = float(camera['haperture'].getValueAt(frame))
+        near = float(camera['near'].getValueAt(frame))
+        far = float(camera['far'].getValueAt(frame))
+        projection_mode = int(camera['projection_mode'].getValueAt(frame))
+    else:
+        focal_length = 50.0
+        h_aperture = 50.0
+        near = 0.1
+        far = 10000.0
+        projection_mode = 0
     projection_matrix = nuke.math.Matrix4()
     projection_matrix.projection(focal_length / h_aperture, near, far, projection_mode == 0)
 
     # Matrix to translate the projected points into normalised pixel coords
     image_aspect = float(image_format.height()) / float(image_format.width())
-
     aspect_matrix = nuke.math.Matrix4()
     aspect_matrix.makeIdentity()
     aspect_matrix.translate(1.0, 1.0 - (1.0 - image_aspect / float(image_format.pixelAspect())), 0.0)
@@ -681,6 +700,23 @@ def get_matrix_at_frame(node, frame):
         matrix = reformat.get_matrix()
         nuke.frame(original_frame)  # Restore current frame so user UI doesn't change frame
 
+    elif node.Class() == "Card3D":
+        # Need to find the Camera, and check if there's a frame-hold
+        cam_frame = frame
+        cam = None
+        top_node = node.input(1)
+        while top_node:
+            if top_node.Class() == 'FrameHold' and not top_node['disable'].value():
+                if nuke.NUKE_VERSION_MAJOR >= 13:
+                    cam_frame = top_node['firstFrame'].value()
+                else:
+                    cam_frame = top_node['first_frame'].value()
+            elif top_node.Class() in ['Camera', 'Camera2', 'Camera3', 'Camera4']:
+                cam = top_node
+                break
+            top_node = top_node.input(0)
+        matrix = reconcile_card(node, cam, frame, camera_frame=cam_frame)
+
     return matrix
 
 
@@ -718,23 +754,25 @@ def print_matrix4(matrix):
     print('-'*35)
 
 
-def reconcile_card(card, camera, frame):
+def reconcile_card(card, camera, frame, camera_frame=None):
     """ Reconcile the matrix of a 3D card into a 2D matrix
 
     :param nuke.Node card: Card Node
     :param nuke.Node camera: Camera Node
     :param int frame: Frame number
     :rtype: nuke.math.Vector4
+    :param int camera_frame: Frame number to use for the Camera. Optional. Uses the frame if not provided.
     """
     try:
         image_format = card.input(0).format()
     except AttributeError:
         image_format = nuke.root()['format'].value()
     card_matrix = get_card_matrix(card, frame)
-    cam_matrix = get_camera_projection_matrix(camera, frame, image_format)
+    cam_matrix = get_camera_projection_matrix(camera, camera_frame or frame, image_format)
     if cam_matrix is None:
         raise RuntimeError("matrix_util.get_camera_projection() returned None for camera.")
     matrix_2d = cam_matrix * card_matrix
+
     # 2D Matrices don't like to have 3D attributes, let's kill them
     matrix_2d[10] = 1
     for index in [2, 6, 8, 9, 11, 14]:
@@ -839,7 +877,7 @@ def merge_transforms(transform_list, first, last, cornerpin=False, force_matrix=
     task.setMessage("Checking Settings")
     # Check if we have Cornerpins in the list
     for node in transform_list:
-        if node.Class() == 'CornerPin2D':
+        if node.Class() in ['CornerPin2D', 'Card3D']:
             cornerpin = True
             break
 
@@ -877,10 +915,10 @@ def merge_transforms(transform_list, first, last, cornerpin=False, force_matrix=
             # Generate matrix
             current_matrix = get_matrix_at_frame(transform_list[0], frame)
             # We merge the nodes 2 by two
-            # TODO: Keep track of reformats to include them if needed
-            for index in range(1, len(transform_list)):
+            # TODO: Keep track of reformats to include them if needed. We can just use the last node's format as a shortcut and compare if different from the first node's
+            for transform in transform_list[1:]:
                 # Access the matrix knobs of the next transformation
-                transform_matrix = get_matrix_at_frame(transform_list[index], frame)
+                transform_matrix = get_matrix_at_frame(transform, frame)
                 current_matrix = transform_matrix * current_matrix
 
             if force_matrix or not cornerpin:
@@ -978,33 +1016,31 @@ def do_matrix_conversion(old_node, new_class, first, last,
             if task.isCancelled():
                 break
 
-            current_matrix = None
+            matrix = None
 
             if old_node.Class() in ['Transform', 'CornerPin2D', 'Tracker4']:
-                current_matrix = get_matrix_at_frame(old_node, frame)
+                matrix = get_matrix_at_frame(old_node, frame)
             elif old_node.Class() in ['Card2', 'Card3D']:
-                current_matrix = reconcile_card(old_node, camera, frame)
+                matrix = reconcile_card(old_node, camera, frame)
 
-            if not current_matrix:
+            if not matrix:
                 raise RuntimeError("Something went wrong, could not calculate matrix")
-            if reformat_matrix:  # Maybe??
-                # current_matrix = reformat_matrix * current_matrix
-                current_matrix = current_matrix * reformat_matrix.inverse()
+            if reformat_matrix:
+                matrix = matrix * reformat_matrix.inverse()
 
             if reference_frame is not None:
-                current_matrix = current_matrix * ref_matrix.inverse()
+                matrix = matrix * ref_matrix.inverse()
 
             if invert:
-                current_matrix = current_matrix.inverse()
+                matrix = matrix.inverse()
 
             if reformat_matrix:
-                current_matrix = reformat_matrix * current_matrix
-                # current_matrix = current_matrix * reformat_matrix
+                matrix = reformat_matrix * matrix
 
             if raw_matrix:
-                wrapped_node.set_matrix_at(current_matrix, frame, animated)
+                wrapped_node.set_matrix_at(matrix, frame, animated)
             else:
-                current_points = matrix_to_corners(current_matrix, target_format.width(), target_format.height())
+                current_points = matrix_to_corners(matrix, target_format.width(), target_format.height())
                 wrapped_node.set_points_at(current_points, frame, animated)
 
             # set thread progress
@@ -1018,7 +1054,7 @@ def do_matrix_conversion(old_node, new_class, first, last,
 def run_merge_transforms():
     """ Show the merge transforms panel and starts the merge process"""
     nodes = nuke.selectedNodes()
-    valid_nodes = check_classes(nodes, ['Transform', 'CornerPin2D', 'Tracker4', 'Reformat'])
+    valid_nodes = check_classes(nodes, ['Transform', 'CornerPin2D', 'Tracker4', 'Reformat', 'Card3D'])
     if valid_nodes:
         transform_list = sort_nodes(nodes)
     else:
