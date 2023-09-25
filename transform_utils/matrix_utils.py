@@ -147,8 +147,19 @@ class NodeMatrixWrapper(object):
                 knob.setValueAt(point.y, frame, 1)
 
         elif self.type == "Tracker4":
+            tracker = Tracker(self.node)
+            while len(tracker) < len(points):
+                tracker.add_point(translate=True, rotate=True, scale=True)
             for index, point in enumerate(points):
-                set_value_on_tracker(self.node, point, index, frame, set_animated)
+                track_x = tracker[index]['track_x']
+                track_y = tracker[index]['track_y']
+                if set_animated:
+                    if not track_y.isAnimated():
+                        track_x.setAnimated()
+                    if not track_y.isAnimated():
+                        track_y.setAnimated()
+                track_x.setValueAt(point.x, frame)
+                track_y.setValueAt(point.y, frame)
 
         else:
             raise NotImplementedError("Method not implemented for class {}".format(self.type))
@@ -823,38 +834,6 @@ def reconcile_card(card, camera, frame, camera_frame=None):
     # TODO: When the card is behind the camera, right now the 2D matrix doesn't know.
     #       Hard to handle as the card center could be behind while some corners are in front.
     return matrix_2d
-
-
-def set_value_on_tracker(tracker, point, point_index, frame, set_animated):
-    """ Set a value on a tracking point
-
-    :param nuke.Node tracker: Tracker4 node
-    :param nuke.math.Vector2 point: Point coordinates (as a vector2 or higher order)
-    :param int point_index: Index of the tracking point on which to set the value
-    :param int frame: frame number
-    :param bool set_animated: set a keyframe if True, just set the value on False
-    """
-    tracker.showControlPanel()
-    tracks = tracker['tracks']
-    columns = 31
-    # Check point index exists, and create/adjust if required
-    if tracks.fullyQualifiedName(point_index * columns).endswith('.tracks'):
-        # count existing points
-        count = 0
-        while not tracks.fullyQualifiedName(count * columns).endswith('.tracks'):
-            count += 1
-        tracker['add_track'].execute()
-        point_index = count
-
-    x_knob_index = point_index * columns + 2
-    y_knob_index = point_index * columns + 3
-    if set_animated and not tracks.isAnimated(x_knob_index):
-        tracks.setAnimated(x_knob_index)
-    if set_animated and not tracks.isAnimated(y_knob_index):
-        tracks.setAnimated(y_knob_index)
-
-    tracks.setValueAt(point.x, frame, x_knob_index)
-    tracks.setValueAt(point.y, frame, y_knob_index)
 
 
 def set_cornerpin_to_size(node, width, height, set_from=True, set_to=True):

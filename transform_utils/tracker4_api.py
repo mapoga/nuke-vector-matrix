@@ -1,5 +1,7 @@
 """
-Shim to give the Tracker4 node a slightly more convenient API, closer to interacting with regular Nuke knobs
+Shim to give the Tracker4 node a slightly more convenient API, closer to interacting with regular Nuke knobs.
+While it can do a lot of things conveniently, it's not as fast as some direct manipulation as it may parse
+values multiple times while doing some operations.
 
 Examples:
 
@@ -58,6 +60,10 @@ class Tracker(object):
         for i in range(len(self)):
             yield self[i]
 
+    @staticmethod
+    def _get_point_names(internals):
+        return [p[1] for p in internals[2]]
+
     def get_internals(self):
         tcl_list = self.knob.toScript()
         py = self._parser.parse(tcl_list)
@@ -65,7 +71,7 @@ class Tracker(object):
 
     @property
     def point_names(self):
-        return [p[1] for p in self.get_internals()[2]]
+        return self._get_point_names(self.get_internals())
 
     @property
     def columns(self):
@@ -77,9 +83,12 @@ class Tracker(object):
         return columns
 
     def add_point(self, name='track', ref_frame=None, translate=False, rotate=False, scale=False):
+        parsed = self.get_internals()
+
         n = 1
         name_candidate = name
-        while name_candidate in self:
+        existing_names = self._get_point_names(parsed)
+        while name_candidate in existing_names:
             name_candidate = '{} {}'.format(name, n)
             n += 1
 
@@ -97,7 +106,6 @@ class Tracker(object):
         blank_row += ['1', '0', -search, -search, search, search, -track, -track, track, track]
         blank_row += [[]] * 11
 
-        parsed = self.get_internals()
         parsed[0][2] = int(parsed[0][2])+1
         parsed[2].append(blank_row)
         if self.knob.fromScript(self._parser.encode(parsed)):
@@ -254,17 +262,18 @@ class TCLListParser(object):
         def _encode(item):
             str_buf = ''
             if isinstance(item, list):
-                str_buf += '{ '
-                for sub_item in item:
-                    str_buf += _encode(sub_item) + ' '
-                str_buf += '} '
+                str_buf += '{'
+                str_buf += ' '.join([_encode(sub_item) for sub_item in item])
+                str_buf += '}'
             else:
                 sub_item = str(item)
                 if any((c in sub_item for c in self.WHITESPACE)):
-                    str_buf += '"' + sub_item.replace('"', '\\"') + '" '
+                    str_buf += '"' + sub_item.replace('"', '\\"') + '"'
                 else:
-                    str_buf += sub_item.replace('{', '\\{').replace('"', '\\"').replace('\\', '\\\\') + ' '
+                    str_buf += sub_item.replace('{', '\\{').replace('"', '\\"').replace('\\', '\\\\')
 
                 pass
-            return str_buf[:-1]
-        return _encode(python_list)[1:-1]
+            return str_buf[:]
+
+        encoded = _encode(python_list)[1:-1]
+        return encoded
