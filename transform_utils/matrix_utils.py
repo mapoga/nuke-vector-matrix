@@ -40,12 +40,16 @@ class NodeMatrixWrapper(object):
         self.node = node
         self._set_type()
 
-    def set_matrix_at(self, matrix, frame, set_animated=True):
+    def set_matrix_at(self, matrix, frame, set_animated=True, rotation_hint=None):
         """ Set the matrix on the wrapped node at a certain frame.
 
         :param nuke.math.Matrix4 matrix: The matrix to set
         :param int frame: The frame at which to set the matrix
         :param bool set_animated: Set knobs being set to animated if not already
+        :param float rotation_hint: If setting the matrix to a node with rotation support, use this
+                                    number (in degrees) as a hint, as matrices can only represent -180 to +180
+                                    degrees for rotations. The result will use the closest value to that number
+                                    that matches the matrix transform.
         """
         node = self.node
 
@@ -890,6 +894,13 @@ def merge_transforms(transform_list, first, last, cornerpin=False, force_matrix=
     :param bool cornerpin: Makes a CornerPin if True, else tries to make a Transform
     :param bool force_matrix: In case of Cornerpin, use the extra matrix instead of corners
     """
+
+    def _calculate_rotation_hint(_node, _matrix, _frame):
+        if 'rotate' in _node.knobs():
+            return _node['rotate'].getValueAt(_frame)
+        else:
+            return math.degrees(math.atan2(_matrix[1], _matrix[0]))
+
     # Set Threading
     task = nuke.ProgressTask("Merging Transforms")
     task.setMessage("Checking Settings")
@@ -932,15 +943,21 @@ def merge_transforms(transform_list, first, last, cornerpin=False, force_matrix=
             task.setProgress(int((frame - first) / ((last - first + 1) * 0.01)))
             # Generate matrix
             current_matrix = get_matrix_at_frame(transform_list[0], frame)
+            # Keep track of all the rotations to avoid breaking rotations when doing a full flip.
+            # Will handle transforms well, but might fail in situations where a full flip in introduced by a cornerpin.
+            # Luckily, it's really annoying to do rotations with cornerpin, so I don't expect to run into this often.
+            rotation_hint = _calculate_rotation_hint(transform_list[0], current_matrix, frame)
+
             # We merge the nodes 2 by two
             # TODO: Keep track of reformats to include them if needed. We can just use the last node's format as a shortcut and compare if different from the first node's
             for transform in transform_list[1:]:
                 # Access the matrix knobs of the next transformation
                 transform_matrix = get_matrix_at_frame(transform, frame)
+                rotation_hint += _calculate_rotation_hint(transform, transform_matrix, frame)
                 current_matrix = transform_matrix * current_matrix
 
             if force_matrix or not cornerpin:
-                wrapped_node.set_matrix_at(current_matrix, frame, animated)
+                wrapped_node.set_matrix_at(current_matrix, frame, animated, rotation_hint=rotation_hint)
             else:
                 points = matrix_to_corners(current_matrix, width, height)
                 wrapped_node.set_points_at(points, frame, animated)
