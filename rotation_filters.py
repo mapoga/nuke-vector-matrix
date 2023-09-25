@@ -42,6 +42,7 @@ def euler_filter_1d(previous, current):
 
     return current
 
+
 def distance_squared(vec1, vec2):
     """ Calculate distance between two vector3 represented as lists of len 3
 
@@ -50,6 +51,7 @@ def distance_squared(vec1, vec2):
     :return: Squared distance between the 2 vectors
     """
     return (vec1[0] - vec2[0])**2 + (vec1[1]  -vec2[1])**2 + (vec1[2] - vec2[2])**2
+
 
 def euler_filter_3d(previous, current, rotation_order="XYZ"):
     """ Attempts to minimize the amount of rotation between the current orientation and the previous one.
