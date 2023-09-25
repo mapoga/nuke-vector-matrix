@@ -7,7 +7,8 @@ All subdirectories are added to the nuke.pluginPath() (see init.py)
 import os
 import re
 import nuke
-import matrix_utils
+from transform_utils import matrix_utils
+
 try:
     import scandir as walk_module
 except ImportError:
@@ -64,7 +65,7 @@ def populate_menu_recursive(tool_path, menu):
 
 def natural_sort(values, case_sensitive=False):
     """
-    Returns a human readable list with integers accounted for in the sort.
+    Returns a human-readable list with integers accounted for in the sort.
     items = ['xyz.1001.exr', 'xyz.1000.exr', 'abc11.txt', 'xyz.0999.exr', 'abc10.txt', 'abc9.txt']
     natural_sort(items) = ['abc9.txt', 'abc10.txt', 'abc11.txt', 'xyz.0999.exr', 'xyz.1000.exr', 'xyz.1001.exr']
     :param values: string list
@@ -95,5 +96,6 @@ populate_menu_recursive(nuke_dir, toolbar_math_tools)
 # By default in the main Nuke menu, change the next line to have the menu somewhere else.
 target_menu = nuke.menu('Nuke')
 transform_menu = target_menu.addMenu("Transform Utils", icon="transforms.png")
-transform_menu.addCommand("Convert Node Matrix", matrix_utils.run_convert_matrix)
+transform_menu.addCommand("Convert Transforms", matrix_utils.run_convert_matrix)
 transform_menu.addCommand("Merge Transforms", matrix_utils.run_merge_transforms)
+transform_menu.addCommand("Convert Tracker to SplineWarp", matrix_utils.run_convert_tracker_to_splinewarp)

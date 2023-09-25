@@ -8,6 +8,8 @@ import math
 import nuke
 import nukescripts
 
+from .tracker4_api import Tracker
+
 
 class NodeMatrixWrapper(object):
     """
@@ -22,7 +24,7 @@ class NodeMatrixWrapper(object):
         self._set_type()
 
     def _set_type(self):
-        """ Set self.type to a string corresponding to the type of node wrapped """
+        """ Set `self.type` to a string corresponding to the type of node wrapped """
         if not self.node:
             self.type = None
         else:
@@ -424,6 +426,43 @@ class MatrixConversionPanel(nukescripts.PythonPanel):
         elif knob is self.specify_format:
             value = knob.value()
             self.format.setEnabled(value)
+
+
+class TrackerToSplinewarpPanel(nukescripts.PythonPanel):
+    """ Panel presenting options for converting a tracker to splinewarp """
+    def __init__(self, ref=1001):
+        nukescripts.PythonPanel.__init__(self, 'Merge Transforms')
+
+        # CREATE KNOBS
+        self.mode = nuke.Enumeration_Knob('mode', 'Mode', ['Bake values', 'Expression Link'])
+        self.mode.setTooltip("You can either create the SplineWarp in Baked mode, where the SplineWarp "
+                             "becomes self-contained, or expression-linked, where the positions are kept "
+                             "live from the tracker.\nNote that new points added to the tracker after expression "
+                             "linking will not be added to the SplineWarp, and deleted points on the tracker will "
+                             "result in points at 0, 0 in the SplineWarp.\nBaking recommended.")
+        self.first = nuke.Int_Knob('first', 'First Frame')
+        self.first.setValue(int(nuke.root()['first_frame'].value()))
+        self.last = nuke.Int_Knob('last', 'Last Frame')
+        self.last.setValue(int(nuke.root()['last_frame'].value()))
+        self.last.clearFlag(nuke.STARTLINE)
+        self.ref = nuke.Int_Knob('ref', 'Reference Frame')
+        self.ref.setValue(ref)
+        self.ref.setTooltip("At this frame, the Splinewarp will not deform the image.\n"
+                            "Defaults to the Tracker's reference frame knob.")
+        self.direction = nuke.Enumeration_Knob('direction', 'Direction', ['Stabilize', 'Matchmove'])
+        self.direction.setTooltip("Choose whether to Stabilize or Matchmove.\nNote that these operations"
+                                  "are not perfectly opposite and applying both a stabilize and a matchmove after one "
+                                  "another will approximate the original plate but not match it 100%.")
+
+        # ADD KNOBS
+        for k in (self.mode, self.first, self.last, self.ref, self.direction):
+            self.addKnob(k)
+
+    def knobChanged(self, knob):
+        """ knobChanged callback """
+        if knob is self.mode:
+            self.first.setEnabled(knob.getValue() == 0)
+            self.last.setEnabled(knob.getValue() == 0)
 
 
 # Defining Helper Functions
@@ -1050,6 +1089,78 @@ def do_matrix_conversion(old_node, new_class, first, last,
         del task
 
 
+def convert_tracker_to_splinewarp(tracker_node, first=0, last=0, ref=0, stabilize=False, link=False):
+    """
+    Convert a Tracker4 Node's point to a SpineWarp3 node
+    Some inspiration taken from:
+        https://www.nukepedia.com/python/misc/track-to-pins
+        https://www.nukepedia.com/python/nodegraph/kj_tracker_to_pins
+    """
+    import nuke.splinewarp
+
+    def _make_anim_curve(source_knob_name, track_point, is_ref=False):
+        curve = nuke.splinewarp.AnimCurve()
+        if link:
+            if is_ref:
+                curve.expressionString = '{}.tracks.{}.{}({})'.format(tracker_node.fullName(), track_point.index+1,
+                                                                      source_knob_name, ref)
+            else:
+                curve.expressionString = '{}.tracks.{}.{}'.format(tracker_node.fullName(), track_point.index+1,
+                                                                  source_knob_name)
+            curve.useExpression = True
+
+        else:
+            if is_ref:
+                curve.addKey(ref, track_point[source_knob_name].getValueAt(ref))
+            else:
+                for f in range(first, last+1):
+                    curve.addKey(f, track_point[source_knob_name].getValueAt(f))
+        return curve
+
+    label = "{} {} - {}".format('Linked to' if link else "Baked from",
+                                tracker_node.name(),
+                                'Stabilize' if stabilize else 'MatchMove')
+
+    tracker = Tracker(tracker_node)
+
+    # Create the splinewarp node
+    splinewarp_node = nuke.Node("SplineWarp3")
+    splinewarp_node.setInput(0, tracker_node.input(0))
+    splinewarp_node.setXpos(tracker_node.xpos() + 100)
+    splinewarp_node.setYpos(tracker_node.ypos())
+    splinewarp_node['label'].setValue(label)
+    splinewarp_node['boundary_bbox'].setValue(False)
+    splinewarp_node['crop_to_format'].setValue(False)
+
+    curve_knob = splinewarp_node['curves']
+    for point in tracker:
+        point_name = point['name'].value()
+        # Add a layer to keep things clean
+        layer = nuke.splinewarp.Layer(curve_knob)
+        layer.name = point_name
+        curve_knob.rootLayer.append(layer)
+        # We create the points at 0, 0, and animate them from the transform instead of keyframes on the point itself
+        src = nuke.splinewarp.Shape(curve_knob, (0.0, 0.0))
+        src.name = '{} source'.format(point_name)
+        dst = nuke.splinewarp.Shape(curve_knob, (0.0, 0.0))
+        dst.name = '{} destination'.format(point_name)
+        src_transform = src.getTransform()
+        dst_transform = dst.getTransform()
+        for curve_index, knob_name in enumerate(['track_x', 'track_y']):
+            src_transform.setTranslationAnimCurve(curve_index, _make_anim_curve(knob_name, point, is_ref=not stabilize))
+            dst_transform.setTranslationAnimCurve(curve_index, _make_anim_curve(knob_name, point, is_ref=stabilize))
+        layer.append(src)
+        layer.append(dst)
+        curve_knob.defaultJoin(src, dst)
+
+    # Special hack:
+    # The SpineWarp does not like it when we make single point Bezier Shapes, it prefers that we use "Pins"
+    # It's unclear if Pins can be made directly by API, however, the only thing that changes if the cubic curve's
+    # flags. It changes from 8192 to 8224. These flags are not documented so we do it via serialization.
+    # 10000000000000 -> 10000000100000
+    curve_knob.fromScript(curve_knob.toScript().replace("{f 8192}", "{f 8224}"))
+
+
 # Defining runner functions
 def run_merge_transforms():
     """ Show the merge transforms panel and starts the merge process"""
@@ -1101,7 +1212,6 @@ def run_convert_matrix():
             new_class = 'CornerPin2D'
         elif target == 'Transform (No Perspective)':
             new_class = 'Transform'
-            # matrix = False
         elif target == 'Tracker':
             new_class = 'Tracker4'
         elif target == 'SplineWarp':
@@ -1123,3 +1233,25 @@ def run_convert_matrix():
         exec_thread = threading.Thread(None, do_matrix_conversion(node, new_class, first, last,
                                                                   matrix, camera, ref, invert, target_format))
         exec_thread.start()
+
+
+def run_convert_tracker_to_splinewarp():
+    try:
+        node = nuke.selectedNode()
+    except ValueError:
+        node = None
+
+    if not node or node.Class() != 'Tracker4':
+        nuke.critical("Please select exactly 1 Tracker4 node.")
+
+    # We set the reference frame to be by default the node's reference frame, if it falls within the shot range
+    ref_frame = node['reference_frame'].value()
+    ref_frame = int(min(max(ref_frame, nuke.root()['first_frame'].value()), nuke.root()['last_frame'].value()))
+    panel = TrackerToSplinewarpPanel(ref_frame)
+    if panel.showModalDialog():
+        first = panel.first.value()
+        last = panel.last.value()
+        ref = panel.ref.value()
+        stabilize = panel.direction.getValue() == 0
+        link = panel.mode.getValue() == 1
+        convert_tracker_to_splinewarp(node, first, last, ref, stabilize=stabilize, link=link)
