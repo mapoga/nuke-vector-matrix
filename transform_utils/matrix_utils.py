@@ -9,6 +9,7 @@ import nuke
 import nukescripts
 
 from .tracker4_api import Tracker
+from .rotation_filters import match_target_rotation_1d
 
 
 class NodeMatrixWrapper(object):
@@ -92,6 +93,8 @@ class NodeMatrixWrapper(object):
                 matrix = apply_par * matrix * un_apply_par
 
             translate_x, translate_y, rotation, scale_x, scale_y, skew_x = decompose_matrix(matrix, center_x, center_y)
+            if rotation_hint is not None:
+                rotation = math.degrees(match_target_rotation_1d(math.radians(rotation), math.radians(rotation_hint)))
             node['translate'].setValueAt(translate_x, frame, 0)
             node['translate'].setValueAt(translate_y, frame, 1)
             node['rotate'].setValueAt(rotation, frame)

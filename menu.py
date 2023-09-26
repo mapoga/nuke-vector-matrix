@@ -99,3 +99,8 @@ transform_menu = target_menu.addMenu("Transform Utils", icon="transforms.png")
 transform_menu.addCommand("Convert Transforms", matrix_utils.run_convert_matrix)
 transform_menu.addCommand("Merge Transforms", matrix_utils.run_merge_transforms)
 transform_menu.addCommand("Convert Tracker to SplineWarp", matrix_utils.run_convert_tracker_to_splinewarp)
+
+# Menus in the animation menu must call a string for some reason
+nuke.menu('Animation').addCommand('Edit/Filter Rotations',
+                                  "from transform_utils import rotation_filters;"
+                                  "rotation_filters.setup_filter_rotations()")

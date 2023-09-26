@@ -50,7 +50,7 @@ def distance_squared(vec1, vec2):
     :param list vec2: List of 3 floats
     :return: Squared distance between the 2 vectors
     """
-    return (vec1[0] - vec2[0])**2 + (vec1[1]  -vec2[1])**2 + (vec1[2] - vec2[2])**2
+    return (vec1[0] - vec2[0])**2 + (vec1[1] - vec2[1])**2 + (vec1[2] - vec2[2])**2
 
 
 def euler_filter_3d(previous, current, rotation_order="XYZ"):
@@ -186,6 +186,7 @@ def angular_velocity_filter(knob, use_degrees=True):
 
 
 def setup_filter_rotations(knob=None):
+    print("AAAAAAA")
 
     valid_rotation_orders = ['XYZ', 'XZY', 'YXZ', 'YZX', 'ZXY', 'ZYX']
     strategies = ["Minimum Rotation (Euler Filter)", "Preserve Angular Velocity"]
@@ -204,7 +205,7 @@ def setup_filter_rotations(knob=None):
         raise ValueError("Don't know how to apply a rotation filter on knobs of type %s" % knob.Class())
 
     node = knob.node()
-    # Figure out if the node has a built in rotation order
+    # Figure out if the node has a built-in rotation order
     if rotation_order is None and node.knob('rot_order'):
         value = node.knob('rot_order').value()
         if value in valid_rotation_orders:
@@ -213,7 +214,7 @@ def setup_filter_rotations(knob=None):
     # Build panel
     panel = RotationFilterPanel(
         strategies,
-        rotation_orders= valid_rotation_orders if use_3d_filter and rotation_order is None else None)
+        rotation_orders=valid_rotation_orders if use_3d_filter and rotation_order is None else None)
 
     if panel.showModalDialog():
         strategy = strategies.index(panel.strategy.value())
@@ -243,6 +244,3 @@ class RotationFilterPanel(nukescripts.PythonPanel):
 
         self.unit = nuke.Enumeration_Knob('unit', 'Angle Units', ['Degrees', 'Radians'])
         self.addKnob(self.unit)
-
-
-nuke.menu('Animation').addCommand('Edit/Filter Rotations', 'setup_filter_rotations()')
