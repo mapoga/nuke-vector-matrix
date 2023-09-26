@@ -201,7 +201,7 @@ class ReformatWrapper(object):
     @classmethod
     def from_node(cls, node):
         """ Init from an existing node """
-        from_format = node.input(0).format() if node.input(0) else nuke.root().format()
+        from_format = get_input_format(node)
         to_format = node.format()
         wrapper = cls(from_format, to_format)
         wrapper.resize = node['resize'].value()
@@ -225,8 +225,23 @@ class ReformatWrapper(object):
         Create a node for this reformat.
         Note that "from_format" is ignored as it will depend on what the node gets connected to.
         """
-        # TODO
-        raise NotImplementedError
+        reformat_node = nuke.nodes.Reformat()
+        target_format = self.to_format
+        if target_format.name():
+            reformat_node['type'].setValue('to format')
+            reformat_node['format'].setValue(target_format.name())
+        else:
+            reformat_node['type'].setValue('to box')
+            reformat_node['box_fixed'].setValue(True)
+            reformat_node['box_width'].setValue(target_format.width())
+            reformat_node['box_height'].setValue(target_format.height())
+            reformat_node['box_pixel_aspect'].setValue(target_format.pixelAspect())
+        reformat_node['resize'].setValue(self.resize)
+        reformat_node['center'].setValue(self.center)
+        reformat_node['flip'].setValue(self.flip)
+        reformat_node['flop'].setValue(self.flop)
+        reformat_node['turn'].setValue(self.turn)
+        return reformat_node
 
     def get_matrix(self):
         """ Convert Reformat to a Matrix. """
@@ -311,6 +326,15 @@ class ReformatWrapper(object):
         else:
             result = par_out * resize_matrix * invert_center_matrix * flipflop_matrix * center_matrix * par_in
         return result
+
+    @staticmethod
+    def formats_match(format1, format2):
+        """
+        Return True if the 2 given formats are equivalent.
+        Workaround for Nuke always returning false if comparing format1 == format2.
+        """
+        attributes_to_compare = ['width', 'height', 'pixelAspect']
+        return all((getattr(format1, attr)() == getattr(format2, attr)() for attr in attributes_to_compare))
 
 
 # Panel Classes
@@ -605,11 +629,7 @@ def get_camera_projection_matrix(camera, frame, image_format):
 
 def get_card_matrix(card, frame):
     """ Returns the matrix of a card, no matter the card settings (except distortion)"""
-
-    try:
-        image_format = card.input(0).format()
-    except AttributeError:
-        image_format = nuke.root()['format'].value()
+    image_format = get_input_format(card)
     # grab data from our snapped card
     if card.Class() == 'Card3D' or card['image_aspect'].value():
         aspect = float(image_format.height()) / float(image_format.width()) / image_format.pixelAspect()
@@ -777,6 +797,14 @@ def get_matrix_at_frame(node, frame):
     return matrix
 
 
+def get_input_format(node):
+    """ Return the format of the node's input. If no input, return the root format. """
+    try:
+        return node.input(0).format()
+    except AttributeError:
+        return nuke.root().format()
+
+
 def matrix_to_corners(matrix, frame_width, frame_height):
     """ Convert a Matrix to 4 corners
 
@@ -820,10 +848,7 @@ def reconcile_card(card, camera, frame, camera_frame=None):
     :rtype: nuke.math.Vector4
     :param int camera_frame: Frame number to use for the Camera. Optional. Uses the frame if not provided.
     """
-    try:
-        image_format = card.input(0).format()
-    except AttributeError:
-        image_format = nuke.root()['format'].value()
+    image_format = get_input_format(card)
     card_matrix = get_card_matrix(card, frame)
     cam_matrix = get_camera_projection_matrix(camera, camera_frame or frame, image_format)
     if cam_matrix is None:
@@ -917,6 +942,9 @@ def merge_transforms(transform_list, first, last, cornerpin=False, force_matrix=
     height = transform_list[0].height()
     width = transform_list[0].width()
 
+    initial_format = get_input_format(transform_list[0])
+    latest_format = initial_format
+
     # Create the node to receive the baked transformations
     if cornerpin:
         new_node = nuke.nodes.CornerPin2D(inputs=[transform_list[0].input(0)])
@@ -952,18 +980,28 @@ def merge_transforms(transform_list, first, last, cornerpin=False, force_matrix=
             rotation_hint = _calculate_rotation_hint(transform_list[0], current_matrix, frame)
 
             # We merge the nodes 2 by two
-            # TODO: Keep track of reformats to include them if needed. We can just use the last node's format as a shortcut and compare if different from the first node's
             for transform in transform_list[1:]:
                 # Access the matrix knobs of the next transformation
                 transform_matrix = get_matrix_at_frame(transform, frame)
                 rotation_hint += _calculate_rotation_hint(transform, transform_matrix, frame)
                 current_matrix = transform_matrix * current_matrix
+                latest_format = transform.format()
 
             if force_matrix or not cornerpin:
                 wrapped_node.set_matrix_at(current_matrix, frame, animated, rotation_hint=rotation_hint)
             else:
                 points = matrix_to_corners(current_matrix, width, height)
                 wrapped_node.set_points_at(points, frame, animated)
+
+        # Add a reformat node if needed
+        if not ReformatWrapper.formats_match(initial_format, latest_format):
+            reformat_wrapper = ReformatWrapper(to_format=latest_format)
+            reformat_wrapper.center = False
+            reformat_wrapper.resize = reformat_wrapper.NoneMode
+            reformat_node = reformat_wrapper.to_node()
+            reformat_node.setInput(0, new_node)
+            reformat_node.setXpos(new_node.xpos())
+            reformat_node.setYpos(new_node.ypos() + 48)
 
     finally:
         task.setProgress(100)
@@ -992,10 +1030,7 @@ def do_matrix_conversion(old_node, new_class, first, last,
     for node in nuke.selectedNodes():
         node.setSelected(False)
 
-    try:
-        image_format = old_node.input(0).format()
-    except AttributeError:
-        image_format = nuke.root()['format'].value()
+    image_format = get_input_format(old_node)
 
     if target_format is None:
         reformat_node = None
