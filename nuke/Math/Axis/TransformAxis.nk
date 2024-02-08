@@ -2,7 +2,7 @@ Group {
 name TransformAxis
 help "Transforms AxisB by AxisA (similar to adding axis A above axis B)"
 tile_color 0x9c0000ff
-addUserKnob {20 InvertAxis l "Invert Axis"}
+addUserKnob {20 TransformAxis l "Transform Axis"}
 addUserKnob {26 tip l "" +STARTLINE T "Results are similar to connecting Axis A to Axis B's axis input"}
 addUserKnob {26 divider_matrix l "" +STARTLINE}
 addUserKnob {41 world_matrix l "" -STARTLINE T Out_Axis.world_matrix}
