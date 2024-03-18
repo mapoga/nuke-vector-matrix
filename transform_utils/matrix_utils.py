@@ -371,7 +371,7 @@ class MergeTransformsPanel(nukescripts.PythonPanel):
 class MatrixConversionPanel(nukescripts.PythonPanel):
     """ Panel presenting options for converting Matrices from a node class to another"""
     def __init__(self):
-        nukescripts.PythonPanel.__init__(self, 'Corner Pin To Matrix')
+        nukescripts.PythonPanel.__init__(self, 'Convert transformation')
 
         # ANALYZE NUKE SCRIPT TO GATHER VALUES
         camera_nodes = []
@@ -1101,11 +1101,14 @@ def do_matrix_conversion(old_node, new_class, first, last,
             if reformat_matrix:
                 matrix = matrix * reformat_matrix.inverse()
 
-            if reference_frame is not None:
-                matrix = matrix * ref_matrix.inverse()
-
             if invert:
                 matrix = matrix.inverse()
+
+            if reference_frame is not None:
+                if invert:
+                    matrix = ref_matrix * matrix
+                else:
+                    matrix = ref_matrix.inverse() * matrix
 
             if reformat_matrix:
                 matrix = reformat_matrix * matrix
