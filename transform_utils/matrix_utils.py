@@ -423,6 +423,10 @@ class MatrixConversionPanel(nukescripts.PythonPanel):
         self.destination = nuke.Enumeration_Knob('target', 'Convert to', options)
 
         div1 = nuke.Text_Knob('div1', '')
+        self.invert = nuke.Boolean_Knob('invert', 'Invert Matrix')
+        self.invert.setTooltip("Invert the matrix")
+        self.invert.setFlag(nuke.STARTLINE)
+
         self.force_ref = nuke.Boolean_Knob('force_reference', '')
         self.force_ref.setTooltip("Forces the resulting node to leave the reference frame untouched")
         self.force_ref.setFlag(nuke.STARTLINE)
@@ -430,8 +434,20 @@ class MatrixConversionPanel(nukescripts.PythonPanel):
         self.reference.clearFlag(nuke.STARTLINE)
         self.reference.setEnabled(False)
         self.reference.setValue(nuke.frame())
+        self.reference_mode = nuke.Enumeration_Knob('reference_mode', '', ['Pre', 'Post'])
+        self.reference_mode.setTooltip("Choose whether the reference frame should be pre or post transform.\n\n"
+                                       "In both modes, the transform will be zeroed at the reference frame.\n\n"
+                                       "In Pre mode, the resulting motion will be as if the object had been \"glued\" "
+                                       "to another, almost like if they were parented. This is what Nuke does by "
+                                       "default when you change the ref frame on a tracker for example.\n\n"
+                                       "In Post mode, the resulting motion will be as if the motion had been applied, "
+                                       "then the object moved back to its initial position, which could be different. "
+                                       "This is can make certain offset animations look closer to the original motion. "
+                                       "It can also be useful for certain stabilizations to ensure no wiggle/slide is "
+                                       "introduced when changing reference.")
+        self.reference_mode.clearFlag(nuke.STARTLINE)
+        self.reference_mode.setEnabled(False)
 
-        self.invert = nuke.Boolean_Knob('invert', 'Invert Matrix')
 
         # Reformat knobs
         div2 = nuke.Text_Knob('div2', '')
@@ -451,8 +467,8 @@ class MatrixConversionPanel(nukescripts.PythonPanel):
         div3 = nuke.Text_Knob('div3', '')
 
         # ADD KNOBS
-        for k in (self.first, self.last, self.node, self.camera, self.destination, div1, self.force_ref, self.reference,
-                  self.invert, div2, self.specify_format, self.format, div3):
+        for k in (self.first, self.last, self.node, self.camera, self.destination, div1, self.invert, self.force_ref,
+                  self.reference, self.reference_mode, div2, self.specify_format, self.format, div3):
             self.addKnob(k)
 
     def knobChanged(self, knob):
@@ -465,6 +481,7 @@ class MatrixConversionPanel(nukescripts.PythonPanel):
                 self.camera.setVisible(False)
         elif knob is self.force_ref:
             self.reference.setEnabled(knob.value())
+            self.reference_mode.setEnabled(knob.value())
         elif knob is self.specify_format:
             value = knob.value()
             self.format.setEnabled(value)
@@ -932,7 +949,7 @@ def merge_transforms(transform_list, first, last, cornerpin=False, force_matrix=
     # Set Threading
     task = nuke.ProgressTask("Merging Transforms")
     task.setMessage("Checking Settings")
-    # Check if we have Cornerpins in the list
+    # Check if we have CornerPins in the list
     for node in transform_list:
         if node.Class() in ['CornerPin2D', 'Card3D']:
             cornerpin = True
@@ -1008,8 +1025,8 @@ def merge_transforms(transform_list, first, last, cornerpin=False, force_matrix=
         del task
 
 
-def do_matrix_conversion(old_node, new_class, first, last,
-                         raw_matrix=False, camera=None, reference_frame=None, invert=False, target_format=None):
+def do_matrix_conversion(old_node, new_class, first, last, raw_matrix=False, camera=None,
+                         reference_frame=None, invert=False, target_format=None, ref_frame_post_mode=False):
     """ Create a new node with a matrix from another node, for multiple frames.
 
     :param nuke.Node old_node: Original Node to extract the matrix from
@@ -1021,6 +1038,8 @@ def do_matrix_conversion(old_node, new_class, first, last,
     :param int reference_frame: Set frame as reference frame (makes the resulting matrix identity at that frame)
     :param bool invert: Invert the matrix
     :param nuke.Format target_format: If provided, bake the matrix as if in that format.
+    :param bool ref_frame_post_mode: If True, the reference frame matrix will be applied after the
+                                     matrix, if False, before.
     """
     # Set Threading
     task = nuke.ProgressTask("Converting Matrix")
@@ -1059,7 +1078,7 @@ def do_matrix_conversion(old_node, new_class, first, last,
     label_string = "Baked Matrix from {}".format(old_node.name())
     label_string += "\n{}x{}".format(int(target_format.width()), int(target_format.height()))
     if reference_frame is not None:
-        label_string += "\nReference Frame {}".format(reference_frame)
+        label_string += "\nReference Frame {} ({})".format(reference_frame, "Post" if ref_frame_post_mode else "Pre")
     new_node['label'].setValue(label_string)
 
     if new_class == 'CornerPin2D':
@@ -1069,6 +1088,7 @@ def do_matrix_conversion(old_node, new_class, first, last,
         new_node['center'].setValue(target_format.height() / 2, 1)
     elif new_class in ['Roto', 'RotoPaint']:
         # Set format value, so we can disconnect the node without risk
+        # FIXME: This doesn't work if the format is not in the list of available formats
         new_node['format'].setValue(target_format)
 
     wrapped_node = NodeMatrixWrapper(new_node)
@@ -1106,9 +1126,15 @@ def do_matrix_conversion(old_node, new_class, first, last,
 
             if reference_frame is not None:
                 if invert:
-                    matrix = ref_matrix * matrix
+                    if ref_frame_post_mode:
+                        matrix = ref_matrix * matrix
+                    else:
+                        matrix = matrix * ref_matrix
                 else:
-                    matrix = ref_matrix.inverse() * matrix
+                    if ref_frame_post_mode:
+                        matrix = ref_matrix.inverse() * matrix
+                    else:
+                        matrix = matrix * ref_matrix.inverse()
 
             if reformat_matrix:
                 matrix = reformat_matrix * matrix
@@ -1261,14 +1287,20 @@ def run_convert_matrix():
         if panel.force_ref.value():
             ref = panel.reference.value()
 
+        ref_mode = bool(panel.reference_mode.getValue())
+
         # Set the format
         if panel.specify_format.value():
             target_format = panel.format.value()
         else:
             target_format = None
 
-        exec_thread = threading.Thread(None, do_matrix_conversion(node, new_class, first, last,
-                                                                  matrix, camera, ref, invert, target_format))
+        exec_thread = threading.Thread(
+            None,
+            do_matrix_conversion(
+                node, new_class, first, last, matrix, camera, ref, invert, target_format, ref_mode
+            )
+        )
         exec_thread.start()
 
 
