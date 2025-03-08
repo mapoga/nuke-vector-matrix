@@ -1184,44 +1184,62 @@ def convert_tracker_to_splinewarp(tracker_node, first=0, last=0, ref=0, stabiliz
                                 tracker_node.name(),
                                 'Stabilize' if stabilize else 'MatchMove')
 
-    tracker = Tracker(tracker_node)
+    # Set Progressbar
+    task = nuke.ProgressTask("Converting Tracker to SplineWarp")
+    task.setMessage("Creating Node")
+    try:
 
-    # Create the splinewarp node
-    splinewarp_node = nuke.Node("SplineWarp3")
-    splinewarp_node.setInput(0, tracker_node.input(0))
-    splinewarp_node.setXpos(tracker_node.xpos() + 100)
-    splinewarp_node.setYpos(tracker_node.ypos())
-    splinewarp_node['label'].setValue(label)
-    splinewarp_node['boundary_bbox'].setValue(False)
-    splinewarp_node['crop_to_format'].setValue(False)
+        tracker = Tracker(tracker_node)
 
-    curve_knob = splinewarp_node['curves']
-    for point in tracker:
-        point_name = point['name'].value()
-        # Add a layer to keep things clean
-        layer = nuke.splinewarp.Layer(curve_knob)
-        layer.name = point_name
-        curve_knob.rootLayer.append(layer)
-        # We create the points at 0, 0, and animate them from the transform instead of keyframes on the point itself
-        src = nuke.splinewarp.Shape(curve_knob, (0.0, 0.0))
-        src.name = '{} source'.format(point_name)
-        dst = nuke.splinewarp.Shape(curve_knob, (0.0, 0.0))
-        dst.name = '{} destination'.format(point_name)
-        src_transform = src.getTransform()
-        dst_transform = dst.getTransform()
-        for curve_index, knob_name in enumerate(['track_x', 'track_y']):
-            src_transform.setTranslationAnimCurve(curve_index, _make_anim_curve(knob_name, point, is_ref=not stabilize))
-            dst_transform.setTranslationAnimCurve(curve_index, _make_anim_curve(knob_name, point, is_ref=stabilize))
-        layer.append(src)
-        layer.append(dst)
-        curve_knob.defaultJoin(src, dst)
+        # Create the splinewarp node
+        splinewarp_node = nuke.Node("SplineWarp3")
+        splinewarp_node.setInput(0, tracker_node.input(0))
+        splinewarp_node.setXpos(tracker_node.xpos() + 100)
+        splinewarp_node.setYpos(tracker_node.ypos())
+        splinewarp_node['label'].setValue(label)
+        splinewarp_node['boundary_bbox'].setValue(False)
+        splinewarp_node['crop_to_format'].setValue(False)
 
-    # Special hack:
-    # The SpineWarp does not like it when we make single point Bezier Shapes, it prefers that we use "Pins"
-    # It's unclear if Pins can be made directly by API, however, the only thing that changes if the cubic curve's
-    # flags. It changes from 8192 to 8224. These flags are not documented so we do it via serialization.
-    # 10000000000000 -> 10000000100000
-    curve_knob.fromScript(curve_knob.toScript().replace("{f 8192}", "{f 8224}"))
+        curve_knob = splinewarp_node['curves']
+        number_of_points = len(tracker)
+        for i, point in enumerate(tracker):
+            if task.isCancelled():
+                break
+            task.setProgress(int(i/float(number_of_points) * 100))
+
+            point_name = point['name'].value()
+
+            task.setMessage("Processing {} ({}/{})".format(point_name, i+1, number_of_points))
+
+            # Add a layer to keep things clean
+            layer = nuke.splinewarp.Layer(curve_knob)
+            layer.name = point_name
+            curve_knob.rootLayer.append(layer)
+            # We create the points at 0, 0, and animate them from the transform instead of keyframes on the point itself
+            src = nuke.splinewarp.Shape(curve_knob, (0.0, 0.0))
+            src.name = '{} source'.format(point_name)
+            dst = nuke.splinewarp.Shape(curve_knob, (0.0, 0.0))
+            dst.name = '{} destination'.format(point_name)
+            src_transform = src.getTransform()
+            dst_transform = dst.getTransform()
+            for curve_index, knob_name in enumerate(['track_x', 'track_y']):
+                src_transform.setTranslationAnimCurve(curve_index, _make_anim_curve(knob_name, point, is_ref=not stabilize))
+                dst_transform.setTranslationAnimCurve(curve_index, _make_anim_curve(knob_name, point, is_ref=stabilize))
+            layer.append(src)
+            layer.append(dst)
+            curve_knob.defaultJoin(src, dst)
+
+        # Special hack:
+        # The SpineWarp does not like it when we make single point Bezier Shapes, it prefers that we use "Pins"
+        # It's unclear if Pins can be made directly by API, however, the only thing that changes if the cubic curve's
+        # flags. It changes from 8192 to 8224. These flags are not documented, so we do it via serialization.
+        # 10000000000000 -> 10000000100000
+        curve_knob.fromScript(curve_knob.toScript().replace("{f 8192}", "{f 8224}"))
+
+        return splinewarp_node
+    finally:
+        task.setProgress(100)
+        del task
 
 
 # Defining runner functions
